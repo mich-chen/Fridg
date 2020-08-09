@@ -10,7 +10,7 @@ from jinja2 import StrictUndefined
 # instance of Flask class, store as app
 app = Flask(__name__)
 # secret key from api
-app.secret_key = ""
+app.secret_key = "blah"
 app.jinja_env.undefined = StrictUndefined
 
 
@@ -20,6 +20,20 @@ def homepage():
 
     return render_template("homepage.html")
 
+@app.route('/login', methods=["POST"])
+def process_login():
+
+    email = request.form.get('email')
+    password = request.form.get('password')
+
+    flash('hit login route!')
+
+    # function to check if email exists in db
+
+    # conditional if email exists, flash message
+    # else create a new user in db and flash message
+
+    return redirect('/')
 
 
 

@@ -7,6 +7,11 @@
   </head>
 
   <body>
+    {% for msg in get_flashed_messages() %}
+      <p class="flash_msg">
+        {{ msg }}
+      </p>
+    {% endfor %}
     {% block content %} BODY GOES HERE {% endblock %}
     <!-- <script></script> -->
   </body>

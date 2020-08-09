@@ -4,4 +4,16 @@
 {% block content %}
   <h1> Hello! Welcome to the homepage! </h1>
 
+  <h3> To start searching and saving recipes enter your email and password! 
+  </h3>
+  <form action="/login" method="POST">
+    <label> Email </label>
+    <input type="text" name="email">
+
+    <label> Password </label>
+    <input type="text" name="password">
+
+    <input type="submit">
+  </form>
+
 {% endblock %}
