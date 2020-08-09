@@ -8,7 +8,7 @@ from flask import (Flask, render_template, request, flash, session, redirect)
 from jinja2 import StrictUndefined
 
 # instance of Flask class, store as app
-app = FLask(__name__)
+app = Flask(__name__)
 # secret key from api
 app.secret_key = ""
 app.jinja_env.undefined = StrictUndefined
@@ -17,8 +17,10 @@ app.jinja_env.undefined = StrictUndefined
 @app.route('/')
 def homepage():
     """Show homepage."""
-    
+
     return render_template("homepage.html")
+
+
 
 
 
