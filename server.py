@@ -14,6 +14,11 @@ app.secret_key = ""
 app.jinja_env.undefined = StrictUndefined
 
 
+@app.route('/')
+def homepage():
+    return render_template("homepage.html")
+
+
 
 
 if __name__ == "__main__":
