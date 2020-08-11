@@ -3,15 +3,22 @@
 
 # importing all these for now
 from flask import (Flask, render_template, request, flash, session, redirect)
+import os
+import requests
 
 # import jinja 2 to make it throw errors for undefined variables
 from jinja2 import StrictUndefined
 
 # instance of Flask class, store as app
 app = Flask(__name__)
+
+app.secret_key = "secretkey"
+app.jinja_env.undefined = StrictUndefined\
+
 # secret key from api
-app.secret_key = "blah"
-app.jinja_env.undefined = StrictUndefined
+API_KEY = os.environ["SPOONACULAR_KEY"]
+
+
 
 
 @app.route('/')
@@ -35,6 +42,16 @@ def process_login():
 
     return redirect('/')
 
+
+@app.route('/ingredient_search')
+
+
+
+url = "https://api.spoonacular.com/recipes/findByIngredients" 
+payload = {"apiKey": API_KEY, "ingredients": "apples, flour, sugar"} 
+res = requests.get(url, params=payload)
+# convert json into python dictionary -> API is a List of dictionaries
+res.json()
 
 
 
