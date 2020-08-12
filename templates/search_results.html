@@ -6,6 +6,7 @@
 
   {% for recipe in recipes %}
   <div name="recipes">
+    <img src="{{ recipe.image }}">
     <h3>{{ recipe['title'] }}</h3>
     <ul>
       <li>
@@ -20,6 +21,10 @@
         <label>Ready In: </label>
         {{ recipe.get('readyInMinutes', 'N/A') }}
       </li>
+      <li>
+        <label>Servings: </label>
+        {{ recipe['servings'] }}
+      </li>
     </ul>
 
     <h4>Instructions</h4>
@@ -31,7 +36,9 @@
       {% endfor %}
     </ol>
 
+    <a href="{{ recipe.sourceUrl }}">For more details on {{ recipe.title }}</a>
   </div>
+  <br>
   {% endfor %}
 
 
