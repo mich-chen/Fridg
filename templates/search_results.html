@@ -2,9 +2,22 @@
 {% block title %}Recipes{% endblock %}
 
 {% block content %}
+  <h1> Recipes Based on Your Search! </h1>
+{# 
+  {% for recipe in recipes %}
+  <div name="recipes">
+    <h4>{{ recipe['title'] }}</h4>
+    <br>
+    <label>Instructions</label>
+    <ul name="recipe_instructions">
+      {% for i in range(instructions | length) %}
+      <li>Step #{{ instructions[i]['number'] }}</li>
 
+      {% endfor %} #}
+    {# </ul> #}
 
-
+  {# </div> #}
+{#   {% endfor %} #}
 
 
 

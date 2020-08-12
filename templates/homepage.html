@@ -4,6 +4,7 @@
 {% block content %}
   <h1> Hello! Welcome to the homepage! </h1>
 
+  {% if not session.get('user_id') %}
   <h3> To start searching and saving recipes enter your email and password! 
   </h3>
   <form action="/login" method="POST">
@@ -15,5 +16,17 @@
 
     <input type="submit">
   </form>
+  {% endif %}
+
+  {% if session.get('user_id') %}
+    <form action="/search_results" method="POST">
+      <p>
+        What's in your fridge?
+
+        <input type="text" name="user_ingredients">
+      </p>
+      <input type="submit">
+    </form>
+  {% endif %}
 
 {% endblock %}
