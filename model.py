@@ -16,7 +16,6 @@ class User(db.Model):
                          primary_key=True)
     email = db.Column(db.String)
     password = db.Column(db.String)
-    name = db.Column(db.String)
 
     saved_recipes = db.relationship('Saved_Recipe')
 
