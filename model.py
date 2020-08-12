@@ -54,7 +54,7 @@ class Recipe(db.Model):
                          primary_key=True)
     title = db.Column(db.String)
     image = db.Column(db.String)
-    serverings = db.Column(db.Integer)
+    servings = db.Column(db.Integer)
 
     ingredients = db.relationship('Recipe_Ingredient')
     instructions = db.relationship('Instructions')
@@ -96,7 +96,7 @@ class Recipe_Ingredient(db.Model):
     amount = db.Column(db.Integer)
     unit = db.Column(db.String)
 
-    ingredient = db.relationship('Recipe_Ingredient')
+    ingredient = db.relationship('Ingredient')
     recipe = db.relationship('Recipe')
 
 
