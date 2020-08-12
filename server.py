@@ -91,12 +91,6 @@ def search_results():
     #     print('\n')
 
 
-    # for recipe in instruction_steps:
-    #     print(recipe)
-    #     print('\n\n')
-
-
-
     return render_template("search_results.html", recipes=recipes)
 
 
