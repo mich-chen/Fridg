@@ -18,18 +18,18 @@ class User(db.Model):
     password = db.Column(db.String)
     name = db.Column(db.String)
 
-    users_recipes = db.relationship('Users_Recipe')
+    saved_recipes = db.relationship('Saved_Recipe')
 
     def __repr__(self):
         return f'<User user_id={self.user_id} email={self.email}>'
 
 
-class Users_Recipe(db.Model):
+class Saved_Recipe(db.Model):
     """User's selected recipes."""
 
-    __tablename__ = 'users_recipes'
+    __tablename__ = 'saved_recipes'
 
-    user_recipe_id = db.Column(db.Integer,
+    saved_id = db.Column(db.Integer,
                          autoincrement=True,
                          primary_key=True)
     recipe_id = db.Column(db.Integer,
@@ -59,7 +59,7 @@ class Recipe(db.Model):
 
     ingredients = db.relationship('Recipe_Ingredient')
     instructions = db.relationship('Instructions')
-    users_recipes = db.relationship('Users_Recipe')
+    saved_recipe = db.relationship('Saved_Recipe')
 
 
     def __repr__(self):
