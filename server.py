@@ -10,6 +10,8 @@ import json
 # import jinja 2 to make it throw errors for undefined variables
 from jinja2 import StrictUndefined
 
+from pprint import pprint
+
 # instance of Flask class, store as app
 app = Flask(__name__)
 
@@ -64,8 +66,8 @@ def search_results():
                "instructionsRequired": True,
                "fillIngredients": True,
                "ignorePantry": True,
-               "offset": 5,
-               "number": 10,
+               # "offset": 5,
+               "number": 3,
                } 
     res = requests.get(url, params=payload)
     # convert json into python dictionary -> API is a List of dictionaries
@@ -73,43 +75,29 @@ def search_results():
     # print(res.json())
 
     recipes = data['results']
-    # print(recipes)
 
-    # # list of recipe titles as strings
-    # titles = []
-    # # list of dictionaries of each step with keys:
-    # # 'number', 'step', 'ingredients', 'equipment'
-    instruction_steps = []
-    # # store recipe id's in a list as int
-    # recipe_ids = []
-    # # store prep mins in list as int
-    # prep_mins = []
-    # cooking_mins = []
-    # ready_time = []
-    # searvings = []
-    # images = []
+    # each list is a list of dictionaries of each step with keys:
+    # 'number', 'step', 'ingredients', 'equipment'
+    # instruction_steps = []
 
 
-    for recipe in recipes:
-    #     recipe_ids.append(recipe['id'])
-    #     title = recipe['title']
-    #     titles.append(title)
-        instruction_steps.append(recipe['analyzedInstructions'][0]['steps'])
-        # for step in instructions:
-        #     instruction_steps.append(step)
-    #     prep_mins.append(recipe['preparationMinutes'])
-    #     cooking_mins.append(recipe['cookingMinutes'])
-    #     ready_time.append(recipe['readyInMinutes'])
-    #     servings.append(recipe['servings'])
-    #     images.append(recipe['image'])
+    # for recipe in recipes:
+    #     instructions = recipe['analyzedInstructions'][0]['steps']
+    #     # instructions is list of dictionaries which are each step
+    #     # instruction_steps.append(instructions)
+    #     print(f'number of steps: {len(instructions)}')
+    #     for step in instructions:
+    #         print(step['step'])
+    #     print('\n')
 
-    # print(titles)
-    # print(instruction_steps)
 
-    for instruction in instruction_steps:
-        print(instruction['number'])
+    # for recipe in instruction_steps:
+    #     print(recipe)
+    #     print('\n\n')
 
-    return render_template("search_results.html", recipes=recipes, instructions=instruction_steps)
+
+
+    return render_template("search_results.html", recipes=recipes)
 
 
 

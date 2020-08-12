@@ -3,21 +3,38 @@
 
 {% block content %}
   <h1> Recipes Based on Your Search! </h1>
-{# 
+
   {% for recipe in recipes %}
   <div name="recipes">
-    <h4>{{ recipe['title'] }}</h4>
-    <br>
-    <label>Instructions</label>
-    <ul name="recipe_instructions">
-      {% for i in range(instructions | length) %}
-      <li>Step #{{ instructions[i]['number'] }}</li>
+    <h3>{{ recipe['title'] }}</h3>
+    <ul>
+      <li>
+        <label>Prep Time: </label>
+        {{ recipe.get('preparationMinutes', 'N/A') }}
+      </li>
+      <li>
+        <label>Cook Time: </label>
+        {{ recipe.get('cookingMinutes', 'N/A') }}
+      </li>
+      <li>
+        <label>Ready In: </label>
+        {{ recipe.get('readyInMinutes', 'N/A') }}
+      </li>
+    </ul>
 
-      {% endfor %} #}
-    {# </ul> #}
 
-  {# </div> #}
-{#   {% endfor %} #}
+
+    <h4>Instructions</h4>
+    {% set instructions = recipe['analyzedInstructions'][0]['steps'] %}
+    
+    <ol>
+      {% for step in instructions %}
+      <li>{{ step['step'] }}</li>
+      {% endfor %}
+    </ol>
+
+  </div>
+  {% endfor %}
 
 
 
