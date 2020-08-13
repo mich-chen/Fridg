@@ -14,7 +14,6 @@ from model import connect_to_db
 import crud # operations for db
 
 
-
 # instance of Flask class, store as app
 app = Flask(__name__)
 
@@ -41,32 +40,36 @@ def process_login():
     email = request.form.get('email')
     password = request.form.get('password')
 
-    # create session for user
-    session['user_id'] = email
-    # flash('logged in!')
-
     # function to check if email exists in db
     existing_user = crud.get_user_by_email(email=email)
+
+    message = ''
+    success = True
 
     # check if email exists in db, if so also check correct password
     if existing_user and password == existing_user.password:
         print(existing_user)
         print('Valid user. Successfully logged in.')
-        # flash('Successfully logged in!')
+        # create session for user
+        session['user_id'] = email
+        message = 'Valid user. Successfully logged in.'
 
     # if password does not match, and email already exists in db
     elif existing_user:
         print('Incorrect email or password. If new user, you cannot create an account with that email. Try again.')
-        # flash('You cannot create an account with that email. Try again.')
+        message = 'Incorrect email or password. If new user, you cannot create an account with that email. Try again.'
+        success = False
 
     # new user, add new user to db 
     else:
         new_user = crud.create_user(email=email, password=password)
         print(new_user)
         print('Successfully created new account!')
-        
+        # create session for user
+        session['user_id'] = email
+        message = 'Successfully created new account!'
 
-    return jsonify({'success': True})
+    return jsonify({'success': success, 'message': message})
 
 
 
