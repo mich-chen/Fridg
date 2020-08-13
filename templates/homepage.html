@@ -23,14 +23,13 @@
 
   {# {% if session.get('user_id') %} #}
   <div id="search">
-{#     <form action="/search_results" method="POST">
+    <form id="search-form" action="/search_results" method="POST">
       <p>
         What's in your fridge?
-
-        <input type="text" id="user_ingredients">
       </p>
-      <input type="submit">
-    </form> #}
+      <input type="text" name="user_ingredients">
+      <button type="submit">submit</button>
+    </form>
   </div>
 
   <div id="logout">
@@ -46,17 +45,10 @@
 <script>
   const showSearch = (data) => {
     alert(data.message);
-    if (data.success) {
-      $('#search').append(
-        `<form action="/search_results" method="POST">
-          <p>
-            What's in your fridge?
-
-            <input type="text" id="user_ingredients">
-          </p>
-          <input type="submit">
-        </form>`
-      )};
+    // if (data.success) {
+    //   $('#search-form').attr('hidden', false);
+    //   document.getElementById('login').style.display = 'none';
+    // }
   };
 
   $('#login-form').on('submit', (evt) => {
