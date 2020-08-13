@@ -71,7 +71,6 @@ class Ingredient(db.Model):
     __tablename__ = 'ingredients'
 
     ingredient_id = db.Column(db.Integer,
-                         autoincrement=True,
                          primary_key=True)
     name = db.Column(db.String)
 
