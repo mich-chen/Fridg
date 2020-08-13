@@ -2,7 +2,7 @@
 
 from flask_sqlalchemy import SQLAlchemy
 
-
+# Instance of SQLAlchemy
 db = SQLAlchemy()
 
 
@@ -17,6 +17,7 @@ class User(db.Model):
     email = db.Column(db.String)
     password = db.Column(db.String)
 
+    # list of user's saved recipes
     saved_recipes = db.relationship('Saved_Recipe')
 
     def __repr__(self):
@@ -24,7 +25,7 @@ class User(db.Model):
 
 
 class Saved_Recipe(db.Model):
-    """User's selected recipes."""
+    """User's saved recipes."""
 
     __tablename__ = 'saved_recipes'
 
@@ -37,7 +38,9 @@ class Saved_Recipe(db.Model):
                               db.ForeignKey('users.user_id'))
     favorite = db.Column(db.Boolean)
 
+    # recipe that was saved
     recipe = db.relationship('Recipe')
+    # user who saved the recipe
     user = db.relationship('User')
 
     def __repr__(self):
@@ -56,9 +59,12 @@ class Recipe(db.Model):
     image = db.Column(db.String)
     servings = db.Column(db.Integer)
 
+    # list of recipe's ingredients
     ingredients = db.relationship('Recipe_Ingredient')
+    # list of recipe's instructions by steps (length is number of steps)
     instructions = db.relationship('Instructions')
-    saved_recipe = db.relationship('Saved_Recipe')
+    # list of instances this recipe is saved by many different users
+    saved_recipe_users = db.relationship('Saved_Recipe')
 
 
     def __repr__(self):
@@ -74,6 +80,7 @@ class Ingredient(db.Model):
                          primary_key=True)
     name = db.Column(db.String)
 
+    # list of recipes this ingredient is part of
     recipes = db.relationship('Recipe_Ingredient')
 
     def __repr__(self):
@@ -95,10 +102,10 @@ class Recipe_Ingredient(db.Model):
     amount = db.Column(db.Integer)
     unit = db.Column(db.String)
 
+    # the recipe's ingredient
     ingredient = db.relationship('Ingredient')
+    # the recipe the ingredient is part of
     recipe = db.relationship('Recipe')
-
-
 
     def __repr__(self):
         return f'<Recipe Ingredient recipe={self.recipe_id} ingredient={self.ingredient_id}>'
@@ -121,6 +128,7 @@ class Instructions(db.Model):
     ready_mins = db.Column(db.Integer)
     equipment = db.Column(db.String)
 
+    # recipe the instructions are for
     recipe = db.relationship('Recipe')
 
     def __repr__(self):
