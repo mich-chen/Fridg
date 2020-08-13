@@ -21,7 +21,7 @@ model.connect_to_db(server.app)
 model.db.create_all()
 
 # read and open ingredients csv
-file = open('top-1k-ingredients.csv', newline='')
+file = open('data/top-1k-ingredients.csv', newline='')
 data = csv.reader(file, delimiter=';')
 # each row is a list of 2, name and id
 ingredients_data = {row[1]:row[0] for row in data}
