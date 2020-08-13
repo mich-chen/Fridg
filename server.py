@@ -124,9 +124,17 @@ def search_results():
     # return render_template("search_results.html", recipes=recipes)
 
 
-@app.route('/saved_recipes')
-def add_recipe_to_saved():
 
+@app.route('/save_a_recipe')
+def add_recipe_to_saved():
+    """Add selected recipe to database as saved recipe."""
+    pass
+
+
+
+@app.route('/saved_recipes')
+def show_users_saved_recipes():
+    """Show all of user's saved recipes."""
     pass
 
 
