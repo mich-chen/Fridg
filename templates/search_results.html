@@ -5,9 +5,12 @@
   <h1> Recipes Based on Your Search! </h1>
 
   {% for recipe in recipes %}
-  <div name="recipes">
-    <img src="{{ recipe.image }}">
-    <h3>{{ recipe['title'] }}</h3>
+  <div name='recipes'>
+{#     <script type='text/javascript'>
+      const img = 
+    </script> #}
+    <img src='{{ recipe.image }}' id='recipe-img'>
+    <h3>{{ recipe['title'] }} </h3>
     <ul>
       <li>
         <label>Prep Time: </label>
@@ -27,6 +30,8 @@
       </li>
     </ul>
 
+{# instructions is a list of (1) dict with keys 'name' and 'steps' #}
+{# steps is dict of all instruction info as dict #}
     <h4>Instructions</h4>
     {% set instructions = recipe['analyzedInstructions'][0]['steps'] %}
     
@@ -36,11 +41,33 @@
       {% endfor %}
     </ol>
 
+    <button class="save-a-recipe" id="{{ recipe['id'] }}">Save Recipe <3 </button>
+    <br>
+
     <a href="{{ recipe.sourceUrl }}">For more details on {{ recipe.title }}</a>
   </div>
   <br>
   {% endfor %}
 
+{% endblock %}
 
+{% block js %}
+<script>
+  $('.save-a-recipe').on('click', (evt) => {
+    console.log(evt.target);
+
+    // $.post('/save_a_recipe', (res) => {
+    //   alert(res.success);
+    //   console.log(@session['user_id']);
+
+
+    // }
+  });
+
+
+
+
+
+</script>
 
 {% endblock %}
