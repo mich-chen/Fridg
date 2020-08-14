@@ -37,10 +37,12 @@ def homepage():
 @app.route('/login', methods=["POST"])
 def process_login():
 
-    # import pdb; pdb.set_trace()
     print('in login route')
-    email = request.form.get('email')
-    password = request.form.get('password')
+    # unencode from JSON
+    data = request.get_json()
+    # print(data)
+    email = data['email']
+    password = data['password']
 
     # function to check if email exists in db
     existing_user = crud.get_user_by_email(email=email)
@@ -50,25 +52,24 @@ def process_login():
 
     # check if email exists in db, if so also check correct password
     if existing_user and password == existing_user.password:
-        print(existing_user)
-        print('Valid user. Successfully logged in.')
         # create session for user
         session['user_id'] = email
+        # set new message
         message = 'Valid user. Successfully logged in.'
 
     # if password does not match, and email already exists in db
     elif existing_user:
-        # print('Incorrect email or password. If new user, you cannot create an account with that email. Try again.')
+        # set new message
         message = 'Incorrect email or password. If new user, you cannot create an account with that email. Try again.'
+        # change success status
         success = False
 
     # new user, add new user to db 
     else:
         new_user = crud.create_user(email=email, password=password)
-        print(new_user)
-        print('Successfully created new account!')
         # create session for user
         session['user_id'] = email
+        # set new message
         message = 'Successfully created new account!'
 
     return jsonify({'success': success, 'message': message})
