@@ -4,7 +4,6 @@
 {% block content %}
   <h1> Hello! Welcome to the homepage! </h1>
 
-  {# {% if not session.get('user_id') %} #}
   <h3> To start searching and saving recipes enter your email and password! 
   </h3>
   <div id="login">
@@ -18,15 +17,10 @@
       <input type="submit" id="login-btn">
     </form>
   </div>
-{#   {% endif %} #}
 
-
-  {# {% if session.get('user_id') %} #}
   <div id="search">
     <form id="search-form" action="/search_results" method="POST">
-      <p>
         What's in your fridge?
-      </p>
       <input type="text" name="user_ingredients">
       <button type="submit">submit</button>
     </form>
@@ -37,18 +31,16 @@
       <button id="logout-btn">Log Out</button>
     </form>
   </div>
-  {# {% endif %} #}
 
 {% endblock %}
 
 {% block js %}
 <script>
-  const showSearch = (data) => {
-    alert(data.message);
-    // if (data.success) {
-    //   $('#search-form').attr('hidden', false);
-    //   document.getElementById('login').style.display = 'none';
-    // }
+  const resetForm = () => {
+    // document.getElementById('login-form').attr('value', '');
+    // document.getElementById('password').rest();
+    $('#email').val('');
+    $('#password').val('');
   };
 
   $('#login-form').on('submit', (evt) => {
@@ -65,11 +57,11 @@
       password: password
     };
 
-    $.post('/login', loginData, showSearch)
+    $.post('/login', loginData, (res) => {
+      alert(res.message);
+      resetForm();
+      // call function after receive response from server
+    });
   });
-
-
-
-
 </script>
 {% endblock %} 
