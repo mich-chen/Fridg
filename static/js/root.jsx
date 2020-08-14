@@ -10,23 +10,22 @@ function Homepage() {
   return <h1> Hello! Welcome to the Homepage! </h1>;
 }
 
+
 function TestPage() {
   return <div>Test react div</div>;
 }
+
 
 function Login() {
   // set state for email and password
   const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')
-  console.log(email)
-  console.log(password)
 
   const checkLogin = () => {
     // create javascript object to stringify to server
-    console.log('we are in checkLogin')
     const loginData = {'email': email, 'password': password}
     console.log(loginData)
-    fetch('/login', {
+    fetch('/api/login', {
       method: 'POST',
       body: JSON.stringify(loginData),
       headers: { 'Content-Type': 'application/json'},
@@ -57,6 +56,32 @@ function Login() {
     </div>
   );
 }
+
+
+// function SearchRecipes() {
+//   // set state for user's ingredient search
+//   const [ingredients, setIngredients] = React.useState('')
+
+
+
+
+
+
+//   return (
+//     <div>
+//       What's in your fridge?
+//         <input type="text"
+//         id="user-ingredients"
+//         onChange={(e) => {set}}
+
+//         >
+//         </input>
+//     </div>
+//     );
+// }
+
+
+
 
 
 function App() {
