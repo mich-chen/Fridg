@@ -54,14 +54,13 @@
 {% block js %}
 <script>
   $('.save-a-recipe').on('click', (evt) => {
-    console.log(evt.target);
+    // console.log(evt.target);
+    const recipe_id = evt.target['id'];
+    // console.log(recipe_id);
 
-    // $.post('/save_a_recipe', (res) => {
-    //   alert(res.success);
-    //   console.log(@session['user_id']);
-
-
-    // }
+    $.get('/save_a_recipe', (res) => {
+      alert(res.success)
+    })
   });
 
 
