@@ -54,11 +54,14 @@
 {% block js %}
 <script>
   $('.save-a-recipe').on('click', (evt) => {
-    // console.log(evt.target);
-    const recipe_id = evt.target['id'];
+    // const recipe_id = evt.target['id'];
     // console.log(recipe_id);
 
-    $.get('/save_a_recipe', (res) => {
+    const recipeData = {
+      recipe_id: evt.target['id']
+    };
+
+    $.post('/save_a_recipe', recipeData, (res) => {
       alert(res.success)
     })
   });
