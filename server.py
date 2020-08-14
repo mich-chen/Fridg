@@ -2,6 +2,8 @@
 
 # importing flask library
 from flask import (Flask, render_template, request, flash, session, redirect, jsonify)
+from flask_debugtoolbar import DebugToolbarExtension
+
 import os # to access api key
 import requests # make http requests to api
 import json
@@ -56,7 +58,7 @@ def process_login():
 
     # if password does not match, and email already exists in db
     elif existing_user:
-        print('Incorrect email or password. If new user, you cannot create an account with that email. Try again.')
+        # print('Incorrect email or password. If new user, you cannot create an account with that email. Try again.')
         message = 'Incorrect email or password. If new user, you cannot create an account with that email. Try again.'
         success = False
 
@@ -90,6 +92,7 @@ def search_results():
     # User's input is a string of comma-separated list of ingredients 
     input_ingredients_str = request.form.get("user_ingredients")
     print(input_ingredients_str)
+    # print(request.form)
 
     # spoonacular's api url
     url = "https://api.spoonacular.com/recipes/complexSearch"
@@ -105,23 +108,14 @@ def search_results():
                "number": 3,
                } 
     # make http request to spoonacular's complexSearch API
-    # res = requests.get(url, params=payload)
+    res = requests.get(url, params=payload)
     # convert json into python dictionary -> API is a List of dictionaries
-
-    # data = res.json()
+    data = res.json()
     # print(res.json())
 
-    # recipes = data['results']
+    recipes = data['results']
 
-    # for recipe in recipes:
-    #     pprint(recipe['title'])
-    #     instructions = recipe['analyzedInstructions'][0]['steps'] 
-    #     pprint(f'Number of steps: {len(instructions)}')
-    #     for step in instructions:
-    #         pprint(step['step'])
-
-    return redirect('/')
-    # return render_template("search_results.html", recipes=recipes)
+    return render_template("search_results.html", recipes=recipes)
 
 
 
@@ -144,11 +138,5 @@ if __name__ == '__main__':
     # Connect to db first, then app can access it.
     app.debug = True
     connect_to_db(app)
-    # DebugToolbarExtension(app)
+    DebugToolbarExtension(app)
     app.run(host='0.0.0.0')
-
-
-
-if __name__ == "__main__":
-    # run app with debug mode on and on host computer
-    app.run(debug=True, host="0.0.0.0")
