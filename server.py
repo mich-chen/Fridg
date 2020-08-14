@@ -30,7 +30,7 @@ API_KEY = os.environ["SPOONACULAR_KEY"]
 def homepage():
     """Show homepage."""
 
-    return render_template("homepage.html")
+    return render_template("root.html")
 
 
 
