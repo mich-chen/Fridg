@@ -8,18 +8,14 @@ def parse_recipe_details(complex_data):
 
     Parse only recipe_id, title, servings, sourceUrl, image, and extended ingredients list."""
 
-    recipes = []
+    recipes = {}
 
-    for recipe in complex_data:
-        details = {}
-        details['recipe_id'] = recipe['id']
-        details['title'] = recipe['title']
-        details['servings'] = recipe['servings']
-        details['sourceUrl'] = recipe['sourceUrl']
-        details['image'] = recipe['image']
-        details['ingredients'] = recipe['extendedIngredients']
-        recipes.append(details)
-    # pprint(recipes)
+    recipes['recipe_id'] = complex_data['id']
+    recipes['title'] = complex_data['title']
+    recipes['servings'] = complex_data['servings']
+    recipes['sourceUrl'] = complex_data['sourceUrl']
+    recipes['image'] = complex_data['image']
+    recipes['ingredients'] = complex_data['extendedIngredients']
 
     return recipes
 
@@ -29,16 +25,13 @@ def parse_recipe_times(complex_data):
 
     Parse only recipe_id, prep mins, cooking mins, and ready mins."""
 
-    recipe_times = []
+    recipe_times = {}
 
-    for recipe in complex_data:
-        times = {}
-        # identify each dictionary with recipe's id
-        times['recipe_id'] = recipe['id']
-        times['preparationMinutes'] = recipe.get('preparationMinutes', 'N/A')
-        times['cookingMinutes'] = recipe.get('cookingMinutes', 'N/A')
-        times['readyInMinutes'] = recipe.get('readyInMinutes', 'N/A')
-        recipe_times.append(times)
+    # identify each dictionary with recipe's id
+    recipe_times['recipe_id'] = complex_data['id']
+    recipe_times['preparationMinutes'] = complex_data.get('preparationMinutes', 'N/A')
+    recipe_times['cookingMinutes'] = complex_data.get('cookingMinutes', 'N/A')
+    recipe_times['readyInMinutes'] = complex_data.get('readyInMinutes', 'N/A')
     # pprint(recipe_times)
 
     return recipe_times
@@ -49,7 +42,7 @@ def parse_recipe_instructions(complex_data):
 
     Parse only instruction's number, step instructions, equipment(s)."""
 
-    recipe_instructions = []
+    recipe_instructions = {}
 
     # temporary variable recipe is now a dictionary of a specific recipe
     for recipe in complex_data:
