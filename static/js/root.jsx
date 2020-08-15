@@ -77,7 +77,7 @@ function RecipeImage(props) {
 
 
 function RecipeTime(props) {
-  return <li>{props.time}</li>;
+  return <span>{props.time}</span>;
 }
 
 
@@ -110,20 +110,34 @@ function RecipeServings(props) {
   );
 }
 
+function RecipeInstructionItem(props) {
+  return <li>{props.instructions}</li>;
+}
+
 
 function RecipeInstructions(props) {
   // list of instructions (in order)
-  const instructions = props.instructions;
+  
+  const instructions = props.instructions['instructions'];
+  // console.log(instructions);
+  const instructionsList = [];
+  for (const instruction of instructions) {
+    console.log(instruction);
+    instructionsList.push(<RecipeInstructionItem instructions={instruction} />)
+  };
+  console.log(instructionsList);
 
   return (
-    <li>{instructions}</li>
+    <ol>
+      {instructionsList}
+    </ol>
     );
 }
 
 
 function SaveRecipe(props) {
   return (
-    <button>Save this Recipe</button>
+      <button>Save this Recipe</button>
     );
 }
 
@@ -131,37 +145,35 @@ function SaveRecipe(props) {
 function RecipeCard(props) {
   // return a div that is a recipe card with recipe's details
   // render detail component with appropriate prop
-  // const {recipe_info, recipe_times, recipe_instructions, recipe_equipment} = props.recipe;
   // console.log(props.recipe_info);
   // console.log(props.recipe_times);
   // console.log(props.recipe_instructions);
+  // console.log(typeof(props.recipe_instructions))
   // console.log(props.recipe_equipment);
 
 
   return (
     <div name='recipe-card'>
       <section id='recipe-card'>
-        <RecipeImage image={recipe_info.image} />
+        <RecipeImage image={props.recipe_info['image']} />
 
-        <h3>{props.recipe_info.title}</h3>
+        <h3>{props.recipe_info['title']}</h3>
 
         <section id="times-section">
-            <RecipeTimeSection time={recipe_times} />
+            <RecipeTimeSection time={props.recipe_times} />
         </section>
 
-        <RecipeServings servings={recipe_info.servings} />
+        <RecipeServings servings={props.recipe_info['servings']} />
 
         <section id="recipe-instructions">
-          <ol>
-            <RecipeInstructions instructions={recipe_instructions} />
-          </ol>
+            <RecipeInstructions instructions={props.recipe_instructions} />
         </section>
 
         <section id="save-recipe">
-          <SaveRecipe recipe_id={recipe_info.recipe_id} />
+          <SaveRecipe recipe_id={props.recipe_info['recipe_id']} />
         </section>
 
-        <a href={`${recipe_info.sourceUrl}`}></a>
+        <a href={`${props.recipe_info['sourceUrl']}`}>For more details on recipe</a>
       </section>
     </div>
     );
@@ -182,14 +194,14 @@ function SearchResults(props) {
     const recipeCards = [];
     for (const recipe of props.recipesList) {
       // console.log(recipe);
-      console.log(recipe['recipe_info']);
-      // recipeCards.push(
-      //   <RecipeCard 
-      //     recipe_info={recipe.recipe_info}
-      //     recipe_times={recipe.recipe_times}
-      //     recipe_instructions={recipe.recipe_instructions}
-      //     recipe_equipment={recipe.recipe_equipment} 
-      //   />)
+      // console.log(recipe['recipe_info']);
+      recipeCards.push(
+        <RecipeCard 
+          recipe_info={recipe['recipe_info']}
+          recipe_times={recipe['recipe_times']}
+          recipe_instructions={recipe['recipe_instructions']}
+          recipe_equipment={recipe['recipe_equipment']} 
+        />)
     };
     setRecipeResultsList(recipeCards)
   }, []);
