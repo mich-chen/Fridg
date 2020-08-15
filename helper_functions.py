@@ -81,7 +81,7 @@ def parse_recipe_equipment(complex_data):
     for recipe in complex_data:
         equipments_data = {}
         # make equipments be a set so unique and no duplicates
-        equipments = set()
+        equipments = {}
 
         equipments_data['recipe_id'] = recipe['id']
 
@@ -89,8 +89,8 @@ def parse_recipe_equipment(complex_data):
         for step in complex_instructions:
             # each equipment is a dictionary in the list of equipments
             for equipment in step['equipment']:
-                equipments.add(equipment['name'])
-        # key is equipment with value as list of equipment names
+                equipments[equipment['name']] = equipment['name']
+        # key is equipment with value as dict of equipment names -> so no duplicates
         equipments_data['equipments'] = equipments
         recipe_equipments.append(equipments_data)
 

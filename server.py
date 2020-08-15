@@ -136,13 +136,15 @@ def search_results():
     recipe_equipments = helper_functions.parse_recipe_equipment(recipes_complex_data)
 
     # store recipe results in current user's session
-    session['recipes_info'] = recipes
+    session['recipes_info'] = recipes_info
     session['recipe_times'] = recipe_times
     session['recipe_instructions'] = recipe_instructions
+    session['recipe_equipments'] = recipe_equipments
+
+    pprint(recipe_equipments)
 
     # return render_template("search_results.html", recipes=recipes)
-    return jsonify({'recipes_info': recipes_info, 'recipe_times': recipe_times, 'recipe_instructions': recipe_instructions, 'recipe_equipments': recipe_equipments})
-
+    return jsonify({'recipe_info': recipes_info, 'recipe_times': recipe_times, 'recipe_instructions': recipe_instructions, 'recipe_equipments': recipe_equipments})
 
 # @app.route('/api/show_results')
 # def show_search_results():
