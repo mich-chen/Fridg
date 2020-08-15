@@ -130,10 +130,8 @@ def search_results():
     # parse only details we need from api endpoint
     for recipe in recipes_complex_data:
         recipe_data = {}
-        recipe_data[str(recipe['id'])] = {}
-        current_recipe = recipe_data[str(recipe['id'])]
-        current_recipe['recipe_info'] = helper_functions.parse_recipe_details(recipe)
-        current_recipe['recipe_times'] = helper_functions.parse_recipe_times(recipe)
+        recipe_data['recipe_info'] = helper_functions.parse_recipe_details(recipe)
+        recipe_data['recipe_times'] = helper_functions.parse_recipe_times(recipe)
         recipe_data['recipe_instructions'] = helper_functions.parse_recipe_instructions(recipe)
         recipe_data['recipe_equipment'] = helper_functions.parse_recipe_equipment(recipe)
         recipe_results.append(recipe_data)
@@ -143,7 +141,7 @@ def search_results():
     session['recipe_results'] = recipe_results
 
     # return render_template("search_results.html", recipes=recipes)
-    return jsonify({'recipes': recipe_results})
+    return jsonify(recipe_results)
 
 # @app.route('/api/show_results')
 # def show_search_results():
