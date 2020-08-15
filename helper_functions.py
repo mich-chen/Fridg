@@ -54,6 +54,7 @@ def parse_recipe_instructions(complex_data):
     # temporary variable recipe is now a dictionary of a specific recipe
     for recipe in complex_data:
         instructions = {}
+        list_instructions = []
         # identify each dictionary with recipe's id
         instructions['recipe_id'] = recipe['id']
         # instructions are nested inside 'steps' key, complex_instructions is a list
@@ -61,8 +62,10 @@ def parse_recipe_instructions(complex_data):
         # each 'step' is a dictionary in complex instructions list
         for i, step in enumerate(complex_instructions):
             # create new key with the numbered step and its instructions
-            instructions[str(i + 1)] = step['step']
+            # instructions[str(i + 1)] = step['step']
+            list_instructions.append(step['step'])
         # add each recipe's parsed instructions into the full list
+        instructions['instructions'] = list_instructions
         recipe_instructions.append(instructions)
         # pprint(instructions)
     # pprint(recipe_instructions)
