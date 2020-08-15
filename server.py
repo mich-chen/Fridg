@@ -127,41 +127,23 @@ def search_results():
 
     recipe_results = []
 
+    # parse only details we need from api endpoint
     for recipe in recipes_complex_data:
-        # pprint(recipe)
         recipe_data = {}
         recipe_data[recipe['id']] = {}
         current_recipe = recipe_data[recipe['id']]
         current_recipe['recipe_info'] = helper_functions.parse_recipe_details(recipe)
         current_recipe['recipe_times'] = helper_functions.parse_recipe_times(recipe)
-        # recipe_data['instructions'] = helper_functions.parse_recipe_instructions(recipe)
-        # recipe_data['equipment'] = helper_functions.parse_recipe_equipment(recipe)
+        recipe_data['recipe_instructions'] = helper_functions.parse_recipe_instructions(recipe)
+        recipe_data['recipe_equipment'] = helper_functions.parse_recipe_equipment(recipe)
         recipe_results.append(recipe_data)
-    pprint(recipe_results)
-
-
-
-
-    # # parse only details we need from api endpoint
-    # recipe_info = helper_functions.parse_recipe_details(recipes_complex_data)
-
-    # # list of dictionaries indentifiable with recipe's id and their time info
-    # recipe_times = helper_functions.parse_recipe_times(recipes_complex_data)
-    # # list of dictionaries indentifiable with recipe's id and their instructions info
-    # recipe_instructions = helper_functions.parse_recipe_instructions(recipes_complex_data)
-
-    # recipe_equipments = helper_functions.parse_recipe_equipment(recipes_complex_data)
+    # pprint(recipe_results)
 
     # store recipe results in current user's session
-    # session['recipe_info'] = recipe_info
-    # session['recipe_times'] = recipe_times
-    # session['recipe_instructions'] = recipe_instructions
-    # session['recipe_equipments'] = recipe_equipments
-
-    pprint(recipe_equipments)
+    session['recipe_results'] = recipe_results
 
     # return render_template("search_results.html", recipes=recipes)
-    return jsonify({'recipe_info': recipe_info, 'recipe_times': recipe_times, 'recipe_instructions': recipe_instructions, 'recipe_equipments': recipe_equipments})
+    return jsonify({'recipes': recipe_results})
 
 # @app.route('/api/show_results')
 # def show_search_results():

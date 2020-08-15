@@ -27,12 +27,9 @@ def parse_recipe_times(complex_data):
 
     recipe_times = {}
 
-    # identify each dictionary with recipe's id
-    recipe_times['recipe_id'] = complex_data['id']
     recipe_times['preparationMinutes'] = complex_data.get('preparationMinutes', 'N/A')
     recipe_times['cookingMinutes'] = complex_data.get('cookingMinutes', 'N/A')
     recipe_times['readyInMinutes'] = complex_data.get('readyInMinutes', 'N/A')
-    # pprint(recipe_times)
 
     return recipe_times
 
@@ -44,50 +41,32 @@ def parse_recipe_instructions(complex_data):
 
     recipe_instructions = {}
 
-    # temporary variable recipe is now a dictionary of a specific recipe
-    for recipe in complex_data:
-        instructions = {}
-        list_instructions = []
-        # identify each dictionary with recipe's id
-        instructions['recipe_id'] = recipe['id']
-        # instructions are nested inside 'steps' key, complex_instructions is a list
-        complex_instructions = recipe['analyzedInstructions'][0]['steps']
-        # each 'step' is a dictionary in complex instructions list
-        for i, step in enumerate(complex_instructions):
-            # create new key with the numbered step and its instructions
-            # instructions[str(i + 1)] = step['step']
-            list_instructions.append(step['step'])
-        # add each recipe's parsed instructions into the full list
-        instructions['instructions'] = list_instructions
-        recipe_instructions.append(instructions)
-        # pprint(instructions)
-    # pprint(recipe_instructions)
+    list_instructions = []
+    # instructions are nested inside 'steps' key, complex_instructions is a list
+    complex_instructions = complex_data['analyzedInstructions'][0]['steps']
+    # each 'step' is a dictionary in complex instructions list
+    for i, step in enumerate(complex_instructions):
+        # create new key with the numbered step and its instructions
+        # instructions[str(i + 1)] = step['step']
+        list_instructions.append(step['step'])
+    # add each recipe's parsed instructions into the full list
+    recipe_instructions['instructions'] = list_instructions
 
     return recipe_instructions
 
 def parse_recipe_equipment(complex_data):
 
 
-    recipe_equipments = []
+    recipe_equipments = {}
 
-    # temporary variable recipe is now a dictionary of a specific recipe
-    for recipe in complex_data:
-        equipments_data = {}
-        # make equipments be a set so unique and no duplicates
-        equipments = {}
+    # make equipments be a set so unique and no duplicates
 
-        equipments_data['recipe_id'] = recipe['id']
-
-        complex_instructions = recipe['analyzedInstructions'][0]['steps']
-        for step in complex_instructions:
-            # each equipment is a dictionary in the list of equipments
-            for equipment in step['equipment']:
-                equipments[equipment['name']] = equipment['name']
-        # key is equipment with value as dict of equipment names -> so no duplicates
-        equipments_data['equipments'] = equipments
-        recipe_equipments.append(equipments_data)
-
-    # pprint(recipe_equipments)
+    complex_instructions = complex_data['analyzedInstructions'][0]['steps']
+    for step in complex_instructions:
+        # each equipment is a dictionary in the list of equipments
+        for equipment in step['equipment']:
+            recipe_equipments[equipment['name']] = equipment['name']
+    # key is equipment with value as dict of equipment names -> so no duplicates
 
     return recipe_equipments
 
