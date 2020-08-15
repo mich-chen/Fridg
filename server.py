@@ -130,8 +130,8 @@ def search_results():
     # parse only details we need from api endpoint
     for recipe in recipes_complex_data:
         recipe_data = {}
-        recipe_data[recipe['id']] = {}
-        current_recipe = recipe_data[recipe['id']]
+        recipe_data[str(recipe['id'])] = {}
+        current_recipe = recipe_data[str(recipe['id'])]
         current_recipe['recipe_info'] = helper_functions.parse_recipe_details(recipe)
         current_recipe['recipe_times'] = helper_functions.parse_recipe_times(recipe)
         recipe_data['recipe_instructions'] = helper_functions.parse_recipe_instructions(recipe)
