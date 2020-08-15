@@ -49,6 +49,27 @@ def save_a_recipe(user, recipe, is_favorite):
 
     return saved_recipe
 
+def show_saved_recipes():
+    """Show all of user's saved recipes."""
+
+    # return a list of user's saved recipes as objects
+    # eagarly load query so can access each saved recipe's ingredients, details, and instructions
+
+    all_saved_recipes = Saved_Recipe.query.options(db.joinedload('recipe')).all() 
+    return 
+
+
+def find_recipe(recipe_id):
+    """Retrieve a recipe from database.
+
+    Used after user has saved a recipe, which populated recipes table and then use when showing all saved recipes."""
+
+
+
+    return Recipe.query.filter_by(recipe_id=recipe_id).first()
+
+
+
 def create_recipe(title, image, servings):
     """Create a recipe."""
 
