@@ -53,7 +53,6 @@ class Recipe(db.Model):
     __tablename__ = 'recipes'
 
     recipe_id = db.Column(db.Integer,
-                         autoincrement=True,
                          primary_key=True)
     title = db.Column(db.String)
     image = db.Column(db.String)
