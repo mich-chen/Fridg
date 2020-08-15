@@ -168,15 +168,18 @@ function SearchResults(props) {
   // set state for user's ingredient search
   const [recipeResultsList, setRecipeResultsList] = React.useState(['Loading...']);
   console.log('in search results');
-  console.log(props);
-  console.log(props.recipes);
-  console.log(props.recipes.recipe_info)
   // make post request with user's ingredients input
   // parse data, and pass appropriate data as props to recipe card component
   React.useEffect(() => {
     const recipeCards = [];
-    for (const recipe of props.recipes.recipe_info.length) {
-      recipeCards.push(<RecipeCard recipe={recipe} />)
+    for (const recipe in props.recipe_info) {
+      recipeCards.push(
+        <RecipeCard 
+          recipe_info={recipe_info}
+          recipe_times={recipe_times}
+          recipe_instructions={recipe_instructions}
+          recipe_equipments={recipe_equipments} 
+        />)
     };
     setRecipeResultsList(recipeCards)
   }, []);
@@ -240,11 +243,19 @@ function App() {
   // const [ingredients, setIngredients] = React.useState('');
   const [data, setData] = React.useState({});
   console.log(data);
-  console.log(data.length);
+  // console.log(Object.keys(data).length);
+
+  const {recipe_info, recipe_times, recipe_instructions, recipe_equipments} = data;
 
   if (data.hasOwnProperty('recipe_info')) {
     console.log('in if statement');
-    return (<SearchResults recipe={data}} />);
+    return (
+      <SearchResults 
+      recipe_info={recipe_info}
+      recipe_times={recipe_times}
+      recipe_instructions={recipe_instructions}
+      recipe_equipments={recipe_equipments}
+      />);
   };
   // React.useEffect(() => {
   //   console.log('in useEffect');

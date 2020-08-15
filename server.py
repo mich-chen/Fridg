@@ -2,7 +2,7 @@
 
 # importing flask library
 from flask import (Flask, render_template, request, flash, session, redirect, jsonify)
-from flask_debugtoolbar import DebugToolbarExtension
+# from flask_debugtoolbar import DebugToolbarExtension
 
 import os # to access api key
 import requests # make http requests to api
@@ -126,7 +126,7 @@ def search_results():
     # pprint(recipes_complex_data)
 
     # parse only details we need from api endpoint
-    recipes_info = helper_functions.parse_recipe_details(recipes_complex_data)
+    recipe_info = helper_functions.parse_recipe_details(recipes_complex_data)
 
     # list of dictionaries indentifiable with recipe's id and their time info
     recipe_times = helper_functions.parse_recipe_times(recipes_complex_data)
@@ -136,7 +136,7 @@ def search_results():
     recipe_equipments = helper_functions.parse_recipe_equipment(recipes_complex_data)
 
     # store recipe results in current user's session
-    session['recipes_info'] = recipes_info
+    session['recipe_info'] = recipe_info
     session['recipe_times'] = recipe_times
     session['recipe_instructions'] = recipe_instructions
     session['recipe_equipments'] = recipe_equipments
@@ -144,7 +144,7 @@ def search_results():
     pprint(recipe_equipments)
 
     # return render_template("search_results.html", recipes=recipes)
-    return jsonify({'recipe_info': recipes_info, 'recipe_times': recipe_times, 'recipe_instructions': recipe_instructions, 'recipe_equipments': recipe_equipments})
+    return jsonify({'recipe_info': recipe_info, 'recipe_times': recipe_times, 'recipe_instructions': recipe_instructions, 'recipe_equipments': recipe_equipments})
 
 # @app.route('/api/show_results')
 # def show_search_results():
@@ -221,5 +221,5 @@ if __name__ == '__main__':
     # Connect to db first, then app can access it.
     app.debug = True
     connect_to_db(app)
-    DebugToolbarExtension(app)
+    # DebugToolbarExtension(app)
     app.run(host='0.0.0.0')
