@@ -57,6 +57,9 @@ class Recipe(db.Model):
     title = db.Column(db.String)
     image = db.Column(db.String)
     servings = db.Column(db.Integer)
+    cooking_mins = db.Column(db.Integer)
+    prep_mins = db.Column(db.Integer)
+    ready_mins = db.Column(db.Integer)
 
     # list of recipe's ingredients
     ingredients = db.relationship('Recipe_Ingredient')
@@ -64,6 +67,8 @@ class Recipe(db.Model):
     instructions = db.relationship('Instructions')
     # list of instances this recipe is saved by many different users
     saved_recipe_users = db.relationship('Saved_Recipe')
+    # list of recipe's equipment(s)
+    equipment = db.relationship('Equipment')
 
 
     def __repr__(self):
@@ -122,10 +127,7 @@ class Instructions(db.Model):
                           db.ForeignKey('recipes.recipe_id'))
     step_num = db.Column(db.Integer)
     step_instruction = db.Column(db.String)
-    cooking_mins = db.Column(db.Integer)
-    prep_mins = db.Column(db.Integer)
-    ready_mins = db.Column(db.Integer)
-    equipment = db.Column(db.String)
+
 
     # recipe the instructions are for
     recipe = db.relationship('Recipe')
@@ -133,6 +135,21 @@ class Instructions(db.Model):
     def __repr__(self):
         return f'<Instructions recipe={self.recipe_id} step={self.step_num}>'
         
+
+class Equipment(db.Model):
+    """A recipe's equipment."""
+
+    __tablename__ = 'equipment'
+
+    equipment_id = db.Column(db.Integer,
+                         autoincrement=True,
+                         primary_key=True)
+    recipe_id = db.Column(db.Integer,
+                          db.ForeignKey('recipes.recipe_id'))
+    equipment = db.Column(db.String)
+
+    # recipe the equipment is part of
+    recipe = db.relationship('Recipe')
 
 def connect_to_db(flask_app, db_uri='postgresql:///recipes', echo=True):
     flask_app.config['SQLALCHEMY_DATABASE_URI'] = db_uri

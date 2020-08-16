@@ -31,7 +31,7 @@ API_KEY = os.environ["SPOONACULAR_KEY"]
 @app.route('/<path:path>')
 def catch_all(path):
     """Catch all URL routes that don't match specific path."""
-    
+
     return render_template('root.html')
 
 
@@ -171,29 +171,61 @@ def search_results():
 
 @app.route('/api/save_a_recipe',methods=["POST"])
 def add_recipe_to_saved():
-    """Add selected recipe to database as saved recipe."""
+    """Add selected recipe to database as saved recipe.
+
+    User clicked the "save recipe" button on each recipe card, therefore should only be saving one recipe at a time (one recipe_id passed in POST request body)."""
 
     # unencode from JSON
     data = request.get_json()
     # # print(data)
     recipe_id = data['recipe_id']
+    pprint(recipe_id)
 
-    # # retrieve session's: recipe search results, user's email
-    # if session['email']:
-    #     user = crud.get_user_by_email(session['email'])
+    # retrieve session's: recipe search results, user's email
+    if session['email']:
+        user = crud.get_user_by_email(session['email'])
+    # adds user's selected recipe to saved recipes table, is_favorite is false until favorited after saving recipe
+    crud.save_a_recipe(user=user.user_id, recipe=recipe_id, is_favorite=False)
     
-    recipe_results = session['recipe_results']
-    pprint(recipe_results)
+    # search's list of organized recipe dictionaries 
+    search_results = session['recipe_results']
+    # pprint(recipe_results)
 
+    # recipe_info will be one recipe's dictionary of details
     recipe_info = {}
-    for recipe in recipe_results:
-        info = recipe['recipe_info']
-        if recipe_id == info['recipe_id']:
+    # loop through search's results, find the recipe that matches saved recipe's id
+    for recipe in search_results:
+        if recipe_id == recipe['recipe_info']['recipe_id']:
+            pprint('found recipe matched id')
+            # set recipe_info to the dictionary of saved recipe's details
             recipe_info = recipe
 
     title = recipe_info['recipe_info']['title']
     image = recipe_info['recipe_info']['image']
     servings = recipe_info['recipe_info']['servings']
+    cooking_mins = recipe_info['recipe_times']['cookingMinutes']
+    prep_mins = recipe_info['recipe_times']['preparationMinutes']
+    ready_mins = recipe_info['recipe_times']['readyInMinutes']
+    # add recipe's title, image, and servings to recipes table
+    crud.create_recipe(title=title, image=image, servings=servings, cooking_mins=cooking_mins, prep_mins=prep_mins, ready_mins=ready_mins)
+
+    # complex_ingredients is a list of dictionaries of each ingredient's details
+    complex_ingredients = recipe_info['recipe_info']['ingredients']
+    for ingredient in complex_ingredients
+        ingredient_id = ingredient['ingredient_id']
+        amount = ingredient['amount']
+        unit = ingredient['unit']
+        crud.add_recipe_ingredient(recipe=recipe_id, ingredient_id=ingredient_id, amount=amount, unit=unit)
+
+
+
+    # ordered list of recipe's instructions (no numbers)
+    instructions_list = recipe_info['recipe_instructions']['instructions']
+    for i, instruction in enumerate(instructions_list):
+        step_num = i + 1
+        step_instruction = instruction
+
+
     instructions = []
 
     for i, instruction in enumerate(recipe_info['recipe_instructions']['instructions']):
@@ -201,22 +233,15 @@ def add_recipe_to_saved():
         step['number'] = instruction['number' + str(i + 1)]
         step['instruction'] = instruction
         instructions.append(step)
+    pprint(instructions)
 
-    cooking_mins = recipe_info['recipe_times']['cookingMinutes']
-    prep_mins = recipe_info['recipe_times']['preparationMinutes']
-    ready_mins = recipe_info['recipe_times']['readyInMinutes']
 
-    # for instruction in instructions:
-        # crud.add_instructions
 
     # need to parse through recipe results for appropriate info
-    # adds user's selected recipe to saved recipes table, is_favorite is false until favorited after saving recipe
-    crud.save_a_recipe(user=user.user_id, recipe=recipe_id, is_favorite=False)
 
-    # add this recipe to the recipe, instructions, and recipe's ingredients table
-    crud.create_recipe(title=title, image=image, servings=servings)
-    crud.add_instructions(recipe=recipe_id, step_num=step_num, instruction=instruction, cooking_mins=cooking_mins, prep_mins=prep_mins, ready_mins=ready_mins, equipement=equipment)
+    crud.add_instructions(recipe=recipe_id, step_num=step_num, step_instruction=step_instruction)
     crud.add_recipe_ingredient(recipe=recipe_id, ingredient_id=ingredient_id)
+    curd.add_equipment(recipe=recipe_id, equipment=equipment)
     
     return jsonify({'message': 'Recipe saved!'})
 

@@ -16,6 +16,7 @@ def create_user(email, password):
 
     return user
 
+
 def get_user_by_email(email):
     """Retrieve user by email."""
 
@@ -37,6 +38,7 @@ def create_ingredient(ingredient_id, name):
 
     return ingredient
 
+
 def save_a_recipe(user, recipe, is_favorite):
     """Saves a recipe user picked."""
 
@@ -48,6 +50,7 @@ def save_a_recipe(user, recipe, is_favorite):
     db.session.commit()
 
     return saved_recipe
+
 
 def show_saved_recipes():
     """Show all of user's saved recipes."""
@@ -67,12 +70,11 @@ def find_recipe(recipe_id):
     return Recipe.query.filter_by(recipe_id=recipe_id).first()
 
 
-
-def create_recipe(title, image, servings):
+def create_recipe(title, image, servings, cooking_mins, prep_mins, ready_mins):
     """Create a recipe."""
 
     # Instantiate a recipe
-    recipe = Recipe(title=title, image=image, servings=servings)
+    recipe = Recipe(title=title, image=image, servings=servings, cooking_mins=cooking_mins, prep_mins=prep_mins, ready_mins=ready_mins)
 
     # add to database
     db.session.add(recipe)
@@ -93,11 +95,12 @@ def add_recipe_ingredient(recipe, ingredient_id, amount, unit):
 
     return recipe_ingredient
 
-def add_instructions(recipe, step_num, step_instruction, cooking_mins, prep_mins, ready_mins, equipment):
-    """Add recipe's instructions, one by one."""
+
+def add_instructions(recipe, step_num, step_instruction):
+    """Add recipe's instructions, one by one, to databasee."""
 
     # Instantiate a recipe's instructions
-    instructions = Instructions(recipe_id=recipe, step_num=step_num, step_instruction=step_instruction, cooking_mins=cooking_mins, prep_mins=prep_mins, ready_mins=ready_mins, equipment=equipment)
+    instructions = Instructions(recipe_id=recipe, step_num=step_num, step_instruction=step_instruction)
 
     # add to database
     db.session.add(instructions)
@@ -106,6 +109,17 @@ def add_instructions(recipe, step_num, step_instruction, cooking_mins, prep_mins
     return instructions
 
 
+def add_equipment(recipe, equipment):
+    """Add recipe's equipment, one by one, to database."""
+
+    # Instantiate a recipe's equipment
+    equipment = Equipment(recipe_id=recipe, equipment=equipment)
+
+    # add to database
+    db.session.add(equipment)
+    db.session.commit()
+
+    return equipment
 
 if __name__ == '__main__':
     from server import app
