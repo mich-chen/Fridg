@@ -64,9 +64,6 @@ def find_recipe(recipe_id):
     """Retrieve a recipe from database.
 
     Used after user has saved a recipe, which populated recipes table and then use when showing all saved recipes."""
-
-
-
     return Recipe.query.filter_by(recipe_id=recipe_id).first()
 
 

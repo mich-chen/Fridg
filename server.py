@@ -139,6 +139,8 @@ def search_results():
 
     # store recipe results in current user's session
     session['recipe_results'] = recipe_results
+    session['full_complex_results'] = recipes_complex_data
+    # pprint(session['recipe_results'])
 
     # return render_template("search_results.html", recipes=recipes)
     return jsonify(recipe_results)
@@ -160,30 +162,56 @@ def search_results():
 
 
 
-@app.route('/save_a_recipe',methods=["POST"])
+@app.route('/api/save_a_recipe',methods=["POST"])
 def add_recipe_to_saved():
     """Add selected recipe to database as saved recipe."""
 
-    # recipe_id = request.form.get('recipe_id')
+    # unencode from JSON
+    data = request.get_json()
+    # # print(data)
+    recipe_id = data['recipe_id']
+
     # # retrieve session's: recipe search results, user's email
-    # # recipe_results = session['recipes']
     # if session['email']:
     #     user = crud.get_user_by_email(session['email'])
-    # else:
+    
+    recipe_results = session['recipe_results']
+    pprint(recipe_results)
 
+    # recipe_info = {}
+    # for recipe in recipe_results:
+    #     info = recipe['recipe_info']
+    #     if recipe_id == info['recipe_id']:
+    #         recipe_info = recipe
 
+    # title = recipe_info['recipe_info']['title']
+    # image = recipe_info['recipe_info']['image']
+    # servings = recipe_info['recipe_info']['servings']
+    # instructions = []
 
-    # need to parse through recipe results for appropriate info
+    # for i, instruction in enumerate(recipe_info['recipe_instructions']['instructions']):
+    #     step = {}
+    #     step['number'] = instruction['number' + str(i + 1)]
+    #     step['instruction'] = instruction
+    #     instructions.append(step)
 
-    # adds user's selected recipe to saved recipes table, is_favorite is false until favorited after saving recipe
-    # crud.save_a_recipe(user=user.user_id, recipe=recipe, is_favorite=False)
+    # cooking_mins = recipe_info['recipe_times']['cookingMinutes']
+    # prep_mins = recipe_info['recipe_times']['preparationMinutes']
+    # ready_mins = recipe_info['recipe_times']['readyInMinutes']
+
+    # # for instruction in instructions:
+    #     # crud.add_instructions
+
+    # # need to parse through recipe results for appropriate info
+    # # adds user's selected recipe to saved recipes table, is_favorite is false until favorited after saving recipe
+    # crud.save_a_recipe(user=user.user_id, recipe=recipe_id, is_favorite=False)
 
     # # add this recipe to the recipe, instructions, and recipe's ingredients table
     # crud.create_recipe(title=title, image=image, servings=servings)
     # crud.add_instructions(recipe=recipe_id, step_num=step_num, instruction=instruction, cooking_mins=cooking_mins, prep_mins=prep_mins, ready_mins=ready_mins, equipement=equipment)
     # crud.add_recipe_ingredient(recipe=recipe_id, ingredient=)
     
-    return jsonify({'success': True})
+    return jsonify({'message': 'Recipe saved!'})
 
 
 

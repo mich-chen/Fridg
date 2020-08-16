@@ -4,6 +4,7 @@ const Link = ReactRouterDOM.Link;
 const Prompt = ReactRouterDOM.Prompt;
 const Switch = ReactRouterDOM.Switch;
 const Redirect = ReactRouterDOM.Redirect;
+const useHistory = ReactRouterDOM.useHistory;
 
 
 function Homepage() {
@@ -122,10 +123,10 @@ function RecipeInstructions(props) {
   // console.log(instructions);
   const instructionsList = [];
   for (const instruction of instructions) {
-    console.log(instruction);
+    // console.log(instruction);
     instructionsList.push(<RecipeInstructionItem instructions={instruction} />)
   };
-  console.log(instructionsList);
+  // console.log(instructionsList);
 
   return (
     <ol>
@@ -136,8 +137,32 @@ function RecipeInstructions(props) {
 
 
 function SaveRecipe(props) {
+  // currently not working, still need to work on backend
+  console.log('in save recipe component')
+  console.log(props);
+  console.log(props.recipe_id);
+
+  // onClick, send POST request to server, sending recipe's id, so backend can identify recipe in current session and parse data to store into db
+  const saveRecipe = () => {
+    console.log('in callback for onClick')
+    fetch('/api/save_a_recipe/', {
+      method: 'POST',
+      body: JSON.stringify({recipe_id: props.recipe_id}),
+      headers: { 'Content-Type': 'application/json'},
+      credentials:'include'
+    }
+    .then(res => res.json())
+    .then(data => alert(data.success))
+    )
+  }
+
+  // event handler for click of Save button
   return (
-      <button>Save this Recipe</button>
+      <button 
+      id='save-recipe-btn' 
+      onClick={saveRecipe}>
+        Save this Recipe
+        </button>
     );
 }
 
@@ -151,6 +176,7 @@ function RecipeCard(props) {
   // console.log(typeof(props.recipe_instructions))
   // console.log(props.recipe_equipment);
 
+  // passing prop's children to new components which are separate parts of recipe card
 
   return (
     <div name='recipe-card'>
@@ -182,14 +208,17 @@ function RecipeCard(props) {
 
 function SearchResults(props) {
   // take results from server and spoonacular api through prop
-  // set state for user's ingredient search
+  // set state for user's ingredient search, if user were to make a new search within same session
   const [recipeResultsList, setRecipeResultsList] = React.useState(['Loading...']);
+  // does not show 'Loading...' on page..
   console.log('in search results');
   // make post request with user's ingredients input
   // parse data, and pass appropriate data as props to recipe card component
   // console.log(props.recipesList);
   // const {recipe_info, recipe_times, recipe_instructions, recipe_equipment} =
 
+
+  // passing API's data as prop to new component. But destructuring and parsing the prop into children(?)
   React.useEffect(() => {
     const recipeCards = [];
     for (const recipe of props.recipesList) {
@@ -204,7 +233,8 @@ function SearchResults(props) {
         />)
     };
     setRecipeResultsList(recipeCards)
-  }, []);
+  }, [recipeResultsList]);
+  // dependency is state, do not need to remake recipe cards if user didn't make new search (but...don't know how to work if i'm using offset of results)
 
   return (
     <div name='recipes'>
@@ -239,7 +269,7 @@ function SearchForm(props) {
   // update ingredient state with value in textbox (string)
   return (
     <div name='search-form'>
-      What's in your fridge? 
+        What's in your fridge? 
         <input type='text'
         id='user-ingredients'
         onChange={(e) => {setIngredients(e.target.value)}}
@@ -264,16 +294,21 @@ function App() {
   // set state for user's ingredient search
   // const [ingredients, setIngredients] = React.useState('');
   const [data, setData] = React.useState({});
+  // data is from external API after clicking SearchForm button
 
+  // check if data is an object or empty object
   if (Object.keys(data).length !== 0) {
     console.log('in if statement');
 
+    // each recipe's data is an object (with more objects nested with specific details)
+    // pushing each recipe into a list so can further iterate to make each recipe card
     const recipesList = [];
     for (const recipe of data) {
       recipesList.push(recipe);
     };
     // console.log(recipesList);
 
+    // pass list of recipe's information to new component as prop
     return (
       <SearchResults recipesList={recipesList}
       />);
@@ -293,14 +328,21 @@ function App() {
             <Link to="/">Homepage</Link>
             </li>
             <li>
-              <Link to="/login">Login</Link>
+              <Link to="/login">Log In</Link>
             </li>
             <li>
               <Link to="/test-page">Test</Link>
             </li>
+            <li>
+              <Link to="/log-out">Log Out</Link>
+            </li>
+            <li>
+              <Link to="create-new-account">Create New Account</Link>
+            </li>
           </ul>
+          <SearchForm setData={setData}/>
         </nav>
-        <SearchForm setData={setData}/>
+
         <Switch>
           <Route path="/login">
             <Login />
