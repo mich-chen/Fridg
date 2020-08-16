@@ -179,9 +179,11 @@ function RecipeCard(props) {
   // passing prop's children to new components which are separate parts of recipe card
 
   return (
-    <div name='recipe-card'>
+    <div>
       <section id='recipe-card'>
-        <RecipeImage image={props.recipe_info['image']} />
+        <section id='recipe-img'>
+          <RecipeImage image={props.recipe_info['image']} />
+        </section>
 
         <h3>{props.recipe_info['title']}</h3>
 
@@ -233,7 +235,7 @@ function SearchResults(props) {
         />)
     };
     setRecipeResultsList(recipeCards)
-  }, [recipeResultsList]);
+  }, []);
   // dependency is state, do not need to remake recipe cards if user didn't make new search (but...don't know how to work if i'm using offset of results)
 
   return (
