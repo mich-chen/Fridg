@@ -56,7 +56,8 @@ def show_saved_recipes():
     # eagarly load query so can access each saved recipe's ingredients, details, and instructions
 
     all_saved_recipes = Saved_Recipe.query.options(db.joinedload('recipe')).all() 
-    return 
+    
+    return all_saved_recipes 
 
 
 def find_recipe(recipe_id):
@@ -96,7 +97,7 @@ def add_recipe_ingredient(recipe, ingredient, amount, unit):
     return recipe_ingredient
 
 def add_instructions(recipe, step_num, instruction, cooking_mins, prep_mins, ready_mins, equipment):
-    """Add recipe's instructions."""
+    """Add recipe's instructions, one by one."""
 
     # Instantiate a recipe's instructions
     instructions = Instructions(recipe_id=recipe, step_num=step_num, step_instruction=instruction, cooking_mins=cooking_mins, prep_mins=prep_mins, ready_mins=ready_mins, equipment=equipment)
