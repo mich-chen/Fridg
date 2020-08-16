@@ -119,12 +119,12 @@ function RecipeInstructionItem(props) {
 function RecipeInstructions(props) {
   // list of instructions (in order)
   
-  const instructions = props.instructions['instructions'];
+  const instructions = props.instructions.instructions;
   // console.log(instructions);
   const instructionsList = [];
   for (const instruction of instructions) {
     // console.log(instruction);
-    instructionsList.push(<RecipeInstructionItem instructions={instruction} />)
+    instructionsList.push(<RecipeInstructionItem key={instructions.indexOf(instruction)} instructions={instruction} />)
   };
   // console.log(instructionsList);
 
@@ -143,24 +143,24 @@ function SaveRecipe(props) {
   console.log(props.recipe_id);
 
   // onClick, send POST request to server, sending recipe's id, so backend can identify recipe in current session and parse data to store into db
-  const saveRecipe = () => {
-    console.log('in callback for onClick')
-    fetch('/api/save_a_recipe/', {
+  const saveRecipe = (recipe_id) => {
+    console.log('in callback for onClick for saving recipe')
+    fetch('/api/save_a_recipe', {
       method: 'POST',
       body: JSON.stringify({recipe_id: props.recipe_id}),
       headers: { 'Content-Type': 'application/json'},
       credentials:'include'
-    }
+    })
     .then(res => res.json())
-    .then(data => alert(data.success))
-    )
-  }
+    .then(data => alert(data.message))
+  };
 
   // event handler for click of Save button
   return (
       <button 
       id='save-recipe-btn' 
-      onClick={saveRecipe}>
+      onClick={(e) => {saveRecipe(e.target.value)}}
+      value={props.recipe_id}>
         Save this Recipe
         </button>
     );
@@ -182,7 +182,7 @@ function RecipeCard(props) {
     <div>
       <section id='recipe-card'>
         <section id='recipe-img'>
-          <RecipeImage image={props.recipe_info['image']} />
+          <RecipeImage image={props.recipe_info.image} />
         </section>
 
         <h3>{props.recipe_info['title']}</h3>
@@ -191,17 +191,17 @@ function RecipeCard(props) {
             <RecipeTimeSection time={props.recipe_times} />
         </section>
 
-        <RecipeServings servings={props.recipe_info['servings']} />
+        <RecipeServings servings={props.recipe_info.servings} />
 
         <section id="recipe-instructions">
             <RecipeInstructions instructions={props.recipe_instructions} />
         </section>
 
         <section id="save-recipe">
-          <SaveRecipe recipe_id={props.recipe_info['recipe_id']} />
+          <SaveRecipe recipe_id={props.recipe_info.recipe_id} />
         </section>
 
-        <a href={`${props.recipe_info['sourceUrl']}`}>For more details on recipe</a>
+        <a href={`${props.recipe_info.sourceUrl}`}>For more details on recipe</a>
       </section>
     </div>
     );
@@ -245,10 +245,10 @@ function SearchResults(props) {
         <ul>
           {!recipeResultsList.length ? 'Loading...' : (recipeResultsList.map((recipe) => <RecipeCard 
             key={recipe.recipe_info.recipe_id}
-          recipe_info={recipe.recipe_info}
-          recipe_times={recipe.recipe_times}
-          recipe_instructions={recipe.recipe_instructions}
-          recipe_equipment={recipe.recipe_equipment} 
+            recipe_info={recipe.recipe_info}
+            recipe_times={recipe.recipe_times}
+            recipe_instructions={recipe.recipe_instructions}
+            recipe_equipment={recipe.recipe_equipment} 
         />)) 
         }
         </ul>
@@ -346,18 +346,15 @@ function App() {
             <li>
               <Link to="/log-out">Log Out</Link>
             </li>
-            <li>
-              <Link to="create-new-account">Create New Account</Link>
-            </li>
           </ul>
           <SearchForm setData={setData}/>
         </nav>
 
         <Switch>
-          <Route path="/login">
+          <Route exact path="/login">
             <Login />
           </Route>
-          <Route path="/test-page">
+          <Route exact path="/test-page">
             <TestPage />
           </Route>
           <Route exact path="/">

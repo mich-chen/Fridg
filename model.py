@@ -44,7 +44,7 @@ class Saved_Recipe(db.Model):
     user = db.relationship('User')
 
     def __repr__(self):
-        return f'<User"s selected recipes recipe={self.recipe_id} user={self.user_id} is_favorite={self.favorite}>'
+        return f'<User\'s selected recipes recipe={self.recipe_id} user={self.user_id} is_favorite={self.favorite}>'
 
 
 class Recipe(db.Model):

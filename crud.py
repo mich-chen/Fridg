@@ -70,11 +70,11 @@ def find_recipe(recipe_id):
     return Recipe.query.filter_by(recipe_id=recipe_id).first()
 
 
-def create_recipe(title, image, servings, cooking_mins, prep_mins, ready_mins):
+def create_recipe(recipe_id, title, image, servings, cooking_mins, prep_mins, ready_mins):
     """Create a recipe."""
 
     # Instantiate a recipe
-    recipe = Recipe(title=title, image=image, servings=servings, cooking_mins=cooking_mins, prep_mins=prep_mins, ready_mins=ready_mins)
+    recipe = Recipe(recipe_id=recipe_id, title=title, image=image, servings=servings, cooking_mins=cooking_mins, prep_mins=prep_mins, ready_mins=ready_mins)
 
     # add to database
     db.session.add(recipe)
