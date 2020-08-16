@@ -111,7 +111,7 @@ class Recipe_Ingredient(db.Model):
 
 
 class Instructions(db.Model):
-    """A recipe's instructions"""
+    """A recipe's instructions."""
 
     __tablename__ = 'instructions'
 
@@ -132,8 +132,7 @@ class Instructions(db.Model):
 
     def __repr__(self):
         return f'<Instructions recipe={self.recipe_id} step={self.step_num}>'
-
-
+        
 
 def connect_to_db(flask_app, db_uri='postgresql:///recipes', echo=True):
     flask_app.config['SQLALCHEMY_DATABASE_URI'] = db_uri

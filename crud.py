@@ -81,11 +81,11 @@ def create_recipe(title, image, servings):
     return recipe
 
 
-def add_recipe_ingredient(recipe, ingredient, amount, unit):
+def add_recipe_ingredient(recipe, ingredient_id, amount, unit):
     """Add a recipe's ingredient to database."""
 
     # Instantiate a recipe's ingredient
-    recipe_ingredient = Recipe_Ingredient(recipe_id=recipe, ingredient_id=ingredient, amount=amount, unit=unit)
+    recipe_ingredient = Recipe_Ingredient(recipe_id=recipe, ingredient_id=ingredient_id, amount=amount, unit=unit)
 
     # add to database
     db.session.add(recipe_ingredient)
