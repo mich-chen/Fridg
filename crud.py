@@ -93,11 +93,11 @@ def add_recipe_ingredient(recipe, ingredient_id, amount, unit):
 
     return recipe_ingredient
 
-def add_instructions(recipe, step_num, instruction, cooking_mins, prep_mins, ready_mins, equipment):
+def add_instructions(recipe, step_num, step_instruction, cooking_mins, prep_mins, ready_mins, equipment):
     """Add recipe's instructions, one by one."""
 
     # Instantiate a recipe's instructions
-    instructions = Instructions(recipe_id=recipe, step_num=step_num, step_instruction=instruction, cooking_mins=cooking_mins, prep_mins=prep_mins, ready_mins=ready_mins, equipment=equipment)
+    instructions = Instructions(recipe_id=recipe, step_num=step_num, step_instruction=step_instruction, cooking_mins=cooking_mins, prep_mins=prep_mins, ready_mins=ready_mins, equipment=equipment)
 
     # add to database
     db.session.add(instructions)
