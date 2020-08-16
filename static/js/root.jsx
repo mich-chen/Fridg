@@ -211,7 +211,7 @@ function RecipeCard(props) {
 function SearchResults(props) {
   // take results from server and spoonacular api through prop
   // set state for user's ingredient search, if user were to make a new search within same session
-  const [recipeResultsList, setRecipeResultsList] = React.useState(['Loading...']);
+  const [recipeResultsList, setRecipeResultsList] = React.useState([]);
   // does not show 'Loading...' on page..
   console.log('in search results');
   // make post request with user's ingredients input
@@ -222,19 +222,20 @@ function SearchResults(props) {
 
   // passing API's data as prop to new component. But destructuring and parsing the prop into children(?)
   React.useEffect(() => {
-    const recipeCards = [];
-    for (const recipe of props.recipesList) {
-      // console.log(recipe);
-      // console.log(recipe['recipe_info']);
-      recipeCards.push(
-        <RecipeCard 
-          recipe_info={recipe['recipe_info']}
-          recipe_times={recipe['recipe_times']}
-          recipe_instructions={recipe['recipe_instructions']}
-          recipe_equipment={recipe['recipe_equipment']} 
-        />)
-    };
-    setRecipeResultsList(recipeCards)
+    // const recipeCards = [];
+    // for (const recipe of props.recipesList) {
+    //   // console.log(recipe);
+    //   // console.log(recipe['recipe_info']);
+    //   recipeCards.push(
+    //     <RecipeCard 
+    //       recipe_info={recipe['recipe_info']}
+    //       recipe_times={recipe['recipe_times']}
+    //       recipe_instructions={recipe['recipe_instructions']}
+    //       recipe_equipment={recipe['recipe_equipment']} 
+    //     />)
+    // };
+    setRecipeResultsList(props.recipesList)
+    //  array of recipe objects
   }, []);
   // dependency is state, do not need to remake recipe cards if user didn't make new search (but...don't know how to work if i'm using offset of results)
 
@@ -242,7 +243,14 @@ function SearchResults(props) {
     <div name='recipes'>
       <section id="search-results">
         <ul>
-          {recipeResultsList}
+          {!recipeResultsList.length ? 'Loading...' : (recipeResultsList.map((recipe) => <RecipeCard 
+            key={recipe.recipe_info.recipe_id}
+          recipe_info={recipe.recipe_info}
+          recipe_times={recipe.recipe_times}
+          recipe_instructions={recipe.recipe_instructions}
+          recipe_equipment={recipe.recipe_equipment} 
+        />)) 
+        }
         </ul>
       </section>
     </div>
