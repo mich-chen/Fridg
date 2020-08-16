@@ -27,12 +27,19 @@ app.jinja_env.undefined = StrictUndefined\
 API_KEY = os.environ["SPOONACULAR_KEY"]
 
 
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def catch_all(path):
+    """Catch all URL routes that don't match specific path."""
+    
+    return render_template('root.html')
+
+
 @app.route('/')
 def homepage():
     """Show homepage."""
 
     return render_template("root.html")
-
 
 
 @app.route('/api/login', methods=["POST"])
@@ -112,7 +119,7 @@ def search_results():
                "fillIngredients": True,
                "ignorePantry": True,
                # "offset": 5,
-               "number": 3,
+               "number": 15,
                } 
     # make http request to spoonacular's complexSearch API
     res = requests.get(url, params=payload)
@@ -178,45 +185,45 @@ def add_recipe_to_saved():
     recipe_results = session['recipe_results']
     pprint(recipe_results)
 
-    # recipe_info = {}
-    # for recipe in recipe_results:
-    #     info = recipe['recipe_info']
-    #     if recipe_id == info['recipe_id']:
-    #         recipe_info = recipe
+    recipe_info = {}
+    for recipe in recipe_results:
+        info = recipe['recipe_info']
+        if recipe_id == info['recipe_id']:
+            recipe_info = recipe
 
-    # title = recipe_info['recipe_info']['title']
-    # image = recipe_info['recipe_info']['image']
-    # servings = recipe_info['recipe_info']['servings']
-    # instructions = []
+    title = recipe_info['recipe_info']['title']
+    image = recipe_info['recipe_info']['image']
+    servings = recipe_info['recipe_info']['servings']
+    instructions = []
 
-    # for i, instruction in enumerate(recipe_info['recipe_instructions']['instructions']):
-    #     step = {}
-    #     step['number'] = instruction['number' + str(i + 1)]
-    #     step['instruction'] = instruction
-    #     instructions.append(step)
+    for i, instruction in enumerate(recipe_info['recipe_instructions']['instructions']):
+        step = {}
+        step['number'] = instruction['number' + str(i + 1)]
+        step['instruction'] = instruction
+        instructions.append(step)
 
-    # cooking_mins = recipe_info['recipe_times']['cookingMinutes']
-    # prep_mins = recipe_info['recipe_times']['preparationMinutes']
-    # ready_mins = recipe_info['recipe_times']['readyInMinutes']
+    cooking_mins = recipe_info['recipe_times']['cookingMinutes']
+    prep_mins = recipe_info['recipe_times']['preparationMinutes']
+    ready_mins = recipe_info['recipe_times']['readyInMinutes']
 
-    # # for instruction in instructions:
-    #     # crud.add_instructions
+    # for instruction in instructions:
+        # crud.add_instructions
 
-    # # need to parse through recipe results for appropriate info
-    # # adds user's selected recipe to saved recipes table, is_favorite is false until favorited after saving recipe
-    # crud.save_a_recipe(user=user.user_id, recipe=recipe_id, is_favorite=False)
+    # need to parse through recipe results for appropriate info
+    # adds user's selected recipe to saved recipes table, is_favorite is false until favorited after saving recipe
+    crud.save_a_recipe(user=user.user_id, recipe=recipe_id, is_favorite=False)
 
-    # # add this recipe to the recipe, instructions, and recipe's ingredients table
-    # crud.create_recipe(title=title, image=image, servings=servings)
-    # crud.add_instructions(recipe=recipe_id, step_num=step_num, instruction=instruction, cooking_mins=cooking_mins, prep_mins=prep_mins, ready_mins=ready_mins, equipement=equipment)
-    # crud.add_recipe_ingredient(recipe=recipe_id, ingredient=)
+    # add this recipe to the recipe, instructions, and recipe's ingredients table
+    crud.create_recipe(title=title, image=image, servings=servings)
+    crud.add_instructions(recipe=recipe_id, step_num=step_num, instruction=instruction, cooking_mins=cooking_mins, prep_mins=prep_mins, ready_mins=ready_mins, equipement=equipment)
+    crud.add_recipe_ingredient(recipe=recipe_id, ingredient_id=ingredient_id)
     
     return jsonify({'message': 'Recipe saved!'})
 
 
 
 
-@app.route('/saved_recipes')
+@app.route('/show_saved_recipes')
 def show_users_saved_recipes():
     """Show all of user's saved recipes."""
 
