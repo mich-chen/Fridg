@@ -52,18 +52,32 @@ def save_a_recipe(user, recipe, is_favorite):
     return saved_recipe
 
 
-def show_saved_recipes(user_id):
-    """Show all of user's saved recipes."""
+def check_if_saved_recipe(email, recipe_id):
+    """Check if recipe has already been saved by user."""
 
-    # return a list of user's saved recipes as objects
+    # eagarly load user with their saved recipes
+    user = db.session.query(User).filter_by(email=email).join(Saved_Recipe, Recipe).first()  
+    users_saved_list = user.saved_recipes
+
+    # loop through list of saved_recipe objects and check matching recipe_id
+    for saved in users_saved_list:
+        if saved.recipe.recipe_id == recipe_id:
+            return True
+  
+    return False
+
+
+def show_saved_recipes(email):
+    """Show all of user's saved recipes.
+
+    Return a list of user's saved recipes as objects."""
+
     # eagarly load query so can access each saved recipe's ingredients, details, and instructions
+    user = User.query.filter_by(email=email).join(Saved_Recipe, Recipe, Recipe_Ingredient, Instructions, Equipment, Ingredient).first()
+      
+    users_saved_list = user.saved_recipes
 
-    # user = User.query.filter_by(user_id=user_id)
-    # saved_recipes_list = Saved_Recipe.query.filter_by(user_id=user).options(db.joinedload(Recipe, Recipe_Ingredient, Instructions, Equipment)).all()
-    
-    saved_recipes_list = Saved_Recipe.query.filter_by(user_id=user_id).all()
-
-    return saved_recipes_list 
+    return users_saved_list 
 
 
 def find_recipe(recipe_id):
