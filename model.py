@@ -112,7 +112,7 @@ class Recipe_Ingredient(db.Model):
     recipe = db.relationship('Recipe')
 
     def __repr__(self):
-        return f'<Recipe Ingredient recipe={self.recipe_id} ingredient={self.ingredient_id}>'
+        return f'<Recipe Ingredient recipe={self.recipe_id} ingredient={self.ingredient.name}>'
 
 
 class Instructions(db.Model):
