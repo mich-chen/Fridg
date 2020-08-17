@@ -167,7 +167,11 @@ function SaveRecipeButton(props) {
     })
     .then(res => res.json())
     .then(data => alert(data.message))
-    .then(toggleBtnText())
+    .then(res => res.json())
+    .then(date => {
+      alert(data.message);
+      data.message === 'Recipe added to db!' ? toggleBtnText()
+    })
   };
 
   const addRecipe = () => {

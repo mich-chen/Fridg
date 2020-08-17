@@ -67,7 +67,7 @@ def check_if_saved_recipe(email, recipe_id):
     return False
 
 
-def show_saved_recipes(email):
+def get_saved_recipes(email):
     """Show all of user's saved recipes.
 
     Return a list of user's saved recipes as objects."""
@@ -81,17 +81,16 @@ def show_saved_recipes(email):
 
 
 def find_recipe(recipe_id):
-    """Retrieve a recipe from database.
+    """Retrieve a recipe from database."""
 
-    Used after user has saved a recipe, which populated recipes table and then use when showing all saved recipes."""
     return Recipe.query.filter_by(recipe_id=recipe_id).first()
 
 
-def create_recipe(recipe_id, title, image, servings, cooking_mins, prep_mins, ready_mins):
+def create_recipe(recipe_id, title, image, servings, sourceUrl, cooking_mins, prep_mins, ready_mins):
     """Create a recipe."""
 
     # Instantiate a recipe
-    recipe = Recipe(recipe_id=recipe_id, title=title, image=image, servings=servings, cooking_mins=cooking_mins, prep_mins=prep_mins, ready_mins=ready_mins)
+    recipe = Recipe(recipe_id=recipe_id, title=title, image=image, servings=servings, sourceUrl=sourceUrl, cooking_mins=cooking_mins, prep_mins=prep_mins, ready_mins=ready_mins)
 
     # add to database
     db.session.add(recipe)

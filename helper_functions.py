@@ -1,6 +1,7 @@
 """Helper functions for routes/apis in server.py"""
 
-
+import crud
+from model import connect_to_db, db
 from pprint import pprint
 
 def parse_recipe_details(complex_data):
@@ -56,7 +57,6 @@ def parse_recipe_instructions(complex_data):
 
 def parse_recipe_equipment(complex_data):
 
-
     recipe_equipments = {}
 
     # make equipments be a set so unique and no duplicates
@@ -71,7 +71,21 @@ def parse_recipe_equipment(complex_data):
     return recipe_equipments
 
 
+def parse_saved_recipe_details(saved_recipe):
+    """Return dictionary of saved recipe's details parsed from db object."""
+    recipes_details = {}
+
+    recipes_details['recipe_id'] = saved_recipe.recipe.recipe_id
+    recipes_details['title'] = saved_recipe.recipe.title
+    recipes_details['servings'] = saved_recipe.recipe.servings
+    recipes_details['sourceUrl'] = saved_recipe.recipe.
+    recipes_details['image'] = saved_recipe['image']
+    recipes_details['ingredients'] = saved_recipe['extendedIngredients']
 
 
 
+
+if __name__ == '__main__':
+    from server import app
+    connect_to_db(app)
 

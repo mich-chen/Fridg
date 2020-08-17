@@ -55,7 +55,6 @@ def process_login():
     # function to check if email exists in db
     existing_user = crud.get_user_by_email(email=email)
 
-    message = ''
     success = True
 
     # check if email exists in db, if so also check correct password
@@ -180,11 +179,12 @@ def save_recipe_to_db():
     title = recipe_details['recipe_info']['title']
     image = recipe_details['recipe_info']['image']
     servings = recipe_details['recipe_info']['servings']
+    sourceUrl = recipe_details['recipe_info']['sourceUrl']
     cooking_mins = recipe_details['recipe_times']['cookingMinutes']
     prep_mins = recipe_details['recipe_times']['preparationMinutes']
     ready_mins = recipe_details['recipe_times']['readyInMinutes']
     # add recipe's title, image, and servings to recipes table in db
-    crud.create_recipe(recipe_id=recipe_id, title=title, image=image, servings=servings, cooking_mins=cooking_mins, prep_mins=prep_mins, ready_mins=ready_mins)
+    crud.create_recipe(recipe_id=recipe_id, title=title, image=image, servings=servings, sourceUrl=sourceUrl, cooking_mins=cooking_mins, prep_mins=prep_mins, ready_mins=ready_mins)
 
     # complex_ingredients is a list of dictionaries of each ingredient's details
     complex_ingredients = recipe_details['recipe_info']['ingredients']
@@ -213,14 +213,14 @@ def save_recipe_to_db():
     # created_recipe = db.session.query(Recipe).all()
     # print(created_recipe)
 
-    return jsonify({'message': 'Recipe saved to db!'})
+    return jsonify({'message': 'Recipe added to db!'})
 
 
 @app.route('/api/save_a_recipe',methods=["POST"])
 def add_recipe_to_saved():
     """Add selected recipe to saved recipes table in db
 
-    User clicked the "save recipe" button on each recipe card, therefore should only be saving one recipe at a time (one recipe_id passed in POST request body)."""
+    User clicked the "save recipe" button on each recipe card, therefore should only be saving one recipe at a time (one recipe_id passed in POST request body). Only users who are logged in will hit this route."""
 
     print('\n\nin save_a_recipe route')
     # unencode from JSON
@@ -229,17 +229,23 @@ def add_recipe_to_saved():
     recipe_id = data['recipe_id']
     pprint(recipe_id)
 
-    # retrieve session's email (if stored account info)
-    if session['email']:
-        user = crud.get_user_by_email(session['email'])
-        # adds user's selected recipe to saved recipes table, is_favorite is false until favorited after saving recipe
-        crud.save_a_recipe(user=user.user_id, recipe=recipe_id, is_favorite=False)
+    # retrieve session's email to query and check if recipe_id is in their saved recipes.
+    # returns boolean
+    is_saved_recipe = crud.check_if_saved_recipe(session['email'], recipe_id)
+    print('\n\n')
+    print(is_saved_recipe)
 
     user = crud.get_user_by_email(session.get('email'))
-    saved_recipe = crud.show_saved_recipes(user.user_id)
-    print(saved_recipe)
-    
-    return jsonify({'message': 'Recipe saved!'})
+    # if selected recipe is NOT already saved, then add to saved_recipes db.
+    if not is_saved_recipe:
+        # is_favorite is false until favorited (after saving recipe in this step)
+        crud.save_a_recipe(user=user.user_id, recipe=recipe_id, is_favorite=False)
+        message = 'Recipe saved to saved_recipes!'
+    else:
+        message = 'Recipe already exists in user\'s saved list'
+
+
+    return jsonify({'is_saved': True, 'message': message})
 
 
 
@@ -248,14 +254,26 @@ def add_recipe_to_saved():
 def show_users_saved_recipes():
     """Show all of user's saved recipes."""
 
-    # all_saved_recipes = crud.show_saved_recipes()
+    # get a list of saved_recipe objects for existing user
+    users_saved_recipes = crud.get_saved_recipes(session.get('email'))
 
-    # recipe_ids = []
+    saved_recipes = []
 
-    # for recipe in all_saved_recipes:
-    #     recipe_ids[recipe.recipe_id] = 
+    for recipe in users_saved_recipes:
+        recipe_data = {}
+        recipe_data['recipe_info'] = recipe.recipe.
 
+
+
+    for recipe in recipes_complex_data:
+        recipe_data = {}
+        recipe_data['recipe_info'] = helper_functions.parse_recipe_details(recipe)
+        recipe_data['recipe_times'] = helper_functions.parse_recipe_times(recipe)
+        recipe_data['recipe_instructions'] = helper_functions.parse_recipe_instructions(recipe)
+        recipe_data['recipe_equipment'] = helper_functions.parse_recipe_equipment(recipe)
+        recipe_results.append(recipe_data)
     pass
+
 
 
 @app.route('/favorited')
