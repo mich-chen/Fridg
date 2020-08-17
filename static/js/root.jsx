@@ -209,41 +209,15 @@ function RecipeCard(props) {
 
 
 function SearchResults(props) {
-  // take results from server and spoonacular api through prop
-  // set state for user's ingredient search, if user were to make a new search within same session
-  const [recipeResultsList, setRecipeResultsList] = React.useState([]);
-  // does not show 'Loading...' on page..
+  // take results from server and spoonacular api through props
   console.log('in search results');
-  // make post request with user's ingredients input
   // parse data, and pass appropriate data as props to recipe card component
-  // console.log(props.recipesList);
-  // const {recipe_info, recipe_times, recipe_instructions, recipe_equipment} =
-
-
-  // passing API's data as prop to new component. But destructuring and parsing the prop into children(?)
-  React.useEffect(() => {
-    // const recipeCards = [];
-    // for (const recipe of props.recipesList) {
-    //   // console.log(recipe);
-    //   // console.log(recipe['recipe_info']);
-    //   recipeCards.push(
-    //     <RecipeCard 
-    //       recipe_info={recipe['recipe_info']}
-    //       recipe_times={recipe['recipe_times']}
-    //       recipe_instructions={recipe['recipe_instructions']}
-    //       recipe_equipment={recipe['recipe_equipment']} 
-    //     />)
-    // };
-    setRecipeResultsList(props.recipesList)
-    //  array of recipe objects
-  }, []);
-  // dependency is state, do not need to remake recipe cards if user didn't make new search (but...don't know how to work if i'm using offset of results)
 
   return (
     <div name='recipes'>
       <section id="search-results">
         <ul>
-          {!recipeResultsList.length ? 'Loading...' : (recipeResultsList.map((recipe) => <RecipeCard 
+          {!props.recipesList.length ? 'Searching...' : (props.recipesList.map((recipe) => <RecipeCard 
             key={recipe.recipe_info.recipe_id}
             recipe_info={recipe.recipe_info}
             recipe_times={recipe.recipe_times}
@@ -259,11 +233,12 @@ function SearchResults(props) {
 
 
 function SearchForm(props) {
+  let history = useHistory();
   const [ingredients, setIngredients] = React.useState('');
 
   const searchRecipes = () => {
     // create javascript object to stringify to server
-    console.log(ingredients)
+    // console.log(ingredients)
     fetch('/api/search_results', {
       method: 'POST',
       body: JSON.stringify({ingredients: ingredients}),
@@ -272,7 +247,9 @@ function SearchForm(props) {
     })
     .then((response) => response.json())
     .then((data) => props.setData(data))
-    .then(setIngredients(''))
+    .then(setIngredients(''));
+
+    history.push("/search-results")
   };
 
   // set onChange listener for change in textbox
@@ -305,24 +282,27 @@ function App() {
   // const [ingredients, setIngredients] = React.useState('');
   const [data, setData] = React.useState({});
   // data is from external API after clicking SearchForm button
+  console.log(data);
+  console.log('in app component');
 
-  // check if data is an object or empty object
-  if (Object.keys(data).length !== 0) {
-    console.log('in if statement');
+  // // check if data is an object or empty object
+  // if (Object.keys(data).length !== 0) {
+  //   console.log('in if statement');
+  //   console.log(data);
 
-    // each recipe's data is an object (with more objects nested with specific details)
-    // pushing each recipe into a list so can further iterate to make each recipe card
-    const recipesList = [];
-    for (const recipe of data) {
-      recipesList.push(recipe);
-    };
-    // console.log(recipesList);
+  //   // each recipe's data is an object (with more objects nested with specific details)
+  //   // pushing each recipe into a list so can further iterate to make each recipe card
+  //   const recipesList = [];
+  //   for (const recipe of data) {
+  //     recipesList.push(recipe);
+  //   };
+  //   // console.log(recipesList);
 
-    // pass list of recipe's information to new component as prop
-    return (
-      <SearchResults recipesList={recipesList}
-      />);
-  };
+  //   // pass list of recipe's information to new component as prop
+  //   return (
+  //     <SearchResults recipesList={recipesList}
+  //     />);
+  
   // React.useEffect(() => {
   //   console.log('in useEffect');
   //   <SearchResults recipes={data} />
@@ -340,6 +320,9 @@ function App() {
             <li>
               <Link to="/login">Log In</Link>
             </li>
+            <li> 
+              <Link to="/search-results">Search Reults</Link>
+            </li>
             <li>
               <Link to="/test-page">Test</Link>
             </li>
@@ -351,6 +334,9 @@ function App() {
         </nav>
 
         <Switch>
+          <Route exact path="/search-results">
+            <SearchResults recipesList={data} />
+          </Route>
           <Route exact path="/login">
             <Login />
           </Route>
