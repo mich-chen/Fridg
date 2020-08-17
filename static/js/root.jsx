@@ -49,13 +49,15 @@ function Login() {
   return (
     <div name='login-form'>
       Email:
-        <input type='text'
+        <input 
+        type='text'
         id='email'
         onChange={(e) => {setEmail(e.target.value)}}
         value={email}>
         </input>
       Password:
-        <input type='text'
+        <input 
+        type='password'
         id='password'
         onChange={(e) => {setPassword(e.target.value)}}
         value={password}>
