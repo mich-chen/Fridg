@@ -27,9 +27,9 @@ def parse_recipe_times(complex_data):
 
     recipe_times = {}
 
-    recipe_times['preparationMinutes'] = complex_data.get('preparationMinutes', 'N/A')
-    recipe_times['cookingMinutes'] = complex_data.get('cookingMinutes', 'N/A')
-    recipe_times['readyInMinutes'] = complex_data.get('readyInMinutes', 'N/A')
+    recipe_times['preparationMinutes'] = complex_data.get('preparationMinutes', 0)
+    recipe_times['cookingMinutes'] = complex_data.get('cookingMinutes', 0)
+    recipe_times['readyInMinutes'] = complex_data.get('readyInMinutes', 0)
 
     return recipe_times
 

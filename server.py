@@ -12,7 +12,7 @@ from pprint import pprint
 # import jinja 2 to make it throw errors for undefined variables
 from jinja2 import StrictUndefined
 
-from model import connect_to_db
+from model import connect_to_db, db
 import crud # operations for db
 import helper_functions
 
@@ -21,7 +21,7 @@ import helper_functions
 app = Flask(__name__)
 
 app.secret_key = "secretkey"
-app.jinja_env.undefined = StrictUnde fined\
+app.jinja_env.undefined = StrictUndefined
 
 # secret key from api
 API_KEY = os.environ["SPOONACULAR_KEY"]
@@ -88,8 +88,8 @@ def process_login():
 def process_logout():
     """Remove user's session after logout."""
 
-    del session['email']
-    del session['recipes']
+    session.pop('email', None)
+    session.pop('recipes_results', None)
     flash('logged out!')
     return redirect('/')
 
@@ -143,12 +143,6 @@ def search_results():
         recipe_results.append(recipe_data)
     # pprint(recipe_results)
 
-    # store recipe results in current user's session
-    session['recipe_results'] = recipe_results
-    session['full_complex_results'] = recipes_complex_data
-    # pprint(session['recipe_results'])
-
-    # return render_template("search_results.html", recipes=recipes)
     return jsonify(recipe_results)
 
 # @app.route('/api/show_results')
@@ -157,82 +151,90 @@ def search_results():
 
 #     reipces = 
 
+@app.route('/api/recipe_to_db', methods=["POST"])
+def save_recipe_to_db():
+    """Add selected recipe to recipes table in db."""
 
-
-
-
-
-
-
-
-
-
-
-@app.route('/api/save_a_recipe',methods=["POST"])
-def add_recipe_to_saved():
-    """Add selected recipe to database as saved recipe.
-
-    User clicked the "save recipe" button on each recipe card, therefore should only be saving one recipe at a time (one recipe_id passed in POST request body)."""
-    print('in save_a_recipe route')
+    pprint('in recipe_to_db route')
     # unencode from JSON
     data = request.get_json()
-
+    # pprint(data)
+    # information on selected recipe
+    recipe_details = data['recipe_details']
+    # pprint(recipe_details)
     # selected recipe's id
-    recipe_id = data['recipe_id']
-    pprint(recipe_id)
+    recipe_id = recipe_details['recipe_info']['recipe_id']
+    print(recipe_id)
 
-    # retrieve session's email (if stored account info)
-    if session['email']:
-        user = crud.get_user_by_email(session['email'])
-    # adds user's selected recipe to saved recipes table, is_favorite is false until favorited after saving recipe
-    crud.save_a_recipe(user=user.user_id, recipe=recipe_id, is_favorite=False)
-    
-    # search's list of organized recipe dictionaries 
-    search_results = session['recipe_results']
+    if session.get('email') == None:
+        print('in session == none')
+        return jsonify({'message': 'You need to create an account to save a recipe!'})
 
-    # recipe_info is saved recipe's details (1 recipe)
-    recipe_info = {}
-    # loop through search's results, find the recipe that matches saved recipe's id
-    for recipe in search_results:
-        if recipe_id == recipe['recipe_info']['recipe_id']:
-            pprint('found recipe matched id')
-            recipe_info = recipe
+    if crud.find_recipe(recipe_id):
+        print('recipe already in db')
+        print(crud.find_recipe(recipe_id))
+        return jsonify({'message': 'Recipe already in db, proceed to saving'})
 
-    title = recipe_info['recipe_info']['title']
-    image = recipe_info['recipe_info']['image']
-    servings = recipe_info['recipe_info']['servings']
-    cooking_mins = recipe_info['recipe_times']['cookingMinutes']
-    prep_mins = recipe_info['recipe_times']['preparationMinutes']
-    ready_mins = recipe_info['recipe_times']['readyInMinutes']
+    title = recipe_details['recipe_info']['title']
+    image = recipe_details['recipe_info']['image']
+    servings = recipe_details['recipe_info']['servings']
+    cooking_mins = recipe_details['recipe_times']['cookingMinutes']
+    prep_mins = recipe_details['recipe_times']['preparationMinutes']
+    ready_mins = recipe_details['recipe_times']['readyInMinutes']
     # add recipe's title, image, and servings to recipes table in db
     crud.create_recipe(recipe_id=recipe_id, title=title, image=image, servings=servings, cooking_mins=cooking_mins, prep_mins=prep_mins, ready_mins=ready_mins)
 
     # complex_ingredients is a list of dictionaries of each ingredient's details
-    complex_ingredients = recipe_info['recipe_info']['ingredients']
+    complex_ingredients = recipe_details['recipe_info']['ingredients']
     for ingredient in complex_ingredients:
-        ingredient_id = ingredient['ingredient_id']
+        ingredient_id = ingredient['id']
         amount = ingredient['amount']
         unit = ingredient['unit']
         crud.add_recipe_ingredient(recipe=recipe_id, ingredient_id=ingredient_id, amount=amount, unit=unit)
 
     # ordered list of recipe's instructions (no numbers)
-    instructions_list = recipe_info['recipe_instructions']['instructions']
+    instructions_list = recipe_details['recipe_instructions']['instructions']
     # enumerate through list of ordered instructions
     for i, instruction in enumerate(instructions_list):
         # set step_num by adding 1 to indices
         step_num = i + 1
         step_instruction = instruction
-        pprint(step_num, step_instruction)
+        print(step_num, step_instruction)
         # add recipe's instruction step and instructions, one by one to db
         crud.add_instructions(recipe=recipe_id, step_num=step_num, step_instruction=step_instruction)
 
     # dictionary with equipment name as both key and value
-    for equipment in recipe_info['recipe_equipment']:
+    for equipment in recipe_details['recipe_equipment']:
         pprint(equipment)
         crud.add_equipment(recipe=recipe_id, equipment=equipment)
 
+    # created_recipe = db.session.query(Recipe).all()
+    # print(created_recipe)
+
+    return jsonify({'message': 'Recipe saved to db!'})
+
+
+@app.route('/api/save_a_recipe',methods=["POST"])
+def add_recipe_to_saved():
+    """Add selected recipe to saved recipes table in db
+
+    User clicked the "save recipe" button on each recipe card, therefore should only be saving one recipe at a time (one recipe_id passed in POST request body)."""
+    print('in save_a_recipe route')
+    # unencode from JSON
+    data = request.get_json()
+    # information on selected recipe
+    recipe_details = data['recipe_details']
+    pprint(recipe_details)
+
+    # retrieve session's email (if stored account info)
+    if session['email']:
+        user = crud.get_user_by_email(session['email'])
+        # adds user's selected recipe to saved recipes table, is_favorite is false until favorited after saving recipe
+        crud.save_a_recipe(user=user.user_id, recipe=recipe_id, is_favorite=False)
+
+
     saved_recipe = Saved_Recipe.query.all()
-    pprint(saved_recipe)
+    print(saved_recipe)
     
     return jsonify({'message': 'Recipe saved!'})
 

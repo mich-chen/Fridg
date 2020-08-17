@@ -137,17 +137,19 @@ function RecipeInstructions(props) {
 
 
 function SaveRecipe(props) {
-  // currently not working, still need to work on backend
   console.log('in save recipe component')
-  console.log(props);
+  // console.log(props);
   console.log(props.recipe_id);
+  console.log(props.recipe_details);
 
   // onClick, send POST request to server, sending recipe's id, so backend can identify recipe in current session and parse data to store into db
-  const saveRecipe = (recipe_id) => {
+  const saveRecipe = () => {
     console.log('in callback for onClick for saving recipe')
-    fetch('/api/save_a_recipe', {
+    fetch('/api/recipe_to_db', {
       method: 'POST',
-      body: JSON.stringify({recipe_id: props.recipe_id}),
+      body: JSON.stringify({
+        recipe_details: props.recipe_details
+      }),
       headers: { 'Content-Type': 'application/json'},
       credentials:'include'
     })
@@ -159,8 +161,7 @@ function SaveRecipe(props) {
   return (
       <button 
       id='save-recipe-btn' 
-      onClick={(e) => {saveRecipe(e.target.value)}}
-      value={props.recipe_id}>
+      onClick={(e) => {saveRecipe(e.target.value)}}>
         Save this Recipe
         </button>
     );
@@ -170,12 +171,6 @@ function SaveRecipe(props) {
 function RecipeCard(props) {
   // return a div that is a recipe card with recipe's details
   // render detail component with appropriate prop
-  // console.log(props.recipe_info);
-  // console.log(props.recipe_times);
-  // console.log(props.recipe_instructions);
-  // console.log(typeof(props.recipe_instructions))
-  // console.log(props.recipe_equipment);
-
   // passing prop's children to new components which are separate parts of recipe card
 
   return (
@@ -197,8 +192,11 @@ function RecipeCard(props) {
             <RecipeInstructions instructions={props.recipe_instructions} />
         </section>
 
-        <section id="save-recipe">
-          <SaveRecipe recipe_id={props.recipe_info.recipe_id} />
+        <section id="save-button">
+          <SaveRecipe 
+            recipe_id={props.recipe_info.recipe_id} 
+            recipe_details={props} 
+            />
         </section>
 
         <a href={`${props.recipe_info.sourceUrl}`}>For more details on recipe</a>

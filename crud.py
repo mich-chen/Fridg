@@ -2,7 +2,7 @@
 
 Create, Read, Update, Delete."""
 
-from model import db, User, Saved_Recipe, Recipe, Ingredient, Recipe_Ingredient, Instructions, connect_to_db
+from model import db, User, Saved_Recipe, Recipe, Ingredient, Recipe_Ingredient, Instructions, Equipment, connect_to_db
 
 def create_user(email, password):
     """Create an user."""
@@ -52,15 +52,17 @@ def save_a_recipe(user, recipe, is_favorite):
     return saved_recipe
 
 
-def show_saved_recipes():
+def show_saved_recipes(user_id):
     """Show all of user's saved recipes."""
 
     # return a list of user's saved recipes as objects
     # eagarly load query so can access each saved recipe's ingredients, details, and instructions
 
-    all_saved_recipes = Saved_Recipe.query.options(db.joinedload('recipe')).all() 
+    # user = User.query.filter_by(user_id=user_id)
+    # saved_recipes_list = Saved_Recipe.query.filter_by(user_id=user).options(db.joinedload(Recipe, Recipe_Ingredient, Instructions, Equipment)).all()
     
-    return all_saved_recipes 
+
+    return saved_recipes_list 
 
 
 def find_recipe(recipe_id):

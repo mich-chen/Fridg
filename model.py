@@ -150,6 +150,7 @@ class Equipment(db.Model):
 
     # recipe the equipment is part of
     recipe = db.relationship('Recipe')
+    
 
 def connect_to_db(flask_app, db_uri='postgresql:///recipes', echo=True):
     flask_app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
