@@ -142,7 +142,16 @@ function SaveRecipeButton(props) {
   console.log(props.recipe_id);
   console.log(props.recipe_details);
 
+  const [saved, setSaved] = React.useState(false);
+  console.log(saved);
+
   // onClick, send POST request to server, sending recipe's id, so backend can identify recipe in current session and parse data to store into db
+
+  const toggleBtnText = () => {
+    console.log('in toggleBtnText');
+    // update button's state, causing rerender of button, which will change text
+    setSaved(true);
+  }
 
   const saveRecipe = () => {
     console.log('in processing saving recipe')
@@ -156,6 +165,7 @@ function SaveRecipeButton(props) {
     })
     .then(res => res.json())
     .then(data => alert(data.message))
+    .then(toggleBtnText())
   };
 
   const addRecipe = () => {
@@ -178,10 +188,13 @@ function SaveRecipeButton(props) {
       <button 
       id='save-recipe-btn' 
       onClick={(e) => {addRecipe(e.target.value)}}>
-        Save this Recipe
+        {!saved ? 'Save this Recipe' : 'Saved!'}
         </button>
     );
 }
+
+
+
 
 
 function RecipeCard(props) {
