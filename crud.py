@@ -61,6 +61,7 @@ def show_saved_recipes(user_id):
     # user = User.query.filter_by(user_id=user_id)
     # saved_recipes_list = Saved_Recipe.query.filter_by(user_id=user).options(db.joinedload(Recipe, Recipe_Ingredient, Instructions, Equipment)).all()
     
+    saved_recipes_list = Saved_Recipe.query.filter_by(user_id=user_id).all()
 
     return saved_recipes_list 
 

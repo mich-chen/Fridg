@@ -136,14 +136,29 @@ function RecipeInstructions(props) {
 }
 
 
-function SaveRecipe(props) {
-  console.log('in save recipe component')
+function SaveRecipeButton(props) {
+  console.log('in save recipe component');
   // console.log(props);
   console.log(props.recipe_id);
   console.log(props.recipe_details);
 
   // onClick, send POST request to server, sending recipe's id, so backend can identify recipe in current session and parse data to store into db
+
   const saveRecipe = () => {
+    console.log('in processing saving recipe')
+    fetch('/api/save_a_recipe', {
+      method: 'POST',
+      body: JSON.stringify({
+        recipe_id: props.recipe_id
+      }),
+      headers: { 'Content-Type': 'application/json'},
+      credentials:'include'
+    })
+    .then(res => res.json())
+    .then(data => alert(data.message))
+  };
+
+  const addRecipe = () => {
     console.log('in callback for onClick for saving recipe')
     fetch('/api/recipe_to_db', {
       method: 'POST',
@@ -155,13 +170,14 @@ function SaveRecipe(props) {
     })
     .then(res => res.json())
     .then(data => alert(data.message))
+    .then(saveRecipe())
   };
 
   // event handler for click of Save button
   return (
       <button 
       id='save-recipe-btn' 
-      onClick={(e) => {saveRecipe(e.target.value)}}>
+      onClick={(e) => {addRecipe(e.target.value)}}>
         Save this Recipe
         </button>
     );
@@ -193,7 +209,7 @@ function RecipeCard(props) {
         </section>
 
         <section id="save-button">
-          <SaveRecipe 
+          <SaveRecipeButton 
             recipe_id={props.recipe_info.recipe_id} 
             recipe_details={props} 
             />

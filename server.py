@@ -166,10 +166,12 @@ def save_recipe_to_db():
     recipe_id = recipe_details['recipe_info']['recipe_id']
     print(recipe_id)
 
+    # must log in to save a recipe, if no session avail, prompt message
     if session.get('email') == None:
         print('in session == none')
         return jsonify({'message': 'You need to create an account to save a recipe!'})
 
+    # find if recipe already exists in db, spoonacular's recipe id is db's recipe_id primary key
     if crud.find_recipe(recipe_id):
         print('recipe already in db')
         print(crud.find_recipe(recipe_id))
@@ -219,12 +221,13 @@ def add_recipe_to_saved():
     """Add selected recipe to saved recipes table in db
 
     User clicked the "save recipe" button on each recipe card, therefore should only be saving one recipe at a time (one recipe_id passed in POST request body)."""
-    print('in save_a_recipe route')
+
+    print('\n\nin save_a_recipe route')
     # unencode from JSON
     data = request.get_json()
     # information on selected recipe
-    recipe_details = data['recipe_details']
-    pprint(recipe_details)
+    recipe_id = data['recipe_id']
+    pprint(recipe_id)
 
     # retrieve session's email (if stored account info)
     if session['email']:
@@ -232,8 +235,8 @@ def add_recipe_to_saved():
         # adds user's selected recipe to saved recipes table, is_favorite is false until favorited after saving recipe
         crud.save_a_recipe(user=user.user_id, recipe=recipe_id, is_favorite=False)
 
-
-    saved_recipe = Saved_Recipe.query.all()
+    user = crud.get_user_by_email(session.get('email'))
+    saved_recipe = crud.show_saved_recipes(user.user_id)
     print(saved_recipe)
     
     return jsonify({'message': 'Recipe saved!'})
