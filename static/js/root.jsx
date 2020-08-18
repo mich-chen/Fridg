@@ -8,7 +8,25 @@ const useHistory = ReactRouterDOM.useHistory;
 
 
 function Homepage() {
-  return <h1> Hello! Welcome to the Homepage! </h1>;
+  let history = useHistory();
+  const handleClick = () => {
+    history.push("create-account")
+  }
+
+  return (
+    <div>
+      <h1> Hello! Welcome to the Homepage! </h1>
+      <br></br>
+
+      <Login />
+      <br></br>
+      OR
+      <br></br>
+      <button onClick={handleClick}>
+        Create New Account!
+      </button>
+    </div>
+    );
 }
 
 
@@ -17,6 +35,7 @@ function TestPage() {
 }
 
 function Logout() {
+  let history = useHistory();
   console.log('in logout component');
 
   fetch('/api/logout')
@@ -24,22 +43,40 @@ function Logout() {
   .then(data => alert(data.message));
 
   return (
-    <Homepage />
+    <div>
+      {history.push("/")}
+    </div>
     );
 }
 
-function Login() {
+function Login(props) {
   // set state for email and password
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
 
+  // boolean, if new user then true
+  const newUser = props.newUser;
+
   const checkLogin = () => {
     // create javascript object to stringify to server
-    const loginData = {'email': email, 'password': password}
-    console.log(loginData)
+    const loginData = {'email': email, 'password': password};
+    console.log(loginData);
     fetch('/api/login', {
       method: 'POST',
       body: JSON.stringify(loginData),
+      headers: { 'Content-Type': 'application/json'},
+      credentials:'include'
+    })
+    .then(response => response.json())
+    .then(data => alert(data.message))
+  };
+
+  const createAccount = () => {
+    const newAccountData = {'email': email, 'password': password};
+    console.log(newAccountData);
+    fetch('/api/create_account', {
+      method: 'POST',
+      body: JSON.stringify(newAccountData),
       headers: { 'Content-Type': 'application/json'},
       credentials:'include'
     })
@@ -58,6 +95,7 @@ function Login() {
   // value of textbox will be the state
   return (
     <div name='login-form'>
+      <h3> {newUser ? 'Enter email and password to get started!': 'Log in to see your saved recipes! :)'} </h3>
       Email:
         <input 
         type='text'
@@ -72,11 +110,19 @@ function Login() {
         onChange={(e) => {setPassword(e.target.value)}}
         value={password}>
         </input>
-      <button onClick={() => {
+      {newUser ? 
+        <button onClick={() => {
+          createAccount();
+          resetForm()}}>
+        Create Account
+        </button>
+        : 
+        <button onClick={() => {
           checkLogin();
           resetForm()}}>
-        Submit 
+        Log in 
         </button>
+      }
     </div>
   );
 }
@@ -364,7 +410,7 @@ function App() {
     .then(data => {setSavedList(data); console.log(savedList.length)});
   };
 
-
+  const newUser = true;
 
 
     // use React Router for front-end routing
@@ -376,12 +422,19 @@ function App() {
             <li>
             <Link to="/">Homepage</Link>
             </li>
+
             <li>
               <Link to="/login">Log In</Link>
             </li>
+
+            <li>
+              <Link to="/create-account">Create An Account</Link>
+            </li>
+
             <li> 
               <Link to="/search-results">Search Reults</Link>
             </li>
+
             <li> 
               <Link 
               to="/saved-recipes" 
@@ -390,14 +443,18 @@ function App() {
                 Saved Recipes
               </Link>
             </li>
+
             <li>
               <Link to="/test-page">Test</Link>
             </li>
+
             <li>
               <Link to="/logout">Log Out</Link>
             </li>
           </ul>
+
           <SearchForm setData={setData}/>
+
         </nav>
 
         <Switch>
@@ -414,6 +471,10 @@ function App() {
 
           <Route exact path="/login">
             <Login />
+          </Route>
+
+          <Route exact path="/create-account">
+            <Login newUser={newUser} />
           </Route>
 
           <Route exact path="/logout">

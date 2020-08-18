@@ -55,8 +55,6 @@ def process_login():
     # function to check if email exists in db
     existing_user = crud.get_user_by_email(email=email)
 
-    success = True
-
     # check if email exists in db, if so also check correct password
     if existing_user and password == existing_user.password:
         # create session for user
@@ -65,22 +63,38 @@ def process_login():
         message = 'Valid user. Successfully logged in.'
 
     # if password does not match, and email already exists in db
-    elif existing_user:
-        # set new message
-        message = 'Incorrect email or password. If new user, you cannot create an account with that email. Try again.'
-        # change success status
-        success = False
-
-    # new user, add new user to db 
     else:
+        # set new message
+        message = 'Incorrect email or password. Try again.'
+
+    return jsonify({'message': message})
+
+
+@app.route('/api/create_account', methods=["POST"])
+def create_account():
+    """Create new account and store in db."""
+
+    print('in create account route')
+    # unencode from JSON
+    data = request.get_json()
+    email = data['email']
+    password = data['password']
+
+    # function to check if email exists in db
+    existing_user = crud.get_user_by_email(email=email)
+
+    # if no return from db for this email
+    if existing_user == None:
         new_user = crud.create_user(email=email, password=password)
         # create session for user
         session['email'] = email
-        # set new message
         message = 'Successfully created new account!'
 
-    return jsonify({'success': success, 'message': message})
+    # if returned an object from db, then email already exists
+    else:
+        message = 'Email exists already! You cannot create new account with that email. Try again.'
 
+    return jsonify({'message': message})
 
 
 @app.route('/api/logout')
