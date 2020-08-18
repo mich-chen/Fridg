@@ -204,15 +204,15 @@ function SaveRecipeButton(props) {
   // state for button's text, initial state is passed through props
   // initial state is true if rendering from savedRecipes
   // initial state is fasle if rendering from searchResults
-  const [savedText, setSavedText] = React.useState(props.savedText);
-  console.log(savedText);
+  const [isSavedText, setIsSavedText] = React.useState(props.isSaved);
+  console.log(isSavedText);
 
   // onClick, send POST request to server, sending recipe's id, so backend can identify recipe in current session and parse data to store into db
 
   const toggleBtnText = () => {
     console.log('in toggleBtnText');
     // update button's state, causing rerender of button, which will change text
-    setSavedText(true);
+    setisSavedText(true);
   };
 
   const saveRecipe = () => {
@@ -252,19 +252,36 @@ function SaveRecipeButton(props) {
       <button 
       id='save-recipe-btn' 
       onClick={(e) => {addRecipe(e.target.value)}}>
-        {!savedText ? 'Save this Recipe' : 'Saved!'}
-        </button>
+        {!isSavedText ? 'Save this Recipe' : 'Saved!'}
+      </button>
     );
 }
 
 
+function FavoriteButton(props) {
+  console.log('in favorite button component');
 
+  const [isFavorite, setIsFavorite] = React.useState(false);
+
+  const toggleBtnText = () => {
+    setIsFavorite(true);
+  }
+
+  return (
+    <button 
+    id='favorite-btn' 
+    onClick={toggleBtnText}>
+      {isFavorite ? 'favorite <3' : 'Saved!'}
+    </button>
+    );
+}
 
 
 function RecipeCard(props) {
   // return a div that is a recipe card with recipe's details
   // render detail component with appropriate prop
   // passing prop's children to new components which are separate parts of recipe card
+
   return (
     <div>
       <section id='recipe-card'>
@@ -285,12 +302,19 @@ function RecipeCard(props) {
         </section>
 
         <section id="save-button">
-          <SaveRecipeButton 
+          {
+            props.renderingFrom === 'SavedRecipes'
+            ? <FavoriteButton 
             recipe_id={props.recipe_info.recipe_id} 
             recipe_details={props}
-            savedText={props.savedText}
-
+            isSaved={props.isSaved}
             />
+            : <SaveRecipeButton 
+            recipe_id={props.recipe_info.recipe_id} 
+            recipe_details={props}
+            isSaved={props.isSaved}
+            />
+          }
         </section>
 
         <a href={`${props.recipe_info.sourceUrl}`}>For more details on recipe</a>
@@ -316,7 +340,8 @@ function SavedRecipes(props) {
               recipe_times={recipe.recipe_times}
               recipe_instructions={recipe.recipe_instructions}
               recipe_equipment={recipe.recipe_equipment}
-              savedText={true}
+              renderingFrom={'SavedRecipes'}
+              isSaved={true}
           />)) 
           }
           </ul>
@@ -341,6 +366,8 @@ function SearchResults(props) {
             recipe_times={recipe.recipe_times}
             recipe_instructions={recipe.recipe_instructions}
             recipe_equipment={recipe.recipe_equipment} 
+            renderingFrom={'SearchResults'}
+            isSaved={false}
         />)) 
         }
         </ul>
