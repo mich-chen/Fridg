@@ -251,45 +251,17 @@ function RecipeCard(props) {
 }
 
 
-// function ShowSavedRecipes(props) {
-//   return (
-//       <div>
-//         <section id="saved-recipes">
-//           <ul>
-//             {!savedList.length ? 'You haven\'t saved any recipes yet!' : (savedList.map((recipe) => <RecipeCard 
-//               key={recipe.recipe_info.recipe_id}
-//               recipe_info={recipe.recipe_info}
-//               recipe_times={recipe.recipe_times}
-//               recipe_instructions={recipe.recipe_instructions}
-//               recipe_equipment={recipe.recipe_equipment} 
-//           />)) 
-//           }
-//           </ul>
-//         </section>
-//       </div>
-//       );
-// }
-
-
-
 function SavedRecipes(props) {
   console.log('in SavedRecipes component');
+  // console.log(props.savedList);
 
-
-  const retrieveSavedRecipes = () => {
-    fetch('/api/show_saved_recipes')
-    .then(res => res.json())
-    .then(data => {props.setSavedList(data); console.log(props.savedList.length)});
-  };
-
-
-  console.log(props.savedList);
-
+  // if user doesn't have any saved recipes yet, render text
+  // else, render user's saved recipe cards
   return (
       <div>
         <section id="saved-recipes">
           <ul>
-            {!props.savedList.length ? <button onClick={retrieveSavedRecipes}> You haven't saved any recipes yet!'</button> : (props.savedList.map((recipe) => <RecipeCard 
+            {!props.savedList.length ? 'You haven\'t saved any recipes yet!' : (props.savedList.map((recipe) => <RecipeCard 
               key={recipe.recipe_info.recipe_id}
               recipe_info={recipe.recipe_info}
               recipe_times={recipe.recipe_times}
@@ -381,8 +353,16 @@ function App() {
   console.log(data);
   console.log('in app component');
 
-  const [savedList, setSavedList] = React.useState([]);
 
+  // set state of user's saved recipes list
+  const [savedList, setSavedList] = React.useState([]);
+  // when user clicks "saved recipes" link, calls function to fetch data
+  // update state of saved recipes, and pass state as prop to SavedRecipes component
+  const retrieveSavedRecipes = () => {
+    fetch('/api/show_saved_recipes')
+    .then(res => res.json())
+    .then(data => {setSavedList(data); console.log(savedList.length)});
+  };
 
 
 
@@ -403,7 +383,12 @@ function App() {
               <Link to="/search-results">Search Reults</Link>
             </li>
             <li> 
-              <Link to="/saved-recipes">Saved Recipes</Link>
+              <Link 
+              to="/saved-recipes" 
+              onClick={retrieveSavedRecipes}
+              >
+                Saved Recipes
+              </Link>
             </li>
             <li>
               <Link to="/test-page">Test</Link>
@@ -418,22 +403,27 @@ function App() {
         <Switch>
           <Route exact path="/saved-recipes">
             <SavedRecipes 
-            setSavedList={setSavedList} 
             savedList={savedList}
             />
           </Route>
+
           <Route exact path="/search-results">
-            <SearchResults recipesList={data} />
+            <SearchResults 
+            recipesList={data} />
           </Route>
+
           <Route exact path="/login">
             <Login />
           </Route>
+
           <Route exact path="/logout">
             <Logout />
           </Route>
+
           <Route exact path="/test-page">
             <TestPage />
           </Route>
+
           <Route exact path="/">
             <Homepage />
           </Route>

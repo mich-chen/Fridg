@@ -285,8 +285,6 @@ def show_users_saved_recipes():
     return jsonify(saved_recipes)
 
 
-
-
 @app.route('/favorited')
 def favorite_a_recipe():
     """Actively favorite a recipe.
@@ -294,9 +292,6 @@ def favorite_a_recipe():
     set is_favorite in db to True."""
 
     pass
-
-
-
 
 
 if __name__ == '__main__':
