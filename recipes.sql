@@ -185,6 +185,7 @@ CREATE TABLE public.recipes (
     title character varying,
     image character varying,
     servings integer,
+    "sourceUrl" character varying,
     cooking_mins integer,
     prep_mins integer,
     ready_mins integer
@@ -340,6 +341,22 @@ ALTER TABLE ONLY public.users ALTER COLUMN user_id SET DEFAULT nextval('public.u
 --
 
 COPY public.equipment (equipment_id, recipe_id, equipment) FROM stdin;
+1	279558	microwave
+2	1184395	bowl
+3	1184395	frying pan
+4	1184395	spatula
+5	1184395	whisk
+6	506109	frying pan
+7	506109	spatula
+8	640457	baking paper
+9	640457	baking sheet
+10	640457	knife
+11	640457	oven
+12	640457	pot
+13	640457	potato masher
+14	283278	baking sheet
+15	283278	bowl
+16	283278	oven
 \.
 
 
@@ -1356,6 +1373,43 @@ COPY public.ingredients (ingredient_id, name) FROM stdin;
 --
 
 COPY public.instructions (instruction_id, recipe_id, step_num, step_instruction) FROM stdin;
+1	279558	1	Beat eggs and milk with fork in large microwaveable mug until blended.  Stir in bacon bits.
+2	279558	2	Microwave on HIGH 1 min. 15 sec. to 1 min. 30 sec. or until  eggs are almost set.
+3	279558	3	Top with cheese.
+4	279558	4	Let stand 1 min.
+5	1184395	1	In a small bowl whisk eggs, milk and salt and pepper until just blended.
+6	1184395	2	Heat a large nonstick skillet over medium-low heat until hot.
+7	1184395	3	Add butter and let melt.
+8	1184395	4	Pour egg mixture into skillet. As eggs begin to set, gently pull the eggs across the pan with a spatula forming large, soft curds.
+9	1184395	5	Let the uncooked eggs flood the area you just pulled back. Low heat is the key here. You need to cook your eggs on a low heat so they are light and luffy instead of rubbery if cook them to quickly.
+10	1184395	6	If you are adding cheese add it as the eggs start to form the large soft curds so it melts right into the eggs. Continue to pull the eggs across skillet, until thickened. They are done when no visible liquid egg mixture remains. DO NOT OVER COOK.
+11	1184395	7	Serve immediately.
+12	506109	1	Heat a small amount of butter in a skillet over medium-high heat, until melted & bubbly.
+13	506109	2	Add the amount of milk you would typically scramble with the eggs to the pan and wait 5 seconds or so until it sizzles & foams up.  (I typically add only a tablespoon or two per 2-3 eggs.)
+14	506109	3	Add whisked eggs, a sprinkle of cheese, if desired, & season with salt & pepper.  Stir with a rubber spatula until eggs are just about done; approximately 2 minutes or less.  (If scrambled eggs look done in the pan, they will be overdone on the plate, so cook accordingly.)
+15	506109	4	Remove pan from heat.
+16	506109	5	Serve immediately topped with extra cheese if desired.
+17	640457	1	Preheat oven to 450 F.
+18	640457	2	Place a sheet of parchment paper on a cookie sheet. Wash the potatoes until they are clean.
+19	640457	3	Put the potatoes in a pot and fill with water.
+20	640457	4	Add about 2 tablespoons of salt to the water.
+21	640457	5	Place the water on a medium high flame and bring to a boil. Boil them until they are tender all the way through. Make sure a fork pierces them easily.
+22	640457	6	Drain the potatoes.
+23	640457	7	Let the potatoes cool a little.
+24	640457	8	Drizzle the cookie sheet with olive oil.
+25	640457	9	Place the cooked potatoes on cookie sheet.
+26	640457	10	Using a small paring knife, make an X cut on the top of each potato so it's easier to crush them. Use a potato masher and gently press on each potato until squashed but not disintegrated. You want them to stay together. If they fall apart, don't worry! Just pick up the bits into piles and keep going.
+27	640457	11	Once smashed, generously sprinkle kosher salt over each potato. Follow with pepper, and then, drizzle them with more olive oil. If desired, sprinkle each potato with freshly chopped rosemary or chives if desired.
+28	640457	12	Sprinkle with smoked paprika to finish them off if desired.
+29	640457	13	Bake the potatoes at 450 F for 20-25 minutes, longer is better, you want them very crisp, just don't let them burn.
+30	640457	14	Serve hot!
+31	283278	1	Heat oven to 400F.
+32	283278	2	Cut carrots diagonally in half, then cut thicker half of each carrot lengthwise in half; place in large bowl.
+33	283278	3	Add potatoes and 2 Tbsp. dressing; toss to coat.
+34	283278	4	Spread vegetables onto half of parchment-covered rimmed baking sheet.
+35	283278	5	Toss chicken with remaining dressing; place, skin sides up, on baking sheet with vegetables.
+36	283278	6	Bake 45 to 50 min. or until chicken is done (165F), turning vegetables after 30 min.
+37	283278	7	Transfer chicken and vegetables to platter; top vegetables with cheese.
 \.
 
 
@@ -1364,6 +1418,31 @@ COPY public.instructions (instruction_id, recipe_id, step_num, step_instruction)
 --
 
 COPY public.recipe_ingredients (rec_ing_id, recipe_id, ingredient_id, amount, unit) FROM stdin;
+1	279558	1041009	1	Tbsp
+2	279558	1123	2	
+3	279558	1077	2	Tbsp
+4	279558	99229	1	Tbsp
+5	1184395	1123	4	large
+6	1184395	1077	1	Tbsp
+7	1184395	1041009	1	serving
+8	1184395	1102047	1	serving
+9	1184395	1001	2	tsp
+10	506109	1001	1	serving
+11	506109	1041009	1	serving
+12	506109	1123	1	serving
+13	506109	1077	1	serving
+14	506109	1102047	1	serving
+15	640457	11352	1	serving
+16	640457	2036	1	Sprigs
+17	640457	1082047	1	serving
+18	640457	1002030	1	serving
+19	640457	4053	1	serving
+20	640457	1041009	1	serving
+21	283278	4135	0.25	cup
+22	283278	11124	4	large
+23	283278	5062	2	lb
+24	283278	11352	1	lb
+25	283278	1033	2	Tbsp
 \.
 
 
@@ -1371,7 +1450,12 @@ COPY public.recipe_ingredients (rec_ing_id, recipe_id, ingredient_id, amount, un
 -- Data for Name: recipes; Type: TABLE DATA; Schema: public; Owner: vagrant
 --
 
-COPY public.recipes (recipe_id, title, image, servings, cooking_mins, prep_mins, ready_mins) FROM stdin;
+COPY public.recipes (recipe_id, title, image, servings, "sourceUrl", cooking_mins, prep_mins, ready_mins) FROM stdin;
+279558	Bacon & Eggs in a Mug	https://spoonacular.com/recipeImages/279558-312x231.jpg	1	http://www.kraftrecipes.com/recipes/bacon-eggs-in-a-131712.aspx	0	5	5
+1184395	The BEST Scrambled Eggs	https://spoonacular.com/recipeImages/1184395-312x231.jpg	2	https://www.julieseatsandtreats.com/the-best-scrambled-eggs/	10	5	15
+506109	Fluffy Scrambled Eggs	https://spoonacular.com/recipeImages/506109-312x231.jpg	1	http://www.dessertnowdinnerlater.com/2012/09/fluffy-scrambled-eggs/	0	0	45
+640457	Crash Hot Potatoes	https://spoonacular.com/recipeImages/640457-312x231.jpg	4	https://www.foodista.com/recipe/RYDPM53V/crash-hot-potatoes	0	0	45
+283278	Baked Chicken	https://spoonacular.com/recipeImages/283278-312x231.jpg	5	http://www.KraftRecipes.com/recipes/family-style-roasted-chicken-bake-143433.aspx	65	15	65
 \.
 
 
@@ -1380,6 +1464,8 @@ COPY public.recipes (recipe_id, title, image, servings, cooking_mins, prep_mins,
 --
 
 COPY public.saved_recipes (saved_id, recipe_id, user_id, favorite) FROM stdin;
+1	279558	1	f
+2	283278	1	f
 \.
 
 
@@ -1388,6 +1474,7 @@ COPY public.saved_recipes (saved_id, recipe_id, user_id, favorite) FROM stdin;
 --
 
 COPY public.users (user_id, email, password) FROM stdin;
+1	test@test.test	test
 \.
 
 
@@ -1395,7 +1482,7 @@ COPY public.users (user_id, email, password) FROM stdin;
 -- Name: equipment_equipment_id_seq; Type: SEQUENCE SET; Schema: public; Owner: vagrant
 --
 
-SELECT pg_catalog.setval('public.equipment_equipment_id_seq', 1, false);
+SELECT pg_catalog.setval('public.equipment_equipment_id_seq', 16, true);
 
 
 --
@@ -1409,14 +1496,14 @@ SELECT pg_catalog.setval('public.ingredients_ingredient_id_seq', 1, false);
 -- Name: instructions_instruction_id_seq; Type: SEQUENCE SET; Schema: public; Owner: vagrant
 --
 
-SELECT pg_catalog.setval('public.instructions_instruction_id_seq', 1, false);
+SELECT pg_catalog.setval('public.instructions_instruction_id_seq', 37, true);
 
 
 --
 -- Name: recipe_ingredients_rec_ing_id_seq; Type: SEQUENCE SET; Schema: public; Owner: vagrant
 --
 
-SELECT pg_catalog.setval('public.recipe_ingredients_rec_ing_id_seq', 1, false);
+SELECT pg_catalog.setval('public.recipe_ingredients_rec_ing_id_seq', 25, true);
 
 
 --
@@ -1430,14 +1517,14 @@ SELECT pg_catalog.setval('public.recipes_recipe_id_seq', 1, false);
 -- Name: saved_recipes_saved_id_seq; Type: SEQUENCE SET; Schema: public; Owner: vagrant
 --
 
-SELECT pg_catalog.setval('public.saved_recipes_saved_id_seq', 1, false);
+SELECT pg_catalog.setval('public.saved_recipes_saved_id_seq', 2, true);
 
 
 --
 -- Name: users_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: vagrant
 --
 
-SELECT pg_catalog.setval('public.users_user_id_seq', 1, false);
+SELECT pg_catalog.setval('public.users_user_id_seq', 1, true);
 
 
 --

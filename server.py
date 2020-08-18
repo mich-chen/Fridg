@@ -265,6 +265,7 @@ def show_users_saved_recipes():
 
     # get a list of saved_recipe objects for existing user
     users_saved_recipes = crud.get_saved_recipes(session.get('email'))
+    pprint(len(users_saved_recipes))
 
     saved_recipes = []
 
@@ -275,7 +276,11 @@ def show_users_saved_recipes():
         recipe_data['recipe_instructions'] = helper_functions.parse_saved_recipe_instructions(recipe)
         recipe_data['recipe_equipment'] = helper_functions.parse_saved_recipe_equipment(recipe)
 
-        recipe_results.append(recipe_data)
+        saved_recipes.append(recipe_data)
+
+    # print('\n')
+    # pprint(saved_recipes)
+    # print('\n')
 
     return jsonify(saved_recipes)
 

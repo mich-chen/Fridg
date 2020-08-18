@@ -217,9 +217,6 @@ function RecipeCard(props) {
   // return a div that is a recipe card with recipe's details
   // render detail component with appropriate prop
   // passing prop's children to new components which are separate parts of recipe card
-
-
-
   return (
     <div>
       <section id='recipe-card'>
@@ -254,15 +251,57 @@ function RecipeCard(props) {
 }
 
 
-// function SavedRecipes(props) {
-//   console.log('in SavedRecipes component');
-
-//   fetch('/api/show_saved_recipes')
-//   .then(res => res.json())
-//   .then()
+// function ShowSavedRecipes(props) {
 //   return (
-//     );
+//       <div>
+//         <section id="saved-recipes">
+//           <ul>
+//             {!savedList.length ? 'You haven\'t saved any recipes yet!' : (savedList.map((recipe) => <RecipeCard 
+//               key={recipe.recipe_info.recipe_id}
+//               recipe_info={recipe.recipe_info}
+//               recipe_times={recipe.recipe_times}
+//               recipe_instructions={recipe.recipe_instructions}
+//               recipe_equipment={recipe.recipe_equipment} 
+//           />)) 
+//           }
+//           </ul>
+//         </section>
+//       </div>
+//       );
 // }
+
+
+
+function SavedRecipes(props) {
+  console.log('in SavedRecipes component');
+
+
+  const retrieveSavedRecipes = () => {
+    fetch('/api/show_saved_recipes')
+    .then(res => res.json())
+    .then(data => {props.setSavedList(data); console.log(props.savedList.length)});
+  };
+
+
+  console.log(props.savedList);
+
+  return (
+      <div>
+        <section id="saved-recipes">
+          <ul>
+            {!props.savedList.length ? <button onClick={retrieveSavedRecipes}> You haven't saved any recipes yet!'</button> : (props.savedList.map((recipe) => <RecipeCard 
+              key={recipe.recipe_info.recipe_id}
+              recipe_info={recipe.recipe_info}
+              recipe_times={recipe.recipe_times}
+              recipe_instructions={recipe.recipe_instructions}
+              recipe_equipment={recipe.recipe_equipment} 
+          />)) 
+          }
+          </ul>
+        </section>
+      </div>
+      );
+}
 
 
 function SearchResults(props) {
@@ -271,7 +310,7 @@ function SearchResults(props) {
   // parse data, and pass appropriate data as props to recipe card component
 
   return (
-    <div name='recipes'>
+    <div>
       <section id="search-results">
         <ul>
           {!props.recipesList.length ? 'Searching...' : (props.recipesList.map((recipe) => <RecipeCard 
@@ -342,6 +381,9 @@ function App() {
   console.log(data);
   console.log('in app component');
 
+  const [savedList, setSavedList] = React.useState([]);
+
+
 
 
 
@@ -360,6 +402,9 @@ function App() {
             <li> 
               <Link to="/search-results">Search Reults</Link>
             </li>
+            <li> 
+              <Link to="/saved-recipes">Saved Recipes</Link>
+            </li>
             <li>
               <Link to="/test-page">Test</Link>
             </li>
@@ -372,6 +417,10 @@ function App() {
 
         <Switch>
           <Route exact path="/saved-recipes">
+            <SavedRecipes 
+            setSavedList={setSavedList} 
+            savedList={savedList}
+            />
           </Route>
           <Route exact path="/search-results">
             <SearchResults recipesList={data} />
