@@ -151,6 +151,9 @@ class Equipment(db.Model):
 
     # recipe the equipment is part of
     recipe = db.relationship('Recipe')
+
+    def __repr__(self):
+        return f'<Equipment recipe={self.recipe_id} equipment={self.equipment}>'
     
 
 def connect_to_db(flask_app, db_uri='postgresql:///recipes', echo=True):
