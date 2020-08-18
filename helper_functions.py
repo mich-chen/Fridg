@@ -75,13 +75,69 @@ def parse_saved_recipe_details(saved_recipe):
     """Return dictionary of saved recipe's details parsed from db object."""
     recipes_details = {}
 
-    recipes_details['recipe_id'] = saved_recipe.recipe.recipe_id
+    recipes_details['recipe_id'] = saved_recipe.recipe_id
     recipes_details['title'] = saved_recipe.recipe.title
     recipes_details['servings'] = saved_recipe.recipe.servings
-    recipes_details['sourceUrl'] = saved_recipe.recipe.
-    recipes_details['image'] = saved_recipe['image']
-    recipes_details['ingredients'] = saved_recipe['extendedIngredients']
+    recipes_details['sourceUrl'] = saved_recipe.recipe.sourceUrl
+    recipes_details['image'] = saved_recipe.recipe.image
 
+    # list of recipe_ingredient objects
+    recipe_ingredients = saved_recipe.recipe.ingredients
+
+    recipe_ingredients_list = []
+    for ingredient in recipe_ingredients:
+        info = {}
+        info['ingredient_name'] = ingredient.ingredient.name
+        info['amount'] = ingredient.amount
+        info['unit'] = ingredient.unit
+        recipe_ingredients_info.append(info)
+
+    recipes_details['ingredients'] = recipe_ingredients_list
+
+    return recipes_details
+
+
+def parse_saved_recipe_times(saved_recipe):
+    """Return dictionary of saved recipe's times parsed from db object."""
+
+    recipe_times = {}
+
+    recipe_times['preparationMinutes'] = saved_recipe.recipe.prep_mins
+    recipe_times['cookingMinutes'] = saved_recipe.recipe.cooking_mins
+    recipe_times['readyInMinutes'] = saved_recipe.recipe.ready_mins
+
+    return recipe_times
+
+
+def parse_saved_recipe_instructions(saved_recipe):
+    """Return dictionary of saved recipe's instructions parsed from db object."""
+
+    recipe_instructions = {}
+
+    instructions_list = []
+    # list of instructions objects, for each step's instructions
+    instructions_objects = saved_recipe.recipe.instructions
+    for instruction in instructions_objects:
+        # add each step's instruction into the full list
+        instructions_list.append(instruction.step_instruction)
+
+    recipe_instructions['instructions'] = instructions_list
+
+    return recipe_instructions
+
+
+def parse_saved_recipe_equipment(saved_recipe):
+    """Return dictionary of saved recipe's instructions parsed from db object."""
+
+    recipe_equipments = {}
+
+    # list of equipment objects
+    equipment_objects = saved_recipe.recipe.equipment
+    for equipment in equipment_objects:
+        # make equipments be dictionary of unique and no duplicates
+        recipe_equipments[equipment.equipment] = equipment.equipment
+
+    return recipe_equipments
 
 
 

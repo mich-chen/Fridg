@@ -83,14 +83,17 @@ def process_login():
 
 
 
-@app.route('/logout')
+@app.route('/api/logout')
 def process_logout():
     """Remove user's session after logout."""
 
+    print('in logout route')
+
     session.pop('email', None)
     session.pop('recipes_results', None)
-    flash('logged out!')
-    return redirect('/')
+
+    return jsonify({'message': 'Logged out!'})
+    # return redirect('/')
 
 
 
@@ -168,13 +171,13 @@ def save_recipe_to_db():
     # must log in to save a recipe, if no session avail, prompt message
     if session.get('email') == None:
         print('in session == none')
-        return jsonify({'message': 'You need to create an account to save a recipe!'})
+        return jsonify({'success': False, 'message': 'You need to create an account to save a recipe!'})
 
     # find if recipe already exists in db, spoonacular's recipe id is db's recipe_id primary key
     if crud.find_recipe(recipe_id):
         print('recipe already in db')
         print(crud.find_recipe(recipe_id))
-        return jsonify({'message': 'Recipe already in db, proceed to saving'})
+        return jsonify({'success': True, 'message': 'Recipe already in db, proceed to saving'})
 
     title = recipe_details['recipe_info']['title']
     image = recipe_details['recipe_info']['image']
@@ -213,14 +216,14 @@ def save_recipe_to_db():
     # created_recipe = db.session.query(Recipe).all()
     # print(created_recipe)
 
-    return jsonify({'message': 'Recipe added to db!'})
+    return jsonify({'success': True, 'message': 'Recipe added to db!'})
 
 
 @app.route('/api/save_a_recipe',methods=["POST"])
 def add_recipe_to_saved():
     """Add selected recipe to saved recipes table in db
 
-    User clicked the "save recipe" button on each recipe card, therefore should only be saving one recipe at a time (one recipe_id passed in POST request body). Only users who are logged in will hit this route."""
+    Only logged in users can save one recipe at a time (one recipe_id passed in POST request body)."""
 
     print('\n\nin save_a_recipe route')
     # unencode from JSON
@@ -230,29 +233,35 @@ def add_recipe_to_saved():
     pprint(recipe_id)
 
     # retrieve session's email to query and check if recipe_id is in their saved recipes.
-    # returns boolean
-    is_saved_recipe = crud.check_if_saved_recipe(session['email'], recipe_id)
-    print('\n\n')
-    print(is_saved_recipe)
+    users_saved_recipes = crud.get_saved_recipes(session['email'])
+    print(len(users_saved_recipes))
 
+    # if user's saved recipes db has data
+    if len(users_saved_recipes) > 0:
+        # loop through list of saved_recipe objects and check matching recipe_id
+        for saved in users_saved_recipes:
+            if saved.recipe_id == recipe_id:
+                print('recipe already saved')
+                message = 'Recipe already exists in user\'s saved list'
+                return jsonify({'message': message})
+
+    # if selected recipe NOT in saved, or user's saved recipes is empty
+    print('\nselected recipe NOT in db, or user"s saved recipes is empty\n')
     user = crud.get_user_by_email(session.get('email'))
-    # if selected recipe is NOT already saved, then add to saved_recipes db.
-    if not is_saved_recipe:
-        # is_favorite is false until favorited (after saving recipe in this step)
-        crud.save_a_recipe(user=user.user_id, recipe=recipe_id, is_favorite=False)
-        message = 'Recipe saved to saved_recipes!'
-    else:
-        message = 'Recipe already exists in user\'s saved list'
+    print(user, user.user_id)
+    crud.save_a_recipe(user=user.user_id, recipe=recipe_id, is_favorite=False)
+    message = 'Recipe saved to saved_recipes!'
 
-
-    return jsonify({'is_saved': True, 'message': message})
+    return jsonify({'message': message})
 
 
 
 
-@app.route('/show_saved_recipes')
+@app.route('/api/show_saved_recipes')
 def show_users_saved_recipes():
     """Show all of user's saved recipes."""
+
+    print('\nin show saved recipes route\n')
 
     # get a list of saved_recipe objects for existing user
     users_saved_recipes = crud.get_saved_recipes(session.get('email'))
@@ -261,18 +270,15 @@ def show_users_saved_recipes():
 
     for recipe in users_saved_recipes:
         recipe_data = {}
-        recipe_data['recipe_info'] = recipe.recipe.
+        recipe_data['recipe_info'] = helper_functions.parse_saved_recipe_details(recipe)
+        recipe_data['recipe_times'] = helper_functions.parse_saved_recipe_times(recipe)
+        recipe_data['recipe_instructions'] = helper_functions.parse_saved_recipe_instructions(recipe)
+        recipe_data['recipe_equipment'] = helper_functions.parse_saved_recipe_equipment(recipe)
 
-
-
-    for recipe in recipes_complex_data:
-        recipe_data = {}
-        recipe_data['recipe_info'] = helper_functions.parse_recipe_details(recipe)
-        recipe_data['recipe_times'] = helper_functions.parse_recipe_times(recipe)
-        recipe_data['recipe_instructions'] = helper_functions.parse_recipe_instructions(recipe)
-        recipe_data['recipe_equipment'] = helper_functions.parse_recipe_equipment(recipe)
         recipe_results.append(recipe_data)
-    pass
+
+    return jsonify(saved_recipes)
+
 
 
 

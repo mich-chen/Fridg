@@ -154,6 +154,8 @@ function SaveRecipeButton(props) {
   console.log(props.recipe_id);
   console.log(props.recipe_details);
 
+  let history = useHistory();
+
   const [saved, setSaved] = React.useState(false);
   console.log(saved);
 
@@ -193,7 +195,7 @@ function SaveRecipeButton(props) {
     .then(res => res.json())
     .then(data => {
       alert(data.message);
-      data.success ? saveRecipe() : <Login />
+      data.success ? saveRecipe() : history.push("/login")
     })
   };
 
@@ -215,6 +217,8 @@ function RecipeCard(props) {
   // return a div that is a recipe card with recipe's details
   // render detail component with appropriate prop
   // passing prop's children to new components which are separate parts of recipe card
+
+
 
   return (
     <div>
@@ -239,6 +243,7 @@ function RecipeCard(props) {
           <SaveRecipeButton 
             recipe_id={props.recipe_info.recipe_id} 
             recipe_details={props} 
+
             />
         </section>
 
@@ -247,6 +252,17 @@ function RecipeCard(props) {
     </div>
     );
 }
+
+
+// function SavedRecipes(props) {
+//   console.log('in SavedRecipes component');
+
+//   fetch('/api/show_saved_recipes')
+//   .then(res => res.json())
+//   .then()
+//   return (
+//     );
+// }
 
 
 function SearchResults(props) {
@@ -326,28 +342,8 @@ function App() {
   console.log(data);
   console.log('in app component');
 
-  // // check if data is an object or empty object
-  // if (Object.keys(data).length !== 0) {
-  //   console.log('in if statement');
-  //   console.log(data);
 
-  //   // each recipe's data is an object (with more objects nested with specific details)
-  //   // pushing each recipe into a list so can further iterate to make each recipe card
-  //   const recipesList = [];
-  //   for (const recipe of data) {
-  //     recipesList.push(recipe);
-  //   };
-  //   // console.log(recipesList);
 
-  //   // pass list of recipe's information to new component as prop
-  //   return (
-  //     <SearchResults recipesList={recipesList}
-  //     />);
-  
-  // React.useEffect(() => {
-  //   console.log('in useEffect');
-  //   <SearchResults recipes={data} />
-  // }, []);
 
     // use React Router for front-end routing
     return (
@@ -375,6 +371,8 @@ function App() {
         </nav>
 
         <Switch>
+          <Route exact path="/saved-recipes">
+          </Route>
           <Route exact path="/search-results">
             <SearchResults recipesList={data} />
           </Route>
