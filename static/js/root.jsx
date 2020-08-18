@@ -16,7 +16,17 @@ function TestPage() {
   return <div>Test react div</div>;
 }
 
+function Logout() {
+  console.log('in logout component');
 
+  fetch('/api/logout')
+  .then(res => res.json())
+  .then(data => alert(data.message));
+
+  return (
+    <Homepage />
+    );
+}
 
 function Login() {
   // set state for email and password
@@ -153,7 +163,7 @@ function SaveRecipeButton(props) {
     console.log('in toggleBtnText');
     // update button's state, causing rerender of button, which will change text
     setSaved(true);
-  }
+  };
 
   const saveRecipe = () => {
     console.log('in processing saving recipe')
@@ -167,11 +177,7 @@ function SaveRecipeButton(props) {
     })
     .then(res => res.json())
     .then(data => alert(data.message))
-    .then(res => res.json())
-    .then(date => {
-      alert(data.message);
-      data.message === 'Recipe added to db!' ? toggleBtnText()
-    })
+    .then(toggleBtnText())
   };
 
   const addRecipe = () => {
@@ -185,8 +191,10 @@ function SaveRecipeButton(props) {
       credentials:'include'
     })
     .then(res => res.json())
-    .then(data => alert(data.message))
-    .then(saveRecipe())
+    .then(data => {
+      alert(data.message);
+      data.success ? saveRecipe() : <Login />
+    })
   };
 
   // event handler for click of Save button
@@ -360,7 +368,7 @@ function App() {
               <Link to="/test-page">Test</Link>
             </li>
             <li>
-              <Link to="/log-out">Log Out</Link>
+              <Link to="/logout">Log Out</Link>
             </li>
           </ul>
           <SearchForm setData={setData}/>
@@ -372,6 +380,9 @@ function App() {
           </Route>
           <Route exact path="/login">
             <Login />
+          </Route>
+          <Route exact path="/logout">
+            <Logout />
           </Route>
           <Route exact path="/test-page">
             <TestPage />
