@@ -196,21 +196,23 @@ function RecipeInstructions(props) {
 
 function SaveRecipeButton(props) {
   console.log('in save recipe component');
-  // console.log(props);
   console.log(props.recipe_id);
-  console.log(props.recipe_details);
+  // console.log(props.recipe_details);
 
   let history = useHistory();
 
-  const [saved, setSaved] = React.useState(false);
-  console.log(saved);
+  // state for button's text, initial state is passed through props
+  // initial state is true if rendering from savedRecipes
+  // initial state is fasle if rendering from searchResults
+  const [savedText, setSavedText] = React.useState(props.savedText);
+  console.log(savedText);
 
   // onClick, send POST request to server, sending recipe's id, so backend can identify recipe in current session and parse data to store into db
 
   const toggleBtnText = () => {
     console.log('in toggleBtnText');
     // update button's state, causing rerender of button, which will change text
-    setSaved(true);
+    setSavedText(true);
   };
 
   const saveRecipe = () => {
@@ -250,7 +252,7 @@ function SaveRecipeButton(props) {
       <button 
       id='save-recipe-btn' 
       onClick={(e) => {addRecipe(e.target.value)}}>
-        {!saved ? 'Save this Recipe' : 'Saved!'}
+        {!savedText ? 'Save this Recipe' : 'Saved!'}
         </button>
     );
 }
@@ -285,7 +287,8 @@ function RecipeCard(props) {
         <section id="save-button">
           <SaveRecipeButton 
             recipe_id={props.recipe_info.recipe_id} 
-            recipe_details={props} 
+            recipe_details={props}
+            savedText={props.savedText}
 
             />
         </section>
@@ -312,7 +315,8 @@ function SavedRecipes(props) {
               recipe_info={recipe.recipe_info}
               recipe_times={recipe.recipe_times}
               recipe_instructions={recipe.recipe_instructions}
-              recipe_equipment={recipe.recipe_equipment} 
+              recipe_equipment={recipe.recipe_equipment}
+              savedText={true}
           />)) 
           }
           </ul>
