@@ -69,6 +69,17 @@ def get_saved_recipes(email):
     return users_saved_list 
 
 
+def favorite_a_saved_recipe(recipe_id):
+    """Favorite a saved recipe from db."""
+
+    favorited_recipe = Saved_Recipe.query.filter_by(recipe_id=recipe_id).first()
+    favorited_recipe.favorite = True
+
+    db.session.commit()
+
+    return favorited_recipe
+
+
 def find_recipe(recipe_id):
     """Retrieve a recipe from database."""
 

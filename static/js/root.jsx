@@ -212,7 +212,7 @@ function SaveRecipeButton(props) {
   const toggleBtnText = () => {
     console.log('in toggleBtnText');
     // update button's state, causing rerender of button, which will change text
-    setisSavedText(true);
+    setIsSavedText(true);
   };
 
   const saveRecipe = () => {
@@ -260,18 +260,33 @@ function SaveRecipeButton(props) {
 
 function FavoriteButton(props) {
   console.log('in favorite button component');
-
+  // console.log(props.recipe_id);
   const [isFavorite, setIsFavorite] = React.useState(false);
 
   const toggleBtnText = () => {
     setIsFavorite(true);
-  }
+  };
+
+  const addFavorite = () => {
+    console.log('in adding favorite component to server');
+    fetch('/api/favorited', {
+      method: 'POST',
+      body: JSON.stringify({
+        recipe_id: props.recipe_id
+      }),
+      headers: { 'Content-Type': 'application/json'},
+      credentials:'include'
+    })
+    .then(res => res.json())
+    .then(data => alert(data.message))
+    .then(toggleBtnText())
+  };
 
   return (
     <button 
     id='favorite-btn' 
-    onClick={toggleBtnText}>
-      {isFavorite ? 'favorite <3' : 'Saved!'}
+    onClick={addFavorite}>
+      {isFavorite ? 'Favorite <3' : 'Saved! Not Favorited'}
     </button>
     );
 }

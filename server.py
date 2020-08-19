@@ -299,13 +299,24 @@ def show_users_saved_recipes():
     return jsonify(saved_recipes)
 
 
-@app.route('/favorited')
+@app.route('/api/favorited', methods=["POST"])
 def favorite_a_recipe():
-    """Actively favorite a recipe.
+    """Make a selected recipe a favorite.
 
     set is_favorite in db to True."""
 
-    pass
+    print('\nin favorited route\n')
+    # unencode from JSON
+    data = request.get_json()
+    # information on selected recipe
+    recipe_id = data['recipe_id']
+    pprint(recipe_id)
+
+    crud.favorite_a_saved_recipe(recipe_id)
+
+    return jsonify({'message': 'successfully favorited this recipe!'})
+
+
 
 
 if __name__ == '__main__':
