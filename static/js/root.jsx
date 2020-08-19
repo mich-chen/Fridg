@@ -267,7 +267,7 @@ function FavoriteButton(props) {
     setIsFavorite(true);
   };
 
-  const addFavorite = () => {
+  React.useEffect(() => {
     console.log('in adding favorite component to server');
     fetch('/api/favorited', {
       method: 'POST',
@@ -279,13 +279,12 @@ function FavoriteButton(props) {
     })
     .then(res => res.json())
     .then(data => alert(data.message))
-    .then(toggleBtnText())
-  };
+  });
 
   return (
     <button 
     id='favorite-btn' 
-    onClick={addFavorite}>
+    onClick={toggleBtnText}>
       {isFavorite ? 'Favorite <3' : 'Saved! Not Favorited'}
     </button>
     );
