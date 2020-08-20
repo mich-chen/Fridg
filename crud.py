@@ -69,15 +69,24 @@ def get_saved_recipes(email):
     return users_saved_list 
 
 
-def favorite_a_saved_recipe(recipe_id):
+def favorite_a_saved_recipe(recipe_id, email):
     """Favorite a saved recipe from db."""
 
-    favorited_recipe = Saved_Recipe.query.filter_by(recipe_id=recipe_id).first()
+    favorited_recipe = Saved_Recipe.query.filter(Saved_Recipe.recipe_id == recipe_id, User.email == email).join(User).first()
     favorited_recipe.favorite = True
 
     db.session.commit()
 
     return favorited_recipe
+
+
+def get_favorited_saved_recipes(email):
+    """show user's favorited saved recipes."""
+
+    # list of user's saved recipes where favorite == True (favorited saved recipe)
+    favorited_recipes = db.session.query(Saved_Recipe.recipe_id).filter(User.email == email).group_by(Saved_Recipe.favorite,Saved_Recipe.recipe_id).having(Saved_Recipe.favorite == True).join(User).all()
+
+    return favorited_recipes
 
 
 def find_recipe(recipe_id):

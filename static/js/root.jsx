@@ -31,7 +31,34 @@ function Homepage() {
 
 
 function TestPage() {
-  return <div>Test react div</div>;
+  // testing how to call two functions in one onClick
+
+  const [test, setTest] = React.useState(false);
+
+  React.useEffect(() =>{
+    test ? console.log('in useEffect, test is true') : console.log('in useEffect, test is false')
+    // setTest(true)
+    console.log('in useEffect')
+  }, [test]);
+
+  const test1 = () => {
+    console.log('test1')
+  };
+
+  const test2 = () => {
+    console.log('test2')
+  };
+
+
+  return (
+    <div>
+      Test react div
+
+      <button onClick={() => setTest(true)}>
+        {test ? 'test is true': 'test is false'}
+      </button>
+    </div>
+  );
 }
 
 function Logout() {
@@ -54,7 +81,9 @@ function Login(props) {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
 
-  // boolean, if new user then true
+  // if new user then true, will be prop when rendering from "/create-user" route
+  // applies when clicked create account button from homepage
+  // or when click create account in navbar
   const newUser = props.newUser;
 
   const checkLogin = () => {
@@ -195,7 +224,7 @@ function RecipeInstructions(props) {
 
 
 function SaveRecipeButton(props) {
-  console.log('in save recipe component');
+  console.log('in save recipe button component');
   console.log(props.recipe_id);
   // console.log(props.recipe_details);
 
@@ -215,6 +244,7 @@ function SaveRecipeButton(props) {
     setIsSavedText(true);
   };
 
+  // add recipe to saved recipes table for logged in user
   const saveRecipe = () => {
     console.log('in processing saving recipe')
     fetch('/api/save_a_recipe', {
@@ -230,6 +260,7 @@ function SaveRecipeButton(props) {
     .then(toggleBtnText())
   };
 
+  // add selected recipe to db (server will check if already stored or new)
   const addRecipe = () => {
     console.log('in callback for onClick for saving recipe')
     fetch('/api/recipe_to_db', {
@@ -244,6 +275,7 @@ function SaveRecipeButton(props) {
     .then(data => {
       alert(data.message);
       data.success ? saveRecipe() : history.push("/login")
+      // if logged in, proceed to saveRecipe, if not logged in will push to login
     })
   };
 
@@ -252,7 +284,10 @@ function SaveRecipeButton(props) {
       <button 
       id='save-recipe-btn' 
       onClick={(e) => {addRecipe(e.target.value)}}>
-        {!isSavedText ? 'Save this Recipe' : 'Saved!'}
+        {props.isFavorite ? 'Favorited <3' 
+          : isSavedText ? 'Saved!' 
+          : 'Save this recipe!'
+        }
       </button>
     );
 }
@@ -261,15 +296,23 @@ function SaveRecipeButton(props) {
 function FavoriteButton(props) {
   console.log('in favorite button component');
   // console.log(props.recipe_id);
-  const [isFavorite, setIsFavorite] = React.useState(false);
+  console.log(props.isFavorite);
+  const [isFavorite, setIsFavorite] = React.useState(props.isFavorite);
+  console.log(isFavorite);
+
+  // React.useEffect(() => {
+  //   console.log('in fav button useEffect');
+  //   isFavorite ? console.log('isFavorite is true') : setIsFavorite(props.isFavorite)
+  // }, [isFavorite]);
+
 
   const toggleBtnText = () => {
     setIsFavorite(true);
   };
 
-  React.useEffect(() => {
+  const favoriteThisRecipe = () => {
     console.log('in adding favorite component to server');
-    fetch('/api/favorited', {
+    fetch('/api/favorite_a_recipe', {
       method: 'POST',
       body: JSON.stringify({
         recipe_id: props.recipe_id
@@ -279,12 +322,13 @@ function FavoriteButton(props) {
     })
     .then(res => res.json())
     .then(data => alert(data.message))
-  });
+    .then(setIsFavorite(true))
+  };
 
   return (
     <button 
     id='favorite-btn' 
-    onClick={toggleBtnText}>
+    onClick={favoriteThisRecipe}>
       {isFavorite ? 'Favorite <3' : 'Saved! Not Favorited'}
     </button>
     );
@@ -295,6 +339,31 @@ function RecipeCard(props) {
   // return a div that is a recipe card with recipe's details
   // render detail component with appropriate prop
   // passing prop's children to new components which are separate parts of recipe card
+  console.log('in recipeCard component')
+  // console.log(props.savedListIds);
+  // console.log(props.favoriteListIds);
+
+  const [isSaved, setIsSaved] = React.useState(false);
+  const [isFavorite, setIsFavorite] = React.useState(false);
+  // console.log(isFavorite);
+
+  // let isSaved = false;
+  // let isFavorite = false;
+  React.useEffect(() => {
+    console.log('in use Effect of recipe card');
+    // console.log(props.recipe_info.recipe_id);
+    console.log(props.favoriteListIds);
+    if (props.favoriteListIds.includes(props.recipe_info.recipe_id)) {
+      console.log('in recipe card, setting isFavorite');
+      setIsFavorite(true);
+    };
+
+    if (props.savedListIds.includes(props.recipe_info.recipe_id)) {
+      console.log('in recipe card, setting isSaved')
+      setIsSaved(true)
+    };
+  }, [isSaved, isFavorite]);
+
 
   return (
     <div>
@@ -319,15 +388,16 @@ function RecipeCard(props) {
           {
             props.renderingFrom === 'SavedRecipes'
             ? <FavoriteButton 
-            recipe_id={props.recipe_info.recipe_id} 
-            recipe_details={props}
-            isSaved={props.isSaved}
-            />
+                recipe_id={props.recipe_info.recipe_id} 
+                recipe_details={props}
+                isFavorite={isFavorite}
+              />
             : <SaveRecipeButton 
-            recipe_id={props.recipe_info.recipe_id} 
-            recipe_details={props}
-            isSaved={props.isSaved}
-            />
+                recipe_id={props.recipe_info.recipe_id} 
+                recipe_details={props}
+                isSaved={isSaved}
+                isFavorite={isFavorite}
+              />
           }
         </section>
 
@@ -342,20 +412,30 @@ function SavedRecipes(props) {
   console.log('in SavedRecipes component');
   // console.log(props.savedList);
 
+  // console.log(props.savedList);
+  // console.log(props.favoriteListIds);
+
+  const savedListIds = []
+  props.savedList.map((recipe) => {savedListIds.push(recipe.recipe_info.recipe_id)}
+  )
+
   // if user doesn't have any saved recipes yet, render text
   // else, render user's saved recipe cards
   return (
       <div>
         <section id="saved-recipes">
           <ul>
-            {!props.savedList.length ? 'You haven\'t saved any recipes yet!' : (props.savedList.map((recipe) => <RecipeCard 
-              key={recipe.recipe_info.recipe_id}
-              recipe_info={recipe.recipe_info}
-              recipe_times={recipe.recipe_times}
-              recipe_instructions={recipe.recipe_instructions}
-              recipe_equipment={recipe.recipe_equipment}
-              renderingFrom={'SavedRecipes'}
-              isSaved={true}
+            {!props.savedList.length 
+              ? 'You haven\'t saved any recipes yet!' 
+              : (props.savedList.map((recipe) => <RecipeCard 
+                  key={recipe.recipe_info.recipe_id}
+                  recipe_info={recipe.recipe_info}
+                  recipe_times={recipe.recipe_times}
+                  recipe_instructions={recipe.recipe_instructions}
+                  recipe_equipment={recipe.recipe_equipment}
+                  renderingFrom={'SavedRecipes'}
+                  savedListIds={savedListIds}
+                  favoriteListIds={props.favoriteListIds}
           />)) 
           }
           </ul>
@@ -367,21 +447,32 @@ function SavedRecipes(props) {
 
 function SearchResults(props) {
   // take results from server and spoonacular api through props
-  console.log('in search results');
   // parse data, and pass appropriate data as props to recipe card component
+  console.log('in search results');
+  
+  // // state of user's saved recipes list is passed as props.savedList
+  // console.log(props.savedList);
+  // console.log(props.favoriteListIds);
+
+  const savedListIds = []
+  props.savedList.map((recipe) => {savedListIds.push(recipe.recipe_info.recipe_id)}
+  )
 
   return (
     <div>
       <section id="search-results">
         <ul>
-          {!props.recipesList.length ? 'Searching...' : (props.recipesList.map((recipe) => <RecipeCard 
-            key={recipe.recipe_info.recipe_id}
-            recipe_info={recipe.recipe_info}
-            recipe_times={recipe.recipe_times}
-            recipe_instructions={recipe.recipe_instructions}
-            recipe_equipment={recipe.recipe_equipment} 
-            renderingFrom={'SearchResults'}
-            isSaved={false}
+          {!props.recipesList.length 
+            ? 'Searching...' 
+            : (props.recipesList.map((recipe) => <RecipeCard 
+              key={recipe.recipe_info.recipe_id}
+              recipe_info={recipe.recipe_info}
+              recipe_times={recipe.recipe_times}
+              recipe_instructions={recipe.recipe_instructions}
+              recipe_equipment={recipe.recipe_equipment} 
+              renderingFrom={'SearchResults'}
+              savedListIds={savedListIds}
+              favoriteListIds={props.favoriteListIds}
         />)) 
         }
         </ul>
@@ -394,6 +485,12 @@ function SearchResults(props) {
 function SearchForm(props) {
   let history = useHistory();
   const [ingredients, setIngredients] = React.useState('');
+
+  // call function to get saved and favorited recipes and updates state in App component
+  const checkSavedFavoriteRecipes = () => {
+    console.log('in check saved and favorite recipes function')
+    props.getSavedFavoritedRecipes();
+  };
 
   const searchRecipes = () => {
     // create javascript object to stringify to server
@@ -417,12 +514,12 @@ function SearchForm(props) {
     <div name='search-form'>
         What's in your fridge? 
         <input type='text'
-        id='user-ingredients'
-        onChange={(e) => {setIngredients(e.target.value)}}
-        value={ingredients}>
+               id='user-ingredients'
+               onChange={(e) => {setIngredients(e.target.value)}}
+               value={ingredients}>
         </input>
 
-        <button onClick={searchRecipes}>
+        <button onClick={() => {searchRecipes(); checkSavedFavoriteRecipes()}}>
           Let's get cookin!
           </button>
     </div>
@@ -431,28 +528,26 @@ function SearchForm(props) {
 
 
 
-
-
-
-
 function App() {
-
-  // set state for user's ingredient search
-  // const [ingredients, setIngredients] = React.useState('');
-  const [data, setData] = React.useState({});
-  // data is from external API after clicking SearchForm button
-  console.log(data);
   console.log('in app component');
+  // data is from external API after clicking SearchForm button
+  const [data, setData] = React.useState({});
+  console.log(data);
 
-
-  // set state of user's saved recipes list
+  // set state of user's saved recipes list of objects with recipe details
   const [savedList, setSavedList] = React.useState([]);
-  // when user clicks "saved recipes" link, calls function to fetch data
+  // set state of favorites list of favorited recipe's ids
+  const [favoriteListIds, setFavoriteListIds] = React.useState([]);
   // update state of saved recipes, and pass state as prop to SavedRecipes component
-  const retrieveSavedRecipes = () => {
-    fetch('/api/show_saved_recipes')
+  const getSavedFavoritedRecipes = () => {
+    fetch('/api/get_saved_and_fav_recipes')
     .then(res => res.json())
-    .then(data => {setSavedList(data); console.log(savedList.length)});
+    .then(savedData => {
+      setSavedList(savedData.saved_recipes); 
+      console.log(savedList.length);
+      setFavoriteListIds(savedData.favorited_list);
+      console.log(savedData.favorited_list)
+    })
   };
 
   const newUser = true;
@@ -482,8 +577,8 @@ function App() {
 
             <li> 
               <Link 
-              to="/saved-recipes" 
-              onClick={retrieveSavedRecipes}
+                to="/saved-recipes" 
+                onClick={getSavedFavoritedRecipes}
               >
                 Saved Recipes
               </Link>
@@ -498,20 +593,27 @@ function App() {
             </li>
           </ul>
 
-          <SearchForm setData={setData}/>
+          <SearchForm 
+            setData={setData}
+            getSavedFavoritedRecipes={getSavedFavoritedRecipes}
+            />
 
         </nav>
 
         <Switch>
           <Route exact path="/saved-recipes">
             <SavedRecipes 
-            savedList={savedList}
+              savedList={savedList}
+              favoriteListIds={favoriteListIds}
             />
           </Route>
 
           <Route exact path="/search-results">
             <SearchResults 
-            recipesList={data} />
+              recipesList={data}
+              savedList={savedList}
+              favoriteListIds={favoriteListIds}
+            />
           </Route>
 
           <Route exact path="/login">

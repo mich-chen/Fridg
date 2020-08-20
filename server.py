@@ -271,11 +271,11 @@ def add_recipe_to_saved():
 
 
 
-@app.route('/api/show_saved_recipes')
-def show_users_saved_recipes():
+@app.route('/api/get_saved_and_fav_recipes')
+def get_saved_and_fav_recipes():
     """Show all of user's saved recipes."""
 
-    print('\nin show saved recipes route\n')
+    print('\nin get saved and favorite recipes route\n')
 
     # get a list of saved_recipe objects for existing user
     users_saved_recipes = crud.get_saved_recipes(session.get('email'))
@@ -296,10 +296,20 @@ def show_users_saved_recipes():
     # pprint(saved_recipes)
     # print('\n')
 
-    return jsonify(saved_recipes)
+    print('\nin getting favorited saved recipes list portion\n')
+
+    # list of recipe ids of user's favorited saved recipes
+    favorited_list_objects = crud.get_favorited_saved_recipes(session.get('email'))
+    favorited_list = [favorited.recipe_id for favorited in favorited_list_objects]
+
+    print('\n')
+    print(favorited_list)
+    print('\n')
+
+    return jsonify({'saved_recipes': saved_recipes, 'favorited_list': favorited_list})
 
 
-@app.route('/api/favorited', methods=["POST"])
+@app.route('/api/favorite_a_recipe', methods=["POST"])
 def favorite_a_recipe():
     """Make a selected recipe a favorite.
 
@@ -312,11 +322,24 @@ def favorite_a_recipe():
     recipe_id = data['recipe_id']
     pprint(recipe_id)
 
-    crud.favorite_a_saved_recipe(recipe_id)
+    crud.favorite_a_saved_recipe(recipe_id, session.get('email'))
 
     return jsonify({'message': 'successfully favorited this recipe!'})
 
 
+# @app.route('/api/get_favorited_list')
+# def get_favorited_list():
+#     """Return a list of user's favorited saved recipes."""
+
+#     print('\nin getting favorited saved recipes list route\n')
+
+#     # list of recipe ids of user's favorited saved recipes
+#     favorited_list = crud.get_favorited_saved_recipes(session.get['email'])
+#     print('\n')
+#     print(favorited_list)
+#     print('\n')
+
+#     return jsonify(favorited_list)
 
 
 if __name__ == '__main__':
