@@ -89,10 +89,10 @@ def get_favorited_saved_recipes(email):
     return favorited_recipes
 
 
-def find_recipe(recipe_id):
+def get_recipe(recipe_id):
     """Retrieve a recipe from database."""
 
-    recipe = Recipe.query.filter_by(recipe_id=recipe_id).first()
+    recipe = db.session.query(Recipe).filter(Recipe.recipe_id == recipe_id).join(Saved_Recipe, User, Recipe_Ingredient, Instructions, Equipment, Ingredient).first() 
 
     return recipe
 
