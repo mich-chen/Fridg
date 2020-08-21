@@ -5,6 +5,8 @@ const Prompt = ReactRouterDOM.Prompt;
 const Switch = ReactRouterDOM.Switch;
 const Redirect = ReactRouterDOM.Redirect;
 const useHistory = ReactRouterDOM.useHistory;
+const useLocation = ReactRouterDOM.useLocation;
+const useParams = ReactRouterDOM.useParams;
 
 
 function Homepage() {
@@ -157,72 +159,6 @@ function Login(props) {
 }
 
 
-function RecipeImage(props) {
-  return (
-      <img src={`${props.image}`} id='recipe-img'></img>
-    );
-}
-
-
-function RecipeTime(props) {
-  return <span>{props.time}</span>;
-}
-
-
-function RecipeTimeSection(props) {
-  return (
-    <ul>
-      <li>
-        <label>Prep Time: </label>
-        <RecipeTime time={props.time.preparationMinutes} />
-      </li>
-      <li>
-        <label>Cook Time: </label>
-        <RecipeTime time={props.time.cookingMinutes} />
-      </li>
-      <li>
-        <label>Ready In: </label>
-        <RecipeTime time={props.time.readyInMinutes} />
-      </li>
-    </ul>
-    );
-}
-
-
-function RecipeServings(props) {
-  return (
-    <div>
-      <label>Servings: </label>
-      {props.servings}
-    </div>
-  );
-}
-
-function RecipeInstructionItem(props) {
-  return <li>{props.instructions}</li>;
-}
-
-
-function RecipeInstructions(props) {
-  // list of instructions (in order)
-  
-  const instructions = props.instructions.instructions;
-  // console.log(instructions);
-  const instructionsList = [];
-  for (const instruction of instructions) {
-    // console.log(instruction);
-    instructionsList.push(<RecipeInstructionItem key={instructions.indexOf(instruction)} instructions={instruction} />)
-  };
-  // console.log(instructionsList);
-
-  return (
-    <ol>
-      {instructionsList}
-    </ol>
-    );
-}
-
-
 function SaveRecipeButton(props) {
   console.log('in save recipe button component');
   console.log(props.recipe_id);
@@ -296,15 +232,11 @@ function SaveRecipeButton(props) {
 function FavoriteButton(props) {
   console.log('in favorite button component');
   // console.log(props.recipe_id);
-  console.log(props.isFavorite);
-  const [isFavorite, setIsFavorite] = React.useState(props.isFavorite);
-  console.log(isFavorite);
+  const initialFavoriteStatus = props.isFavorite
 
-  // React.useEffect(() => {
-  //   console.log('in fav button useEffect');
-  //   isFavorite ? console.log('isFavorite is true') : setIsFavorite(props.isFavorite)
-  // }, [isFavorite]);
-
+  console.log(props.isFavorite); //true
+  const [isFavorite, setIsFavorite] = React.useState(initialFavoriteStatus);
+  console.log(isFavorite); // false
 
   const toggleBtnText = () => {
     setIsFavorite(true);
@@ -322,14 +254,16 @@ function FavoriteButton(props) {
     })
     .then(res => res.json())
     .then(data => alert(data.message))
-    .then(setIsFavorite(true))
+    .then(toggleBtnText())
   };
 
   return (
     <button 
     id='favorite-btn' 
     onClick={favoriteThisRecipe}>
-      {isFavorite ? 'Favorite <3' : 'Saved! Not Favorited'}
+      {props.isFavorite ? 'Favorite <3' 
+        : isFavorite ? 'Favorite <3' 
+        : 'Saved! Not Favorited'}
     </button>
     );
 }
@@ -343,33 +277,32 @@ function RecipeCard(props) {
   // console.log(props.savedListIds);
   // console.log(props.favoriteListIds);
 
-  const [isSaved, setIsSaved] = React.useState(false);
-  const [isFavorite, setIsFavorite] = React.useState(false);
-  // console.log(isFavorite);
+  let isSaved = false;
+  let isFavorite = false;
 
-  // let isSaved = false;
-  // let isFavorite = false;
-  React.useEffect(() => {
-    console.log('in use Effect of recipe card');
-    // console.log(props.recipe_info.recipe_id);
-    console.log(props.favoriteListIds);
-    if (props.favoriteListIds.includes(props.recipe_info.recipe_id)) {
-      console.log('in recipe card, setting isFavorite');
-      setIsFavorite(true);
-    };
+  // console.log(props.recipe_info.recipe_id);
+  console.log(props.favoriteListIds);
+  if (props.favoriteListIds.includes(props.recipe_info.recipe_id)) {
+    console.log('in recipe card, setting isFavorite');
+    isFavorite = true;
+  };
 
-    if (props.savedListIds.includes(props.recipe_info.recipe_id)) {
-      console.log('in recipe card, setting isSaved')
-      setIsSaved(true)
-    };
-  }, [isSaved, isFavorite]);
+  if (props.savedListIds.includes(props.recipe_info.recipe_id)) {
+    console.log('in recipe card, setting isSaved')
+    isSaved = true;
+  };
+
 
 
   return (
     <div>
       <section id='recipe-card'>
         <section id='recipe-img'>
-          <RecipeImage image={props.recipe_info.image} />
+          <RecipeImage 
+          image={props.recipe_info.image}
+          isSaved={isSaved}
+          recipe_id={props.recipe_info.recipe_id}
+          />
         </section>
 
         <h3>{props.recipe_info['title']}</h3>
@@ -380,9 +313,7 @@ function RecipeCard(props) {
 
         <RecipeServings servings={props.recipe_info.servings} />
 
-        <section id="recipe-instructions">
-            <RecipeInstructions instructions={props.recipe_instructions} />
-        </section>
+        <RecipeIngredients ingredients={props.recipe_ingredients} />
 
         <section id="save-button">
           {
@@ -431,12 +362,13 @@ function SavedRecipes(props) {
                   key={recipe.recipe_info.recipe_id}
                   recipe_info={recipe.recipe_info}
                   recipe_times={recipe.recipe_times}
+                  recipe_ingredients={recipe.recipe_ingredients}
                   recipe_instructions={recipe.recipe_instructions}
                   recipe_equipment={recipe.recipe_equipment}
                   renderingFrom={'SavedRecipes'}
                   savedListIds={savedListIds}
-                  favoriteListIds={props.favoriteListIds}
-          />)) 
+                  favoriteListIds={props.favoriteListIds}>
+                    <div>ello</div></RecipeCard>)) 
           }
           </ul>
         </section>
@@ -445,14 +377,19 @@ function SavedRecipes(props) {
 }
 
 
+
+
 function SearchResults(props) {
   // take results from server and spoonacular api through props
   // parse data, and pass appropriate data as props to recipe card component
   console.log('in search results');
   
-  // // state of user's saved recipes list is passed as props.savedList
-  // console.log(props.savedList);
-  // console.log(props.favoriteListIds);
+  // React.useEffect(() =>{
+  //   fetch('/')
+  //   .then()
+  // })
+
+
 
   const savedListIds = []
   props.savedList.map((recipe) => {savedListIds.push(recipe.recipe_info.recipe_id)}
@@ -468,6 +405,7 @@ function SearchResults(props) {
               key={recipe.recipe_info.recipe_id}
               recipe_info={recipe.recipe_info}
               recipe_times={recipe.recipe_times}
+              recipe_ingredients={recipe.recipe_ingredients}
               recipe_instructions={recipe.recipe_instructions}
               recipe_equipment={recipe.recipe_equipment} 
               renderingFrom={'SearchResults'}
@@ -504,7 +442,7 @@ function SearchForm(props) {
     .then((response) => response.json())
     .then((data) => props.setData(data))
     .then(setIngredients(''));
-
+    // push to search results to render search results component
     history.push("/search-results")
   };
 
@@ -601,6 +539,11 @@ function App() {
         </nav>
 
         <Switch>
+          <Route path="/recipe-details/:id" >
+            <RecipeDetails 
+              recipesList={data}/>
+          </Route>
+
           <Route exact path="/saved-recipes">
             <SavedRecipes 
               savedList={savedList}

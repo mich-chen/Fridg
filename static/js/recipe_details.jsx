@@ -1,8 +1,22 @@
 // Recipe details components
 
 function RecipeImage(props) {
+  console.log('in recipe image');
+  console.log(props.isSaved);
+
+  let history = useHistory();
+
+  const handleImgClick = () => {
+    // pass isSaved to recipe-details, true means from saved recipes, false means from search results
+    // this will be used for recipe-detail's get request
+    history.push(`/recipe-details/${props.recipe_id}`, {isSaved: props.isSaved})
+  };
+
   return (
-      <img src={`${props.image}`} id='recipe-img'></img>
+      <img 
+        src={`${props.image}`} id='recipe-img'
+        onClick={handleImgClick}>
+      </img>
     );
 }
 
@@ -109,77 +123,63 @@ function RecipeIngredients(props) {
 
 
 function RecipeDetails(props) {
-  let {id} = React.useParams();
-  // return a div that is a recipe card with recipe's details
-  // render detail component with appropriate prop
-  // passing prop's children to new components which are separate parts of recipe card
-  console.log('in recipeCard component')
-  // console.log(props.savedListIds);
-  // console.log(props.favoriteListIds);
+  let {id} = useParams();
+  console.log(props.isSaved);
+  console.log(id);
 
-  const [isSaved, setIsSaved] = React.useState(false);
-  const [isFavorite, setIsFavorite] = React.useState(false);
-  // console.log(isFavorite);
 
-  // let isSaved = false;
-  // let isFavorite = false;
-  React.useEffect(() => {
-    console.log('in use Effect of recipe card');
-    // console.log(props.recipe_info.recipe_id);
-    console.log(props.favoriteListIds);
-    if (props.favoriteListIds.includes(props.recipe_info.recipe_id)) {
-      console.log('in recipe card, setting isFavorite');
-      setIsFavorite(true);
-    };
+  
+  // React.useEffect(() =>{
+  //   // GET request
+  //   fetch(`/api/recipe_details/${id}`)
 
-    if (props.savedListIds.includes(props.recipe_info.recipe_id)) {
-      console.log('in recipe card, setting isSaved')
-      setIsSaved(true)
-    };
-  }, [isSaved, isFavorite]);
+  // })
 
   return (
-    <div>
-      <section id='recipe-card'>
-        <section id='recipe-img'>
-          <RecipeImage image={props.recipe_info.image} />
-        </section>
-
-        <h3>{props.recipe_info['title']}</h3>
-
-        <section id="times-section">
-            <RecipeTimeSection time={props.recipe_times} />
-        </section>
-
-        <RecipeServings servings={props.recipe_info.servings} />
-
-        <RecipeIngredients ingredients={props.recipe_info.ingredients} />
-
-        <RecipeEquipment equipment={props.recipe_equipment} />
-
-        <section id="recipe-instructions">
-            <RecipeInstructions instructions={props.recipe_instructions} />
-        </section>
-
-        <section id="save-button">
-          {
-            props.renderingFrom === 'SavedRecipes'
-            ? <FavoriteButton 
-                recipe_id={props.recipe_info.recipe_id} 
-                recipe_details={props}
-                isFavorite={isFavorite}
-              />
-            : <SaveRecipeButton 
-                recipe_id={props.recipe_info.recipe_id} 
-                recipe_details={props}
-                isSaved={isSaved}
-                isFavorite={isFavorite}
-              />
-          }
-        </section>
-
-        <a href={`${props.recipe_info.sourceUrl}`}>For more details on recipe</a>
-      </section>
+    <div> hello
     </div>
     );
 }
+
+// <div>
+//   <section id='recipe-card'>
+//     <section id='recipe-img'>
+//       <RecipeImage image={props.recipe_info.image} />
+//     </section>
+
+//     <h3>{props.recipe_info['title']}</h3>
+
+//     <section id="times-section">
+//         <RecipeTimeSection time={props.recipe_times} />
+//     </section>
+
+//     <RecipeServings servings={props.recipe_info.servings} />
+
+//     <RecipeIngredients ingredients={props.recipe_info.ingredients} />
+
+//     <RecipeEquipment equipment={props.recipe_equipment} />
+
+//     <section id="recipe-instructions">
+//         <RecipeInstructions instructions={props.recipe_instructions} />
+//     </section>
+
+//     <section id="save-button">
+//       {
+//         props.renderingFrom === 'SavedRecipes'
+//         ? <FavoriteButton 
+//             recipe_id={props.recipe_info.recipe_id} 
+//             recipe_details={props}
+//             isFavorite={isFavorite}
+//           />
+//         : <SaveRecipeButton 
+//             recipe_id={props.recipe_info.recipe_id} 
+//             recipe_details={props}
+//             isSaved={isSaved}
+//             isFavorite={isFavorite}
+//           />
+//       }
+//     </section>
+
+//     <a href={`${props.recipe_info.sourceUrl}`}>For more details on recipe</a>
+//   </section>
+// </div>
