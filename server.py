@@ -154,6 +154,7 @@ def search_results():
         recipe_data = {}
         recipe_data['recipe_info'] = helper_functions.parse_recipe_details(recipe)
         recipe_data['recipe_times'] = helper_functions.parse_recipe_times(recipe)
+        recipe_data['recipe_ingredients'] = helper_functions.parse_recipe_ingredients(recipe)
         recipe_data['recipe_instructions'] = helper_functions.parse_recipe_instructions(recipe)
         recipe_data['recipe_equipment'] = helper_functions.parse_recipe_equipment(recipe)
         recipe_results.append(recipe_data)
@@ -161,14 +162,22 @@ def search_results():
 
     return jsonify(recipe_results)
 
-# @app.route('/api/show_results')
-# def show_search_results():
-#     """Show recipe search results."""
 
-#     reipces = 
+@app.route('/api/recipe_details/int<recipe_id>')
+def get_recipe_details(recipe_id):
+    """Return information on selected recipe."""
+
+    pprint('in recipe details')
+
+    recipe = crud.get_recipe(recipe_id)
+
+    return jsonify('found recipe')
+
+
+
 
 @app.route('/api/recipe_to_db', methods=["POST"])
-def save_recipe_to_db():
+def add_recipe_to_db():
     """Add selected recipe to recipes table in db."""
 
     pprint('in recipe_to_db route')
@@ -188,9 +197,9 @@ def save_recipe_to_db():
         return jsonify({'success': False, 'message': 'You need to create an account to save a recipe!'})
 
     # find if recipe already exists in db, spoonacular's recipe id is db's recipe_id primary key
-    if crud.find_recipe(recipe_id):
+    if crud.get_recipe(recipe_id):
         print('recipe already in db')
-        print(crud.find_recipe(recipe_id))
+        print(crud.get_recipe(recipe_id))
         return jsonify({'success': True, 'message': 'Recipe already in db, proceed to saving'})
 
     title = recipe_details['recipe_info']['title']
@@ -204,7 +213,7 @@ def save_recipe_to_db():
     crud.create_recipe(recipe_id=recipe_id, title=title, image=image, servings=servings, sourceUrl=sourceUrl, cooking_mins=cooking_mins, prep_mins=prep_mins, ready_mins=ready_mins)
 
     # complex_ingredients is a list of dictionaries of each ingredient's details
-    complex_ingredients = recipe_details['recipe_info']['ingredients']
+    complex_ingredients = recipe_details['recipe_ingredients']
     for ingredient in complex_ingredients:
         ingredient_id = ingredient['id']
         amount = ingredient['amount']
@@ -273,7 +282,7 @@ def add_recipe_to_saved():
 
 @app.route('/api/get_saved_and_fav_recipes')
 def get_saved_and_fav_recipes():
-    """Show all of user's saved recipes."""
+    """Get all of user's saved and favorited recipes."""
 
     print('\nin get saved and favorite recipes route\n')
 
@@ -282,11 +291,12 @@ def get_saved_and_fav_recipes():
     pprint(len(users_saved_recipes))
 
     saved_recipes = []
-
+    
     for recipe in users_saved_recipes:
         recipe_data = {}
         recipe_data['recipe_info'] = helper_functions.parse_saved_recipe_details(recipe)
         recipe_data['recipe_times'] = helper_functions.parse_saved_recipe_times(recipe)
+        recipe_data['recipe_ingredients'] = helper_functions.parse_saved_recipe_ingredients(recipe)
         recipe_data['recipe_instructions'] = helper_functions.parse_saved_recipe_instructions(recipe)
         recipe_data['recipe_equipment'] = helper_functions.parse_saved_recipe_equipment(recipe)
 

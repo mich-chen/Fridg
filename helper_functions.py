@@ -20,14 +20,12 @@ def parse_recipe_details(complex_data):
     return recipes
 
 
-def parse_recipe_ingredeints(complex_data):
+def parse_recipe_ingredients(complex_data):
     """Parse recipe's ingredients we need from bulk/complex API endpoint."""
 
-    recipe_ingredients = {}
+    recipe_ingredients = complex_data['extendedIngredients']
 
-    recipes['ingredients'] = complex_data['extendedIngredients']
-
-    return recipes_ingredients
+    return recipe_ingredients
 
 
 def parse_recipe_times(complex_data):
@@ -96,6 +94,8 @@ def parse_saved_recipe_details(saved_recipe):
 def parse_saved_recipe_ingredients(saved_recipe):
     """Return dictionary of saved recipe's ingredients parsed from db object."""
 
+    saved_recipe_ingredients = {}
+
     # list of recipe_ingredient objects
     recipe_ingredients = saved_recipe.recipe.ingredients
 
@@ -107,7 +107,7 @@ def parse_saved_recipe_ingredients(saved_recipe):
         info['unit'] = ingredient.unit
         recipe_ingredients_list.append(info)
 
-    recipes_details['ingredients'] = recipe_ingredients_list
+    saved_recipe_ingredients['ingredients'] = recipe_ingredients_list
 
     return recipe_ingredients_list
 
@@ -155,30 +155,30 @@ def parse_saved_recipe_equipment(saved_recipe):
     return recipe_equipments
 
 
-def parse_db_recipe_details(recipe):
-    """Return dictionary of a db recipe's details information."""
+# def parse_db_recipe_details(recipe):
+#     """Return dictionary of a db recipe's details information."""
 
-    # dictionary of dictionaries for recipe's categorized information
-    recipe_details = {}
+#     # dictionary of dictionaries for recipe's categorized information
+#     recipe_details = {}
 
-    # dicitonary of recipe's general information:
-    # recipe_id, title, servings, sourceUrl, image, ingredients (name, amount, unit)
-    recipe_info = {}
-    recipes_info['recipe_id'] = recipe.recipe_id
-    recipes_info['title'] = recipe.title
-    recipes_info['servings'] = recipe.servings
-    recipes_info['sourceUrl'] = recipe.sourceUrl
-    recipes_info['image'] = recipe.image
-    # parse through recipe's ingredients table for info
-    recipe_ingredients = recipe.ingredients
-    ingredients_list = []
-    for ingredient in recipe_ingredients:
-        info = {}
-        info['name'] = ingredient.ingredient.name
-        info['amount'] = ingredient.amount
-        info['unit'] = ingredient.unit
-        ingredients_list.append(info)
-    recipes_info['ingredients'] = ingredients_list
+#     # dicitonary of recipe's general information:
+#     # recipe_id, title, servings, sourceUrl, image, ingredients (name, amount, unit)
+#     recipe_info = {}
+#     recipes_info['recipe_id'] = recipe.recipe_id
+#     recipes_info['title'] = recipe.title
+#     recipes_info['servings'] = recipe.servings
+#     recipes_info['sourceUrl'] = recipe.sourceUrl
+#     recipes_info['image'] = recipe.image
+#     # parse through recipe's ingredients table for info
+#     recipe_ingredients = recipe.ingredients
+#     ingredients_list = []
+#     for ingredient in recipe_ingredients:
+#         info = {}
+#         info['name'] = ingredient.ingredient.name
+#         info['amount'] = ingredient.amount
+#         info['unit'] = ingredient.unit
+#         ingredients_list.append(info)
+#     recipes_info['ingredients'] = ingredients_list
 
 
 if __name__ == '__main__':
