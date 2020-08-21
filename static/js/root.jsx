@@ -276,6 +276,7 @@ function RecipeCard(props) {
   console.log('in recipeCard component')
   // console.log(props.savedListIds);
   // console.log(props.favoriteListIds);
+  // console.log('recipe details', props.recipeDetails);
 
   let isSaved = false;
   let isFavorite = false;
@@ -302,6 +303,7 @@ function RecipeCard(props) {
           image={props.recipe_info.image}
           isSaved={isSaved}
           recipe_id={props.recipe_info.recipe_id}
+          recipeDetails={props.recipeDetails}
           />
         </section>
 
@@ -403,6 +405,7 @@ function SearchResults(props) {
             ? 'Searching...' 
             : (props.recipesList.map((recipe) => <RecipeCard 
               key={recipe.recipe_info.recipe_id}
+              recipeDetails={recipe}
               recipe_info={recipe.recipe_info}
               recipe_times={recipe.recipe_times}
               recipe_ingredients={recipe.recipe_ingredients}
@@ -540,8 +543,7 @@ function App() {
 
         <Switch>
           <Route path="/recipe-details/:id" >
-            <RecipeDetails 
-              recipesList={data}/>
+            <RecipeDetails />
           </Route>
 
           <Route exact path="/saved-recipes">

@@ -2,14 +2,20 @@
 
 function RecipeImage(props) {
   console.log('in recipe image');
-  console.log(props.isSaved);
+  // console.log(props.isSaved);
+  // console.log('recipe details in img component', props.recipeDetails);
 
   let history = useHistory();
 
   const handleImgClick = () => {
     // pass isSaved to recipe-details, true means from saved recipes, false means from search results
     // this will be used for recipe-detail's get request
-    history.push(`/recipe-details/${props.recipe_id}`, {isSaved: props.isSaved})
+    history.push({pathname: `/recipe-details/${props.recipe_id}`, 
+                  state:{isSaved: props.isSaved,
+                        recipeDetails: props.recipeDetails
+                        }
+                  } 
+      );
   };
 
   return (
@@ -20,6 +26,21 @@ function RecipeImage(props) {
     );
 }
 
+
+function StaticRecipeImg(props) {
+  return(
+    <img id='static-recipe-img'
+         src={props.image}>
+    </img>
+    );
+}
+
+
+function RecipeTitle(props) {
+  return(
+    <h3 id='recipe-title'>{props.title}</h3>
+    );
+}
 
 function RecipeTime(props) {
   return <span>{props.time}</span>;
@@ -97,7 +118,10 @@ function RecipeEquipment(props) {
     <div>
       <label>Equipment: </label>
         <ul>
-          {equipmentList.map((equipment) => <li>{equipment}</li>)
+          {equipmentList.map((equipment) => 
+            <li key={equipmentList.indexOf(equipment)}>
+              {equipment}
+            </li>)
           }
         </ul>
     </div>
@@ -114,7 +138,9 @@ function RecipeIngredients(props) {
       <label>Ingredients: </label>
         <ul>
           {props.ingredients.map((ingredient) => 
-            <li>{ingredient.amount} {ingredient.unit} {ingredient.name}</li>
+            <li key={props.ingredients.indexOf(ingredient)}>
+              {ingredient.amount} {ingredient.unit} {ingredient.name}
+            </li>
             )}
         </ul>
     </div>
@@ -123,20 +149,54 @@ function RecipeIngredients(props) {
 
 
 function RecipeDetails(props) {
+  console.log('in recipe details component');
   let {id} = useParams();
-  console.log(props.isSaved);
+  let location = useLocation(); 
+
+ 
   console.log(id);
+  // console.log('in recipe details, check saved', location.state.isSaved);
+  // console.log('recipe details in details component', location.state.recipeDetails);
 
+  // const isSaved = location.state.isSaved
+  // const recipeDetails = location.state.recipeDetails
 
-  
+  let details = location.state.recipeDetails;
+
   // React.useEffect(() =>{
-  //   // GET request
-  //   fetch(`/api/recipe_details/${id}`)
+  //   // if recipe is stored in db GET request
+  //   if (props.isSaved === true) {
+  //     fetch(`/api/get_recipe_details/${id}`)
+  //     .then(res => res.json())
+  //     .then(data => {
+  //       alert(data.message);
+  //       details = data.recipe_details;
+  //     })
+  //   } else {
+  //     console.log('in use effect\'s else statement');
+  //     details = location.state.recipeDetails
+  //   };
+  // }, [id]);
 
-  // })
+  console.log(details);
 
   return (
-    <div> hello
+    <div> 
+      <section className='recipe-img'>
+        <StaticRecipeImg image={details.recipe_info.image} />
+      </section>
+
+      <RecipeTitle title={details.recipe_info.title} />
+
+      <RecipeServings servings={details.recipe_info.servings} />
+
+      <RecipeIngredients ingredients={details.recipe_ingredients} />
+
+      <RecipeEquipment equipment={details.recipe_equipment} />
+
+      <RecipeInstructions instructions={details.recipe_instructions} />
+
+      <a href={`${details.recipe_info.sourceUrl}`}>Click for more details on recipe</a>
     </div>
     );
 }
@@ -169,12 +229,6 @@ function RecipeDetails(props) {
 //         ? <FavoriteButton 
 //             recipe_id={props.recipe_info.recipe_id} 
 //             recipe_details={props}
-//             isFavorite={isFavorite}
-//           />
-//         : <SaveRecipeButton 
-//             recipe_id={props.recipe_info.recipe_id} 
-//             recipe_details={props}
-//             isSaved={isSaved}
 //             isFavorite={isFavorite}
 //           />
 //       }

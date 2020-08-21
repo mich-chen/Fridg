@@ -87,6 +87,7 @@ def parse_saved_recipe_details(saved_recipe):
     recipes_details['servings'] = saved_recipe.recipe.servings
     recipes_details['sourceUrl'] = saved_recipe.recipe.sourceUrl
     recipes_details['image'] = saved_recipe.recipe.image
+    recipes_details['favorite'] = saved_recipe.favorite # boolean
 
     return recipes_details
 

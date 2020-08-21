@@ -163,19 +163,6 @@ def search_results():
     return jsonify(recipe_results)
 
 
-@app.route('/api/recipe_details/int<recipe_id>')
-def get_recipe_details(recipe_id):
-    """Return information on selected recipe."""
-
-    pprint('in recipe details')
-
-    recipe = crud.get_recipe(recipe_id)
-
-    return jsonify('found recipe')
-
-
-
-
 @app.route('/api/recipe_to_db', methods=["POST"])
 def add_recipe_to_db():
     """Add selected recipe to recipes table in db."""
@@ -279,6 +266,46 @@ def add_recipe_to_saved():
 
 
 
+@app.route('/api/favorite_a_recipe', methods=["POST"])
+def favorite_a_recipe():
+    """Make a selected recipe a favorite.
+
+    set is_favorite in db to True."""
+
+    print('\nin favorited route\n')
+    # unencode from JSON
+    data = request.get_json()
+    # information on selected recipe
+    recipe_id = data['recipe_id']
+    pprint(recipe_id)
+
+    crud.favorite_a_saved_recipe(recipe_id, session.get('email'))
+
+    return jsonify({'message': 'successfully favorited this recipe!'})
+
+
+
+@app.route('/api/get_recipe_details/int<recipe_id>')
+def get_recipe_details(recipe_id):
+    """Return information on selected single recipe."""
+
+    pprint('in single recipe details route')
+
+    recipe = crud.get_recipe(recipe_id)
+
+    recipe_details = {}
+
+    recipe_details['recipe_info'] = helper_functions.parse_saved_recipe_details(recipe)
+    recipe_details['recipe_times'] = helper_functions.parse_saved_recipe_times(recipe)
+    recipe_details['recipe_ingredients'] = helper_functions.parse_saved_recipe_ingredients(recipe)
+    recipe_details['recipe_instructions'] = helper_functions.parse_saved_recipe_instructions(recipe)
+    recipe_details['recipe_equipment'] = helper_functions.parse_saved_recipe_equipment(recipe)
+
+    pprint(recipe_details)
+
+    return jsonify({'recipe_details': recipe_details, 'message': 'returning recipe\'s details!'})
+
+
 
 @app.route('/api/get_saved_and_fav_recipes')
 def get_saved_and_fav_recipes():
@@ -319,22 +346,6 @@ def get_saved_and_fav_recipes():
     return jsonify({'saved_recipes': saved_recipes, 'favorited_list': favorited_list})
 
 
-@app.route('/api/favorite_a_recipe', methods=["POST"])
-def favorite_a_recipe():
-    """Make a selected recipe a favorite.
-
-    set is_favorite in db to True."""
-
-    print('\nin favorited route\n')
-    # unencode from JSON
-    data = request.get_json()
-    # information on selected recipe
-    recipe_id = data['recipe_id']
-    pprint(recipe_id)
-
-    crud.favorite_a_saved_recipe(recipe_id, session.get('email'))
-
-    return jsonify({'message': 'successfully favorited this recipe!'})
 
 
 # @app.route('/api/get_favorited_list')
