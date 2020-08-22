@@ -22,15 +22,15 @@ function RecipeTimeSection(props) {
         <ul>
           <li id='prep-time'>
             <label>Prep Time: </label>
-            <RecipeTime time={props.time.preparationMinutes} />
+            <RecipeTime time={props.times.preparationMinutes} />
           </li>
           <li id='cook-time'>
             <label>Cook Time: </label>
-            <RecipeTime time={props.time.cookingMinutes} />
+            <RecipeTime time={props.times.cookingMinutes} />
           </li>
           <li id='ready-time'>
             <label>Ready In: </label>
-            <RecipeTime time={props.time.readyInMinutes} />
+            <RecipeTime time={props.times.readyInMinutes} />
           </li>
         </ul>
       </section>
@@ -73,31 +73,66 @@ function RecipeIngredients(props) {
 
 
 function ClickableRecipeTitle(props) {
+  let history = useHistory();
 
   const goToDetails = () => {
-    //go to details should be passed as prop
-  }
+    history.push({pathname: `/recipe-details/${props.recipe_id}`,
+                  state: {isSaved: props.isSaved,
+                          recipeDetails: props.recipeDetails}
+                  })
+  };
 
   return(
     <h3 id='clickable-recipe-title'
-        onClick={props.goToDetails()}>
-            {props.title}
+        onClick={goToDetails}>
+          {props.title}
     </h3>
     );
 }
 
 
 function ClickableRecipeImage(props) {
+  let history = useHistory();
+
+   const goToDetails = () => {
+    history.push({pathname: `/recipe-details/${props.recipe_id}`,
+                  state: {isSaved: props.isSaved,
+                          recipeDetails: props.recipeDetails}
+                  })
+  };
+
   return(
     <img id='clickable-recipe-img'
          src={`${props.image}`} 
-         onClick={props.goToDetails()} 
+         onClick={goToDetails} 
       />
     );
 }
 
 
 // ***** Buttons for Recipe Card and Recipe Details *****
+
+
+function ActionBtn(props) {
+  // pass initial text, updated text, and action as props
+  console.log('in action button component');
+
+  const initialText = props.initialText;
+
+  const [buttonText, setButtonText] = React.useState(initialText);
+
+  const handleClick = () => {
+    props.action();
+    setButtonText(updateText)
+  };
+
+  return (
+    <button id='action-btn'
+            onClick={handleClick}> 
+      {buttonText}
+    </button>
+    );
+}
 
 
 function ToSaveBtn(props) {
@@ -163,31 +198,13 @@ function SearchResultButton(props) {
   return (
     <div>
       <section className='button'>
-        {isSaved ? <SavedBtn /> : <ToSaveBtn addRecipe={addRecipeToDb} />}
+        {isSaved ? <SavedBtn /> 
+          : <ActionBtn action={addRecipeToDb}
+                       initialText={'Save this recipe!'}
+                       updateText={'Saved'} 
+                       />}
       </section>
     </div>
-    );
-}
-
-
-function ActionBtn(props) {
-  // pass initial text, updated text, and action as props
-  console.log('in action button component');
-
-  const initialText = props.initialText;
-
-  const [buttonText, setButtonText] = React.useState(initialText);
-
-  const handleClick = () => {
-    props.action();
-    setButtonText(updatedText)
-  };
-
-  return (
-    <button id='action-btn'
-            onClick={handleClick}> 
-      {buttonText}
-    </button>
     );
 }
 
@@ -242,7 +259,11 @@ function SavedRecipesButton(props) {
   return (
     <div>
       <section className='button'
-        {isFavorite ? <FavoritedBtn /> : <ToFavoriteBtn />}
+        {isFavorite ? <FavoritedBtn /> 
+          : <ActionBtn action={favoriteThisRecipe}
+                       initialText={'Saved! Not favorited!'}
+                       updateText={'Favorite <3'}
+                       />}
       </section>
     </div>
     );
@@ -265,7 +286,29 @@ function StaticTitle(props) {
 }
 
 
-function Instructions(props) {
+function RecipeEquipment(props) {
+  const equipmentList = [];
+  for (const equipment in props.equipment) {
+    console.log(equipment);
+    equipmentList.push(equipment)
+  }
+
+  return (
+    <div>
+      <label>Equipment: </label>
+        <ul>
+          {equipmentList.map((equipment) => 
+            <li key={equipmentList.indexOf(equipment)}>
+              {equipment}
+            </li>)
+          }
+        </ul>
+    </div>
+    );
+}
+
+
+function RecipeInstructions(props) {
   return (
     <div>
     <section className='recipe-instructions'>
@@ -285,8 +328,58 @@ function Instructions(props) {
 
 function SourceUrl(props) {
   return (
-    <a href={`${props.sourceUrl}`}>
+    <a href={`${props.url}`}>
       Click for more details on recipe
     </a>
+    );
+}
+
+
+// ***** Recipe Details as Parent Component *****
+
+
+function RecipeDetails(props) {
+  // recipe's full information will be passed from Recipe Card (parent)
+  // clickable image and title will history.push() here
+  let {id} = useParams();
+  let location = useLocation();
+
+  let details = location.state.recipeDetails;
+
+  return (
+    <div>
+      <section className='recipe-details'>
+
+        <StaticImg image={details.recipe_info.image}/>
+
+        <StaticTitle title={details.recipe_info.title}/>
+
+        <RecipeTimeSection times={details.recipe_times}/>
+
+        <RecipeServings servings={details.recipe_info.servings}/>
+
+        <RecipeIngredients ingredients={details.recipe_ingredients}/>
+
+        <RecipeEquipment equipment={details.recipe_equipment}/>
+
+        <RecipeInstructions instructions={details.recipe_instructions}/>
+
+        <SavedRecipesButton isFavorite={details.recipe_info.favorite}
+
+        <SourceUrl url={details.recipe_info.sourceUrl}/>
+
+      </section>
+    </div>
+    );
+}
+
+
+// ***** Recipe Card as Parent Component to Recipe Details *****
+
+
+function RecipeCard(props) {
+  // pass data as props to children and Recipe Details component
+  // parent is either Search Results or Saved Recipes
+  return (
     );
 }
