@@ -84,20 +84,23 @@ function RecipeInstructionItem(props) {
 function RecipeInstructions(props) {
   // list of instructions (in order)
   
-  const instructions = props.instructions.instructions;
-  // console.log(instructions);
-  const instructionsList = [];
-  for (const instruction of instructions) {
-    // console.log(instruction);
-    instructionsList.push(<RecipeInstructionItem key={instructions.indexOf(instruction)} instructions={instruction} />)
-  };
-  // console.log(instructionsList);
+  // const instructionsList = [];
+  // for (const instruction of props.instructions) {
+  //   instructionsList.push(<RecipeInstructionItem 
+  //                         key={instructions.indexOf(instruction)}
+  //                         instructions={instruction} />
+  //                       )
+  // };
 
   return (
     <div>
       <label>Instructions: </label>
         <ol>
-          {instructionsList}
+          {props.instructions.map((instruction) => 
+            <li key={props.instructions.indexOf(instruction)}>
+              {instruction}
+            </li>
+            )}
         </ol>
     </div>
     );

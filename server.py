@@ -158,7 +158,7 @@ def search_results():
         recipe_data['recipe_instructions'] = helper_functions.parse_recipe_instructions(recipe)
         recipe_data['recipe_equipment'] = helper_functions.parse_recipe_equipment(recipe)
         recipe_results.append(recipe_data)
-    # pprint(recipe_results)
+    pprint(recipe_results)
 
     return jsonify(recipe_results)
 
@@ -208,7 +208,7 @@ def add_recipe_to_db():
         crud.add_recipe_ingredient(recipe=recipe_id, ingredient_id=ingredient_id, amount=amount, unit=unit)
 
     # ordered list of recipe's instructions (no numbers)
-    instructions_list = recipe_details['recipe_instructions']['instructions']
+    instructions_list = recipe_details['recipe_instructions']
     # enumerate through list of ordered instructions
     for i, instruction in enumerate(instructions_list):
         # set step_num by adding 1 to indices

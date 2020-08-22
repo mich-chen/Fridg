@@ -47,20 +47,17 @@ def parse_recipe_instructions(complex_data):
 
     Parse only instruction's number, step instructions, equipment(s)."""
 
-    recipe_instructions = {}
-
-    list_instructions = []
+    instructions_list = []
     # instructions are nested inside 'steps' key, complex_instructions is a list
     complex_instructions = complex_data['analyzedInstructions'][0]['steps']
     # each 'step' is a dictionary in complex instructions list
     for i, step in enumerate(complex_instructions):
         # create new key with the numbered step and its instructions
         # instructions[str(i + 1)] = step['step']
-        list_instructions.append(step['step'])
+        instructions_list.append(step['step'])
     # add each recipe's parsed instructions into the full list
-    recipe_instructions['instructions'] = list_instructions
 
-    return recipe_instructions
+    return instructions_list
 
 def parse_recipe_equipment(complex_data):
 
@@ -128,8 +125,6 @@ def parse_saved_recipe_times(saved_recipe):
 def parse_saved_recipe_instructions(saved_recipe):
     """Return dictionary of saved recipe's instructions parsed from db object."""
 
-    recipe_instructions = {}
-
     instructions_list = []
     # list of instructions objects, for each step's instructions
     instructions_objects = saved_recipe.recipe.instructions
@@ -137,9 +132,7 @@ def parse_saved_recipe_instructions(saved_recipe):
         # add each step's instruction into the full list
         instructions_list.append(instruction.step_instruction)
 
-    recipe_instructions['instructions'] = instructions_list
-
-    return recipe_instructions
+    return instructions_list
 
 
 def parse_saved_recipe_equipment(saved_recipe):
