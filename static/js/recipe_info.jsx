@@ -72,11 +72,10 @@ function RecipeIngredients(props) {
 // ***** Recipe Card components route to Recipe Details *****
 
 
-
 function ClickableRecipeTitle(props) {
 
   const goToDetails = () => {
-
+    //go to details should be passed as prop
   }
 
   return(
@@ -102,9 +101,9 @@ function ClickableRecipeImage(props) {
 
 
 function ToSaveBtn(props) {
-  console.log('to save button component')
+  console.log('to save button component');
 
-  const [buttonText, setButtonText] = React.useState('Save this recipe!')
+  const [buttonText, setButtonText] = React.useState('Save this recipe!');
 
   const handleClick = () => {
     props.addRecipe();
@@ -127,24 +126,8 @@ function SavedBtn(props) {
 }
 
 
-function ToFavoriteBtn(props) {
-  return (
-    <button id='favorited-btn'
-            onClick={handleClick}> 
-      Favorite! 
-    </button>
-    );
-}
-
-function FavoritedBtn(props) {
-  return (
-    <button id='favorited-btn'> Favorite! </button>
-    );
-}
-
-
 function SearchResultButton(props) {
-  console.log('in Button component');
+  console.log('in search results Button component');
   // isSaved is boolean passed from parent component
   let isSaved = props.isSaved;
 
@@ -157,7 +140,7 @@ function SearchResultButton(props) {
             })
     .then(res => res.json())
     .then(data => {alert(data.message);
-                   props.setIsSaved(data.saved)
+                   props.setIsSaved(data.success)
                  })
   };
 
@@ -186,6 +169,84 @@ function SearchResultButton(props) {
     );
 }
 
+
+function ActionBtn(props) {
+  // pass initial text, updated text, and action as props
+  console.log('in action button component');
+
+  const initialText = props.initialText;
+
+  const [buttonText, setButtonText] = React.useState(initialText);
+
+  const handleClick = () => {
+    props.action();
+    setButtonText(updatedText)
+  };
+
+  return (
+    <button id='action-btn'
+            onClick={handleClick}> 
+      {buttonText}
+    </button>
+    );
+}
+
+
+function ToFavoriteBtn(props) {
+  console.log('to favorite button component');
+
+  const [buttonText, setButtonText] = React.useState('Saved! Not favorited!');
+
+  const handleClick = () => {
+    props.favoriteRecipe();
+    setButtonText('Favorite <3')
+  };
+
+  return (
+    <button id='favorited-btn'
+            onClick={handleClick}> 
+      {buttonText}
+    </button>
+    );
+}
+
+function FavoritedBtn(props) {
+
+  const text = 'Favorite <3';
+
+  return (
+    <button id='favorited-btn'> {text}  </button>
+    );
+}
+
+
+function SavedRecipesButton(props) {
+  console.log('in saved recipes buttons component');
+
+  let isFavorite = props.isFavorite;
+
+  const favoriteThisRecipe = () => {
+    console.log('in adding favorite component to server');
+    fetch('/api/favorite_a_recipe', 
+            {method: 'POST',
+              body: JSON.stringify({recipe_id: props.recipe_id}),
+              headers: { 'Content-Type': 'application/json'},
+              credentials:'include'
+            })
+    .then(res => res.json())
+    .then(data => {alert(data.message);
+                    props.setIsFavorite(data.success)
+                  })
+  };
+
+  return (
+    <div>
+      <section className='button'
+        {isFavorite ? <FavoritedBtn /> : <ToFavoriteBtn />}
+      </section>
+    </div>
+    );
+}
 
 // ***** Components specific for Recipe Details (not shared with Recipe Card) *****
 
