@@ -110,6 +110,40 @@ function ClickableRecipeImage(props) {
 }
 
 
+function StaticImg(props) {
+  return (
+    <img id='static-recipe-img' src={`${props.image}`} />
+    );
+}
+
+
+function StaticTitle(props) {
+  return (
+    <h3 id='static-recipe-title'> {props.title}</h3>
+    );
+}
+
+
+function ClickableToDetails(props) {
+  //props.element will be what to render, either image or title
+
+  let history = useHistory();
+
+  const goToDetails = () => {
+    history.push({pathname: `/recipe-details/${props.recipeId}`,
+                  state: {isSaved: props.isSaved,
+                          recipeDetails: props.recipeDetails}
+                  })
+  };
+
+  return(
+    {type === 'image' ? <StaticImg image={props.element} onClick={goToDetails} />
+     : <StaticTitle title={props.element} onClick={goToDetails} />
+      }
+    );
+}
+
+
 // ***** Buttons for Recipe Card and Recipe Details *****
 
 
@@ -272,20 +306,6 @@ function SavedRecipesButton(props) {
 // ***** Components specific for Recipe Details (not shared with Recipe Card) *****
 
 
-function StaticImg(props) {
-  return (
-    <img id='static-recipe-img' src={`${props.image}`} />
-    );
-}
-
-
-function StaticTitle(props) {
-  return (
-    <h3 id='static-recipe-title'> {props.title}</h3>
-    );
-}
-
-
 function RecipeEquipment(props) {
   const equipmentList = [];
   for (const equipment in props.equipment) {
@@ -381,5 +401,26 @@ function RecipeCard(props) {
   // pass data as props to children and Recipe Details component
   // parent is either Search Results or Saved Recipes
   return (
+    <div>
+      <section className='recipe-card'>
+
+        <ClickableToDetails type={'image'} 
+                            recipeId={props.recipe_info.recipe_id}
+                            isSaved={isSaved}
+                            recipeDetails={props.recipeDetails}/>
+
+        <ClickableToDetails type={'title'}
+                            recipeId={props.recipe_info.recipe_id}
+                            isSaved={isSaved}
+                            recipeDetails={props.recipeDetails}/>
+
+        <RecipeServings servings={props.recipe_info.servings}/>
+
+        <RecipeTimeSection times={props.recipe_times}/>
+
+        <RecipeIngredients ingredients={props.recipe_ingredients}/>
+
+      </section>
+    </div>
     );
 }
