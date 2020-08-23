@@ -52,15 +52,15 @@ function RecipeTimeSection(props) {
     <ul>
       <li>
         <label>Prep Time: </label>
-        <RecipeTime time={props.time.preparationMinutes} />
+        <RecipeTime time={props.times.preparationMinutes} />
       </li>
       <li>
         <label>Cook Time: </label>
-        <RecipeTime time={props.time.cookingMinutes} />
+        <RecipeTime time={props.times.cookingMinutes} />
       </li>
       <li>
         <label>Ready In: </label>
-        <RecipeTime time={props.time.readyInMinutes} />
+        <RecipeTime time={props.times.readyInMinutes} />
       </li>
     </ul>
     );
@@ -190,6 +190,8 @@ function RecipeDetails(props) {
       </section>
 
       <RecipeTitle title={details.recipe_info.title} />
+
+      <RecipeTimeSection times={details.recipe_times} />
 
       <RecipeServings servings={details.recipe_info.servings} />
 

@@ -163,7 +163,7 @@ def search_results():
     return jsonify(recipe_results)
 
 
-@app.route('/api/recipe_to_db', methods=["POST"])
+@app.route('/api/add_recipe', methods=["POST"])
 def add_recipe_to_db():
     """Add selected recipe to recipes table in db."""
 
@@ -253,7 +253,7 @@ def add_recipe_to_saved():
             if saved.recipe_id == recipe_id:
                 print('recipe already saved')
                 message = 'Recipe already exists in user\'s saved list'
-                return jsonify({'message': message})
+                return jsonify({'success': True, 'message': message})
 
     # if selected recipe NOT in saved, or user's saved recipes is empty
     print('\nselected recipe NOT in db, or user"s saved recipes is empty\n')
@@ -262,7 +262,7 @@ def add_recipe_to_saved():
     crud.save_a_recipe(user=user.user_id, recipe=recipe_id, is_favorite=False)
     message = 'Recipe saved to saved_recipes!'
 
-    return jsonify({'message': message})
+    return jsonify({'success': True, 'message': message})
 
 
 
@@ -281,7 +281,7 @@ def favorite_a_recipe():
 
     crud.favorite_a_saved_recipe(recipe_id, session.get('email'))
 
-    return jsonify({'message': 'successfully favorited this recipe!'})
+    return jsonify({'success': true,'message': 'successfully favorited this recipe!'})
 
 
 
@@ -344,6 +344,83 @@ def get_saved_and_fav_recipes():
     print('\n')
 
     return jsonify({'saved_recipes': saved_recipes, 'favorited_list': favorited_list})
+
+
+@app.route('/api/saved_recipes')
+def get_saved_recipes():
+    """Get all of user's saved and favorited recipes."""
+
+    print('\nin get saved recipes route\n')
+
+    if session.get('email') == None:
+        print('in session == none')
+        return jsonify({'saved_recipes': [], 'success': False, 'message': 'You need to create an account to see saved recipes!'})
+
+    # get a list of saved_recipe objects for existing user
+    users_saved_recipes = crud.get_saved_recipes(session.get('email'))
+    pprint(len(users_saved_recipes))
+
+    saved_recipes = []
+    
+    for recipe in users_saved_recipes:
+        recipe_data = {}
+        # recipe_info key will have 'favorite' boolean
+        recipe_data['recipe_info'] = helper_functions.parse_saved_recipe_details(recipe)
+        recipe_data['recipe_times'] = helper_functions.parse_saved_recipe_times(recipe)
+        recipe_data['recipe_ingredients'] = helper_functions.parse_saved_recipe_ingredients(recipe)
+        recipe_data['recipe_instructions'] = helper_functions.parse_saved_recipe_instructions(recipe)
+        recipe_data['recipe_equipment'] = helper_functions.parse_saved_recipe_equipment(recipe)
+
+        saved_recipes.append(recipe_data)
+
+    return jsonify({'saved_recipes': saved_recipes, 'message': 'list of user\'s saved recieps!'})
+
+
+@app.route('/api/check_results', methods=["POST"])
+def check_if_saved_recipe():
+    """Checked if recipes saved, if yes then add a key indicating. """
+
+    print('\nin check if saved recipes route\n')
+
+    data = request.get_json()
+
+    recipes_list = data['results_list']
+
+    if session.get('email') == None:
+        print('in session == none')
+        return jsonify({'not_saved': recipes_list, 'success': False, 'message': 'You need to create an account to see saved recipes!'})
+
+
+    # restructure data to be list of recipe dictionaries where first nesting of dictionary's key is recipe's id.
+    # get list of saved recipe's ids, remove these ids that match keys in data restructured.
+
+    users_saved_recipes = crud.get_saved_recipes(session.get('email'))
+    pprint(len(users_saved_recipes))
+
+    saved_ids = set()
+    for saved in users_saved_recipes:
+        saved_ids.add(saved.recipe_id)
+
+
+    for index, recipe in enumerate(recipes_list):
+        recipe_id = recipe['recipe_info']['recipe_id']
+        if recipe_id in saved_ids:
+            recipe['is_saved'] = True
+
+    pprint(recipes_list)
+
+    return jsonify({'checked_recipes': recipes_list})
+
+
+
+
+
+
+
+
+
+
+
 
 
 
