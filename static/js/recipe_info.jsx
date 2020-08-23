@@ -72,44 +72,6 @@ function RecipeIngredients(props) {
 // ***** Recipe Card components route to Recipe Details *****
 
 
-function ClickableRecipeTitle(props) {
-  let history = useHistory();
-
-  const goToDetails = () => {
-    history.push({pathname: `/recipe-details/${props.recipe_id}`,
-                  state: {isSaved: props.isSaved,
-                          recipeDetails: props.recipeDetails}
-                  })
-  };
-
-  return(
-    <h3 id='clickable-recipe-title'
-        onClick={goToDetails}>
-          {props.title}
-    </h3>
-    );
-}
-
-
-function ClickableRecipeImage(props) {
-  let history = useHistory();
-
-   const goToDetails = () => {
-    history.push({pathname: `/recipe-details/${props.recipe_id}`,
-                  state: {isSaved: props.isSaved,
-                          recipeDetails: props.recipeDetails}
-                  })
-  };
-
-  return(
-    <img id='clickable-recipe-img'
-         src={`${props.image}`} 
-         onClick={goToDetails} 
-      />
-    );
-}
-
-
 function StaticImg(props) {
   return (
     <img id='static-recipe-img' src={`${props.image}`} />
@@ -125,24 +87,24 @@ function StaticTitle(props) {
 
 
 function ClickableToDetails(props) {
-  //props.element will be what to render, either image or title
-
   let history = useHistory();
 
   const goToDetails = () => {
     history.push({pathname: `/recipe-details/${props.recipeId}`,
-                  state: {isSaved: props.isSaved,
-                          setIsSaved: props.setIsSaved,
-                          isFavorite: props.isFavorite,
-                          setIsFavorite: props.setIsFavorite,
-                          recipeDetails: props.recipeDetails}
-                  })
+                  state: {button: props.button}
+                })
   };
 
-  return(
-    {type === 'image' ? <StaticImg image={props.element} onClick={goToDetails} />
-     : <StaticTitle title={props.element} onClick={goToDetails} />
-      }
+  return (
+    <div>
+      {props.elementType === 'image' ? <StaticImg image={props.element} 
+                                     onClick={goToDetails} 
+                                     />
+       : <StaticTitle title={props.element} 
+                      onClick={goToDetails} 
+                      />
+        }
+    </div>
     );
 }
 
@@ -160,7 +122,7 @@ function ActionBtn(props) {
 
   const handleClick = () => {
     props.action();
-    setButtonText(updateText)
+    setButtonText(props.updateText)
   };
 
   return (
@@ -172,23 +134,23 @@ function ActionBtn(props) {
 }
 
 
-function ToSaveBtn(props) {
-  console.log('to save button component');
+// function ToSaveBtn(props) {
+//   console.log('to save button component');
 
-  const [buttonText, setButtonText] = React.useState('Save this recipe!');
+//   const [buttonText, setButtonText] = React.useState('Save this recipe!');
 
-  const handleClick = () => {
-    props.addRecipe();
-    setButtonText('Saved')
-  };
+//   const handleClick = () => {
+//     props.addRecipe();
+//     setButtonText('Saved')
+//   };
 
-  return (
-    <button id='to-save-btn' 
-            onClick={handleClick}>
-      {buttonText}
-    </button>
-    );
-}
+//   return (
+//     <button id='to-save-btn' 
+//             onClick={handleClick}>
+//       {buttonText}
+//     </button>
+//     );
+// }
 
 
 function SavedBtn(props) {
@@ -211,9 +173,7 @@ function SearchResultButton(props) {
               credentials:'include'
             })
     .then(res => res.json())
-    .then(data => {alert(data.message);
-                   props.setIsSaved(data.success) //success is boolean
-                 })
+    .then(data => alert(data.message))
   };
 
   const addRecipeToDb = () => {
@@ -246,27 +206,26 @@ function SearchResultButton(props) {
 }
 
 
-function ToFavoriteBtn(props) {
-  console.log('to favorite button component');
+// function ToFavoriteBtn(props) {
+//   console.log('to favorite button component');
 
-  const [buttonText, setButtonText] = React.useState('Saved! Not favorited!');
+//   const [buttonText, setButtonText] = React.useState('Saved! Not favorited!');
 
-  const handleClick = () => {
-    props.favoriteThisRecipe();
-    setButtonText('Favorite <3')
-  };
+//   const handleClick = () => {
+//     props.favoriteThisRecipe();
+//     setButtonText('Favorite <3')
+//   };
 
-  return (
-    <button id='favorited-btn'
-            onClick={handleClick}> 
-      {buttonText}
-    </button>
-    );
-}
+//   return (
+//     <button id='favorited-btn'
+//             onClick={handleClick}> 
+//       {buttonText}
+//     </button>
+//     );
+// }
 
 
 function FavoritedBtn(props) {
-
   const text = 'Favorite <3';
 
   return (
@@ -289,14 +248,12 @@ function SavedRecipesButton(props) {
               credentials:'include'
             })
     .then(res => res.json())
-    .then(data => {alert(data.message);
-                    props.setIsFavorite(data.success) // success is boolean
-                  })
+    .then(data => alert(data.message))
   };
 
   return (
     <div>
-      <section className='button'
+      <section className='button'>
         {isFavorite ? <FavoritedBtn /> 
           : <ActionBtn action={favoriteThisRecipe}
                        initialText={'Saved! Not favorited!'}
@@ -359,16 +316,63 @@ function SourceUrl(props) {
 }
 
 
-// ***** Recipe Details as Parent Component *****
+// ***** Recipe Card as Parent Component to Recipe Details *****
+
+
+function RecipeCard(props) {
+  // pass data as props to children and Recipe Details component
+  // parent is either Search Results or Saved Recipes
+  // props.button will be different component depending on parent
+  const Button = React.cloneElement(props.button, {
+            recipeId: props.recipeInfo.recipe_id,
+            recipeDetails: props.recipeDetails
+          });
+
+  return (
+    <div>
+      <section className='recipe-card'>
+
+        <ClickableToDetails elementType={'image'}
+                            recipeId={props.recipeInfo.recipe_id}
+                            element={props.recipeInfo.image}
+                            button={Button}
+                            />
+
+        <ClickableToDetails elementType={'title'}
+                            recipeId={props.recipeInfo.recipe_id}
+                            element={props.recipeInfo.title}
+                            button={Button}
+                            />
+
+        <RecipeServings servings={props.recipeInfo.servings}/>
+
+        <RecipeTimeSection times={props.recipeTimes}/>
+
+        <RecipeIngredients ingredients={props.recipeIngredients}/>           
+
+        {Button}
+
+      </section>
+    </div>
+    );
+}
+
+
+// ***** Recipe Details *****
 
 
 function RecipeDetails(props) {
-  // recipe's full information will be passed from ClickableToDetails (parent) and grandparant is Recipe Card
   // clickable image and title will history.push() here
   let {id} = useParams();
   let location = useLocation();
 
-  let details = location.state.recipeDetails;
+  const Button = location.state.button;
+
+  let details = {};
+
+  fetch(`/api/recipe_details/${id}`)
+  .then(res => res.json())
+  .then(data => details = data);
 
   return (
     <div>
@@ -386,19 +390,9 @@ function RecipeDetails(props) {
 
         <RecipeEquipment equipment={details.recipe_equipment}/>
 
-        <RecipeInstructions instructions={details.recipe_instructions}/>
+        <RecipeInstructions instructions={details.recipe_instructions}/>             
 
-        <SavedRecipesButton recipeId={details.recipe_info.recipe_id}
-                            isFavorite={details.recipe_info.favorite}
-                            setIsFavorite={details.setIsFavorite}
-                             />
-                            
-
-        <SearchResultButton recipeId={details.recipe_info.recipe_id}
-                            recipeDetails={details}
-                            isSaved={details.isSaved}
-                            setIsSaved={details.setIsSaved}
-                            />
+        {Button}
 
         <SourceUrl url={details.recipe_info.sourceUrl}/>
 
@@ -408,88 +402,37 @@ function RecipeDetails(props) {
 }
 
 
-// ***** Recipe Card as Parent Component to Recipe Details *****
+// function RecipeCardList(props) {
+//   // list of search results checked if saved, dict key called is_saved (boolean)
+//   const recipesList = props.recipesList;
 
+//   // const initialSaved = recipesList.is_saved;
+//   // const initialFavorite = props.isFavorite;
+//   // const [isSaved, setIsSaved] = React.useState(initialSaved);
+//   // const [isFavorite, setIsFavorite] = React.useState(initialFavorite);
 
-function RecipeCard(props) {
-  // pass data as props to children and Recipe Details component
-  // parent is either Search Results or Saved Recipes
+//   return (
+//     <div>
+//       <section id="search-results">
+//         <ul>
+//           {(recipesList.map((recipe) => 
+//               <RecipeCard key={recipe.recipe_info.recipe_id}
+//                           recipe_info={recipe.recipe_info}
+//                           recipe_times={recipe.recipe_times}
+//                           recipe_ingredients={recipe.recipe_ingredients}
+//                           recipe_instructions={recipe.recipe_instructions}
+//                           recipe_equipment={recipe.recipe_equipment} 
+//                           isSaved={props.isSaved}
+//                           // setIsSaved={setIsSaved}
+//                           isFavorite={props.isFavorite}
+//                           // setIsFavorite={setIsFavorite}
+//                           button={props.button}
+//                 />)) 
+//           } 
+//         </ul>
+//       </section>
+//     </div>
 
-  // const Button = props.button;
-  
-  return (
-    <div>
-      <section className='recipe-card'>
-
-        <ClickableToDetails type={'image'} 
-                            recipeId={props.recipe_info.recipe_id}
-                            isSaved={props.isSaved}
-                            setIsSaved={props.setIsSaved}
-                            isFavorite={props.isFavorite}
-                            setIsFavorite={props.setIsFavorite}
-                            recipeDetails={props.recipeDetails}/>
-
-        <ClickableToDetails type={'title'}
-                            recipeId={props.recipe_info.recipe_id}
-                            isSaved={props.isSaved}
-                            setIsSaved={props.setIsSaved}
-                            isFavorite={props.isFavorite}
-                            setIsFavorite={props.setIsFavorite}
-                            recipeDetails={props.recipeDetails}/>
-
-        <RecipeServings servings={props.recipe_info.servings}/>
-
-        <RecipeTimeSection times={props.recipe_times}/>
-
-        <RecipeIngredients ingredients={props.recipe_ingredients}/>
-
-        <SavedRecipesButton recipeId={props.recipe_info.recipe_id}
-                            isFavorite={props.isFavorite}
-                            setIsFavorite={props.setIsFavorite}
-                             />               
-
-        <SearchResultButton recipeId={props.recipe_info.recipe_id}
-                            recipeDetails={props}
-                            isSaved={props.isSaved}
-                            setIsSaved={props.setIsSaved}
-                            />
-
-      </section>
-    </div>
-    );
-}
-
-
-function RecipeCardList(props) {
-  // list of search results checked if saved, dict key called is_saved (boolean)
-  const recipesList = props.checkedRecipes;
-
-  const initialSaved = recipesList.is_saved;
-  const initialFavorite = props.isFavorite;
-  const [isSaved, setIsSaved] = React.useState(initialSaved);
-  const [isFavorite, setIsFavorite] = React.useState(initialFavorite);
-
-  return (
-    <div>
-      <section id="search-results">
-        <ul>
-          {(recipesList.map((recipe) => 
-              <RecipeCard key={recipe.recipe_info.recipe_id}
-                          recipe_info={recipe.recipe_info}
-                          recipe_times={recipe.recipe_times}
-                          recipe_ingredients={recipe.recipe_ingredients}
-                          recipe_instructions={recipe.recipe_instructions}
-                          recipe_equipment={recipe.recipe_equipment} 
-                          isSaved={isSaved}
-                          setIsSaved={setIsSaved}
-                          isFavorite={isFavorite}
-                          setIsFavorite={setIsFavorite}
-                />)) 
-          } 
-        </ul>
-      </section>
-    </div>
-
-    <RecipeCard />
-    );
-}
+//     <RecipeCard />
+//     );
+// }
