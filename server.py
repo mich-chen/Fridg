@@ -391,7 +391,7 @@ def check_if_saved_recipe():
 
     if session.get('email') == None:
         print('in session == none')
-        return jsonify({'not_saved': recipes_list, 'success': False, 'message': 'You need to create an account to see saved recipes!'})
+        return jsonify({'checked_recipes': recipes_list, 'success': False, 'message': 'You need to create an account to see saved recipes!'})
 
 
     # restructure data to be list of recipe dictionaries where first nesting of dictionary's key is recipe's id.
@@ -405,14 +405,16 @@ def check_if_saved_recipe():
         saved_ids.add(saved.recipe_id)
 
 
-    for index, recipe in enumerate(recipes_list):
+    for recipe in recipes_list:
         recipe_id = recipe['recipe_info']['recipe_id']
         if recipe_id in saved_ids:
             recipe['is_saved'] = True
+        else:
+            recipe['is_saved'] = False
 
     pprint(recipes_list)
 
-    return jsonify({'checked_recipes': recipes_list})
+    return jsonify({'checked_recipes': recipes_list, 'success': True, 'message': 'Checked results for any saved recipes!'})
 
 
 

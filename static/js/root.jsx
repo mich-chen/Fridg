@@ -197,6 +197,7 @@ function SavedRecipes(props) {
 function SearchResults(props) {
   // resultsList is data from App component and Spoonacular's data.
   const resultsList = props.resultsList;
+  console.log('outside resultsList', resultsList);
   // console.log('results list', resultsList);
   // list of saved recipes (will be empty if not logged in or none saved)
   // const savedList = props.savedList;
@@ -204,8 +205,11 @@ function SearchResults(props) {
   
   const [checkedRecipes, updateCheckedRecipes] = React.useState([]);
 
+  const [success, updateSuccess] = React.useState(undefined);
+
   React.useEffect(() => {
     console.log('in searchResults useEffect');
+    console.log('resultsList', resultsList);
     fetch('/api/check_results', {
       method: 'POST',
       body: JSON.stringify({results_list: resultsList}),
@@ -213,10 +217,13 @@ function SearchResults(props) {
       credentials:'include'
     })
     .then(res => res.json())
-    .then(data => {updateCheckedRecipes(data.checked_recipes)});
-  }, [resultsList]);
+    .then(data => {
+      alert(data.message);
+      updateCheckedRecipes(data.checked_recipes);
+      updateSuccess(data.success);
+    });
+  }, [resultsList, success]);
 
-// console.log('checked list', checkedRecipes); 
 
   return (
     <div>
@@ -232,7 +239,9 @@ function SearchResults(props) {
                           recipeEquipment={recipe.recipe_equipment} 
                           isSaved={recipe.is_saved}
                           isFavorite={false}
-                          button={<SearchResultButton isSaved={recipe.is_saved}/>}
+                          button={success ? <SearchResultButton isSaved={recipe.is_saved}/>
+                          : <StaticButton />
+                                     }
                           />
                       ))
         }
@@ -249,9 +258,6 @@ function SearchBar(props) {
 
   const searchRecipes = () => {
     // create javascript object to stringify to server
-    
-    let data = [];
-
     fetch('/api/search_results', {
       method: 'POST',
       body: JSON.stringify({ingredients: ingredients}),
@@ -296,7 +302,7 @@ function App() {
   // data is from external API after clicking SearchBar button
   const [data, setData] = React.useState([]);
   console.log((data));
-  console.log(typeof(data));
+  // console.log(typeof(data));
 
   // // set state of user's saved recipes list of objects with recipe details
   // const [savedList, setSavedList] = React.useState([]);

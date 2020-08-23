@@ -81,7 +81,24 @@ function StaticImg(props) {
 
 function StaticTitle(props) {
   return (
-    <h3 id='static-recipe-title'> {props.title}</h3>
+    <h3 id='static-recipe-title' onClick={props.goToDetails}> {props.title}</h3>
+    );
+}
+
+
+function Title(props) {
+  let history = useHistory();
+
+  const Button = React.cloneElement(props.button);
+
+  const goToDetails = () => {
+    history.push({pathname: `/recipe-details/${props.recipeId}`,
+                  state: {button: Button}
+                })
+  };
+
+  return (
+    <h3 id='static-recipe-title' onClick={goToDetails}> {props.title}</h3>
     );
 }
 
@@ -89,9 +106,11 @@ function StaticTitle(props) {
 function ClickableToDetails(props) {
   let history = useHistory();
 
+  const Button = React.cloneElement(props.button);
+
   const goToDetails = () => {
     history.push({pathname: `/recipe-details/${props.recipeId}`,
-                  state: {button: props.button}
+                  state: {button: React.cloneElement(props.button)}
                 })
   };
 
@@ -100,8 +119,9 @@ function ClickableToDetails(props) {
       {props.elementType === 'image' ? <StaticImg image={props.element} 
                                      onClick={goToDetails} 
                                      />
-       : <StaticTitle title={props.element} 
+       : <Title title={props.element} 
                       onClick={goToDetails} 
+                      button={Button}
                       />
         }
     </div>
@@ -134,23 +154,12 @@ function ActionBtn(props) {
 }
 
 
-// function ToSaveBtn(props) {
-//   console.log('to save button component');
-
-//   const [buttonText, setButtonText] = React.useState('Save this recipe!');
-
-//   const handleClick = () => {
-//     props.addRecipe();
-//     setButtonText('Saved')
-//   };
-
-//   return (
-//     <button id='to-save-btn' 
-//             onClick={handleClick}>
-//       {buttonText}
-//     </button>
-//     );
-// }
+function StaticButton(props) {
+  // Button to render if user is not logged in
+  return (
+    <button id='static-btn'> Log In To Save! </button>
+    );
+}
 
 
 function SavedBtn(props) {
