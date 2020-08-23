@@ -158,7 +158,7 @@ def search_results():
         recipe_data['recipe_instructions'] = helper_functions.parse_recipe_instructions(recipe)
         recipe_data['recipe_equipment'] = helper_functions.parse_recipe_equipment(recipe)
         recipe_results.append(recipe_data)
-    pprint(recipe_results)
+    # pprint(recipe_results)
 
     return jsonify(recipe_results)
 
@@ -281,11 +281,11 @@ def favorite_a_recipe():
 
     crud.favorite_a_saved_recipe(recipe_id, session.get('email'))
 
-    return jsonify({'success': true,'message': 'successfully favorited this recipe!'})
+    return jsonify({'success': True,'message': 'successfully favorited this recipe!'})
 
 
 
-@app.route('/api/get_recipe_details/int<recipe_id>')
+@app.route('/api/recipe_details/int<recipe_id>')
 def get_recipe_details(recipe_id):
     """Return information on selected single recipe."""
 
@@ -307,43 +307,43 @@ def get_recipe_details(recipe_id):
 
 
 
-@app.route('/api/get_saved_and_fav_recipes')
-def get_saved_and_fav_recipes():
-    """Get all of user's saved and favorited recipes."""
+# @app.route('/api/get_saved_and_fav_recipes')
+# def get_saved_and_fav_recipes():
+#     """Get all of user's saved and favorited recipes."""
 
-    print('\nin get saved and favorite recipes route\n')
+#     print('\nin get saved and favorite recipes route\n')
 
-    # get a list of saved_recipe objects for existing user
-    users_saved_recipes = crud.get_saved_recipes(session.get('email'))
-    pprint(len(users_saved_recipes))
+#     # get a list of saved_recipe objects for existing user
+#     users_saved_recipes = crud.get_saved_recipes(session.get('email'))
+#     pprint(len(users_saved_recipes))
 
-    saved_recipes = []
+#     saved_recipes = []
     
-    for recipe in users_saved_recipes:
-        recipe_data = {}
-        recipe_data['recipe_info'] = helper_functions.parse_saved_recipe_details(recipe)
-        recipe_data['recipe_times'] = helper_functions.parse_saved_recipe_times(recipe)
-        recipe_data['recipe_ingredients'] = helper_functions.parse_saved_recipe_ingredients(recipe)
-        recipe_data['recipe_instructions'] = helper_functions.parse_saved_recipe_instructions(recipe)
-        recipe_data['recipe_equipment'] = helper_functions.parse_saved_recipe_equipment(recipe)
+#     for recipe in users_saved_recipes:
+#         recipe_data = {}
+#         recipe_data['recipe_info'] = helper_functions.parse_saved_recipe_details(recipe)
+#         recipe_data['recipe_times'] = helper_functions.parse_saved_recipe_times(recipe)
+#         recipe_data['recipe_ingredients'] = helper_functions.parse_saved_recipe_ingredients(recipe)
+#         recipe_data['recipe_instructions'] = helper_functions.parse_saved_recipe_instructions(recipe)
+#         recipe_data['recipe_equipment'] = helper_functions.parse_saved_recipe_equipment(recipe)
 
-        saved_recipes.append(recipe_data)
+#         saved_recipes.append(recipe_data)
 
-    # print('\n')
-    # pprint(saved_recipes)
-    # print('\n')
+#     # print('\n')
+#     # pprint(saved_recipes)
+#     # print('\n')
 
-    print('\nin getting favorited saved recipes list portion\n')
+#     print('\nin getting favorited saved recipes list portion\n')
 
-    # list of recipe ids of user's favorited saved recipes
-    favorited_list_objects = crud.get_favorited_saved_recipes(session.get('email'))
-    favorited_list = [favorited.recipe_id for favorited in favorited_list_objects]
+#     # list of recipe ids of user's favorited saved recipes
+#     favorited_list_objects = crud.get_favorited_saved_recipes(session.get('email'))
+#     favorited_list = [favorited.recipe_id for favorited in favorited_list_objects]
 
-    print('\n')
-    print(favorited_list)
-    print('\n')
+#     print('\n')
+#     print(favorited_list)
+#     print('\n')
 
-    return jsonify({'saved_recipes': saved_recipes, 'favorited_list': favorited_list})
+#     return jsonify({'saved_recipes': saved_recipes, 'favorited_list': favorited_list})
 
 
 @app.route('/api/saved_recipes')
@@ -383,8 +383,11 @@ def check_if_saved_recipe():
     print('\nin check if saved recipes route\n')
 
     data = request.get_json()
+    pprint(data)
 
     recipes_list = data['results_list']
+    print('recipes list')
+    pprint(recipes_list);
 
     if session.get('email') == None:
         print('in session == none')
