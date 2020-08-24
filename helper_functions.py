@@ -149,30 +149,59 @@ def parse_saved_recipe_equipment(saved_recipe):
     return recipe_equipments
 
 
-# def parse_db_recipe_details(recipe):
-#     """Return dictionary of a db recipe's details information."""
+def parse_db_recipe_details(recipe):
+    """Return dictionary of a db recipe's details information."""
 
-#     # dictionary of dictionaries for recipe's categorized information
-#     recipe_details = {}
+    # dictionary of dictionaries for recipe's categorized information
+    recipe_details = {}
 
-#     # dicitonary of recipe's general information:
-#     # recipe_id, title, servings, sourceUrl, image, ingredients (name, amount, unit)
-#     recipe_info = {}
-#     recipes_info['recipe_id'] = recipe.recipe_id
-#     recipes_info['title'] = recipe.title
-#     recipes_info['servings'] = recipe.servings
-#     recipes_info['sourceUrl'] = recipe.sourceUrl
-#     recipes_info['image'] = recipe.image
-#     # parse through recipe's ingredients table for info
-#     recipe_ingredients = recipe.ingredients
-#     ingredients_list = []
-#     for ingredient in recipe_ingredients:
-#         info = {}
-#         info['name'] = ingredient.ingredient.name
-#         info['amount'] = ingredient.amount
-#         info['unit'] = ingredient.unit
-#         ingredients_list.append(info)
-#     recipes_info['ingredients'] = ingredients_list
+    # dicitonary of recipe's general information:
+    # recipe_id, title, servings, sourceUrl, image, ingredients (name, amount, unit)
+    recipe_info = {}
+    recipe_info['recipe_id'] = recipe.recipe_id
+    recipe_info['title'] = recipe.title
+    recipe_info['servings'] = recipe.servings
+    recipe_info['sourceUrl'] = recipe.sourceUrl
+    recipe_info['image'] = recipe.image
+    # parse through recipe's ingredients table for info
+    ingredients = recipe.ingredients
+    ingredients_list = []
+    for ingredient in ingredients:
+        info = {}
+        info['name'] = ingredient.ingredient.name
+        info['amount'] = ingredient.amount
+        info['unit'] = ingredient.unit
+        ingredients_list.append(info)
+
+    recipe_times = {}
+    recipe_times['preparationMinutes'] = recipe.prep_mins
+    recipe_times['cookingMinutes'] = recipe.cooking_mins
+    recipe_times['readyInMinutes'] = recipe.ready_mins
+
+    instructions_list = []
+    # list of instructions objects, for each step's instructions
+    instructions_objects = recipe.instructions
+    for instruction in instructions_objects:
+        # add each step's instruction into the full list
+        instructions_list.append(instruction.step_instruction)
+
+    recipe_equipment = {}
+    # list of equipment objects
+    equipment_objects = recipe.equipment
+    for equipment in equipment_objects:
+        # make equipments be dictionary of unique and no duplicates
+        recipe_equipment[equipment.equipment] = equipment.equipment
+
+    recipe_details['recipe_info'] = recipe_info
+    recipe_details['recipe_times'] = recipe_times
+    recipe_details['recipe_ingredients'] = ingredients_list
+    recipe_details['recipe_instructions'] = instructions_list
+    recipe_details['recipe_equipment'] = recipe_equipment
+
+    return recipe_details
+
+
+
 
 
 if __name__ == '__main__':

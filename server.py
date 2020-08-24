@@ -285,7 +285,7 @@ def favorite_a_recipe():
 
 
 
-@app.route('/api/recipe_details/int<recipe_id>')
+@app.route('/api/recipe_details/<recipe_id>')
 def get_recipe_details(recipe_id):
     """Return information on selected single recipe."""
 
@@ -296,57 +296,37 @@ def get_recipe_details(recipe_id):
 
     recipe = crud.get_recipe(recipe_id)
 
-    recipe_details = {}
-
-    recipe_details['recipe_info'] = helper_functions.parse_saved_recipe_details(recipe)
-    recipe_details['recipe_times'] = helper_functions.parse_saved_recipe_times(recipe)
-    recipe_details['recipe_ingredients'] = helper_functions.parse_saved_recipe_ingredients(recipe)
-    recipe_details['recipe_instructions'] = helper_functions.parse_saved_recipe_instructions(recipe)
-    recipe_details['recipe_equipment'] = helper_functions.parse_saved_recipe_equipment(recipe)
+    recipe_details = helper_functions.parse_db_recipe_details(recipe)
 
     pprint(recipe_details)
 
     return jsonify({'recipe_details': recipe_details, 'message': 'returning recipe\'s details!'})
 
 
+@app.route('/api/saved_recipe_details/<recipe_id>')
+def get_saved_recipe_details(recipe_id):
+    """Return details of one saved recipe given id."""
 
-# @app.route('/api/get_saved_and_fav_recipes')
-# def get_saved_and_fav_recipes():
-#     """Get all of user's saved and favorited recipes."""
+    print('\nin one saved recipe details\n')
 
-#     print('\nin get saved and favorite recipes route\n')
+    if session.get('email') == None:
+        print('in session == none')
+        return jsonify({'recipe_details': [], 'success': False, 'message': 'You need to create an account to see a saved recipe\'s details!'})
 
-#     # get a list of saved_recipe objects for existing user
-#     users_saved_recipes = crud.get_saved_recipes(session.get('email'))
-#     pprint(len(users_saved_recipes))
+    email = session.get('email')
 
-#     saved_recipes = []
-    
-#     for recipe in users_saved_recipes:
-#         recipe_data = {}
-#         recipe_data['recipe_info'] = helper_functions.parse_saved_recipe_details(recipe)
-#         recipe_data['recipe_times'] = helper_functions.parse_saved_recipe_times(recipe)
-#         recipe_data['recipe_ingredients'] = helper_functions.parse_saved_recipe_ingredients(recipe)
-#         recipe_data['recipe_instructions'] = helper_functions.parse_saved_recipe_instructions(recipe)
-#         recipe_data['recipe_equipment'] = helper_functions.parse_saved_recipe_equipment(recipe)
+    saved_recipe = crud.get_a_saved_recipe(recipe_id, email)
 
-#         saved_recipes.append(recipe_data)
+    recipe_details = {}
 
-#     # print('\n')
-#     # pprint(saved_recipes)
-#     # print('\n')
+    recipe_details['recipe_info'] = helper_functions.parse_saved_recipe_details(saved_recipe)
+    recipe_details['recipe_times'] = helper_functions.parse_saved_recipe_times(saved_recipe)
+    recipe_details['recipe_ingredients'] = helper_functions.parse_saved_recipe_ingredients(saved_recipe)
+    recipe_details['recipe_instructions'] = helper_functions.parse_saved_recipe_instructions(saved_recipe)
+    recipe_details['recipe_equipment'] = helper_functions.parse_saved_recipe_equipment(saved_recipe)
 
-#     print('\nin getting favorited saved recipes list portion\n')
+    return jsonify({'recipe_details': recipe_details, 'message': 'returning a saved recipe\'s details'})
 
-#     # list of recipe ids of user's favorited saved recipes
-#     favorited_list_objects = crud.get_favorited_saved_recipes(session.get('email'))
-#     favorited_list = [favorited.recipe_id for favorited in favorited_list_objects]
-
-#     print('\n')
-#     print(favorited_list)
-#     print('\n')
-
-#     return jsonify({'saved_recipes': saved_recipes, 'favorited_list': favorited_list})
 
 
 @app.route('/api/saved_recipes')

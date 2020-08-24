@@ -68,6 +68,13 @@ def get_saved_recipes(email):
 
     return users_saved_list 
 
+def get_a_saved_recipe(recipe_id, email):
+    """Return saved recipe object given id and user's email."""
+
+    saved_recipe = db.session.query(Saved_Recipe).filter(User.email == email).group_by(Saved_Recipe.recipe_id, Saved_Recipe.saved_id).having(Saved_Recipe.recipe_id == recipe_id).join(User, Recipe, Recipe_Ingredient, Ingredient, Instructions, Equipment).first() 
+
+    return saved_recipe
+
 
 def favorite_a_saved_recipe(recipe_id, email):
     """Favorite a saved recipe from db."""
