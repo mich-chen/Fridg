@@ -171,20 +171,23 @@ function SavedRecipes(props) {
     })
   }, []);
 
+  console.log(savedList);
+
   return (
     <div>
       <section id='saved-recipes'>
-        {!savedList.length ? 'You haven\'t saved any recipes yet!'
+        {!savedList.length ? <p>You haven't saved any recipes yet!</p>
           : (savedList.map((recipe) => 
                 <RecipeCard key={recipe.recipe_info.recipe_id}
-                            recipeInfo={recipe.recipe_info}
+                            recipeDetails={recipe}
+                            fromPath={'saved-recipes'}
+                            recipeImg={recipe.recipe_info.image}
+                            recipeTitle={recipe.recipe_info.title}
+                            recipeId={recipe.recipe_info.recipe_id}
+                            recipeServings={recipe.recipe_info.servings}
                             recipeTimes={recipe.recipe_times}
                             recipeIngredients={recipe.recipe_ingredients}
-                            recipeInstructions={recipe.recipe_instructions}
-                            recipeEquipment={recipe.recipe_equipment} 
-                            isSaved={true}
-                            isFavorite={recipe.recipe_info.favorite}
-                            button={<SavedRecipesButton isFavorite={recipe.recipe_info.favorite}/>}
+                            button={<SavedRecipesButton buttonStatus={recipe.recipe_info.favorite}/>}
                             />
                         ))
         }
@@ -228,18 +231,18 @@ function SearchResults(props) {
   return (
     <div>
       <section id='search-results'>
-        {!props.resultsList.length ? 'Searching...'
+        {!props.resultsList.length ? <p>Searching...</p>
           : (checkedRecipes.map((recipe) => 
               <RecipeCard key={recipe.recipe_info.recipe_id}
+                          fromPath={success ? 'logged-in/search-results': 'search-results'}
                           recipeDetails={recipe}
-                          recipeInfo={recipe.recipe_info}
+                          recipeImg={recipe.recipe_info.image}
+                          recipeTitle={recipe.recipe_info.title}
+                          recipeId={recipe.recipe_info.recipe_id}
+                          recipeServings={recipe.recipe_info.servings}
                           recipeTimes={recipe.recipe_times}
                           recipeIngredients={recipe.recipe_ingredients}
-                          recipeInstructions={recipe.recipe_instructions}
-                          recipeEquipment={recipe.recipe_equipment} 
-                          isSaved={recipe.is_saved}
-                          isFavorite={false}
-                          button={success ? <SearchResultButton isSaved={recipe.is_saved}/>
+                          button={success ? <SearchResultButton buttonStatus={recipe.is_saved}/>
                           : <StaticButton />
                                      }
                           />
@@ -362,7 +365,7 @@ function App() {
         </nav>
 
         <Switch>
-          <Route path="/recipe-details/:id" >
+          <Route path="/:fromPath/recipe-details/:id" >
             <RecipeDetails />
           </Route>
 

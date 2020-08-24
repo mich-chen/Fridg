@@ -81,24 +81,28 @@ function StaticImg(props) {
 
 function StaticTitle(props) {
   return (
-    <h3 id='static-recipe-title' onClick={props.goToDetails}> {props.title}</h3>
+    <h3 id='static-recipe-title'> {props.title}</h3>
     );
 }
 
 
-function Title(props) {
-  let history = useHistory();
-
-  const Button = React.cloneElement(props.button);
-
-  const goToDetails = () => {
-    history.push({pathname: `/recipe-details/${props.recipeId}`,
-                  state: {button: Button}
-                })
-  };
-
+function ClickableImg(props) {
   return (
-    <h3 id='static-recipe-title' onClick={goToDetails}> {props.title}</h3>
+    <img id='clickable-recipe-img' 
+         src={`${props.image}`} 
+         onClick={props.onClick}
+      />
+    );
+}
+
+
+function ClickableTitle(props) {
+  console.log('clickable title');
+  return (
+    <h3 id='clickable-recipe-title'
+        onClick={props.onClick}> 
+          {props.title}
+    </h3>
     );
 }
 
@@ -109,21 +113,22 @@ function ClickableToDetails(props) {
   const Button = React.cloneElement(props.button);
 
   const goToDetails = () => {
-    history.push({pathname: `/recipe-details/${props.recipeId}`,
-                  state: {button: React.cloneElement(props.button)}
+    console.log('in go to details func');
+    history.push({pathname: `/${props.fromPath}/recipe-details/${props.recipeId}`,
+                  state: {recipeDetails: props.recipeDetails}
                 })
   };
 
   return (
     <div>
-      {props.elementType === 'image' ? <StaticImg image={props.element} 
-                                     onClick={goToDetails} 
-                                     />
-       : <Title title={props.element} 
-                      onClick={goToDetails} 
-                      button={Button}
-                      />
-        }
+      <section className='clickable-to-details'>
+        {props.elementType === 'image' ? <ClickableImg image={props.element}                                          onClick={goToDetails}
+                                       />
+         : <ClickableTitle title={props.element} 
+                        onClick={goToDetails}
+                        />
+          }
+      </section>
     </div>
     );
 }
@@ -172,7 +177,7 @@ function SavedBtn(props) {
 function SearchResultButton(props) {
   console.log('in search results Button component');
   // isSaved is boolean passed from parent component
-  let isSaved = props.isSaved;
+  let isSaved = props.buttonStatus;
 
   const addRecipeToSaved = () => {
     fetch('/api/save_a_recipe', 
@@ -235,7 +240,7 @@ function SearchResultButton(props) {
 
 
 function FavoritedBtn(props) {
-  const text = 'Favorite <3';
+  const text = 'Favorited <3';
 
   return (
     <button id='favorited-btn'> {text}  </button>
@@ -246,7 +251,7 @@ function FavoritedBtn(props) {
 function SavedRecipesButton(props) {
   console.log('in saved recipes buttons component');
 
-  let isFavorite = props.isFavorite;
+  let isFavorite = props.buttonStatus;
 
   const favoriteThisRecipe = () => {
     console.log('in adding favorite component to server');
@@ -333,7 +338,7 @@ function RecipeCard(props) {
   // parent is either Search Results or Saved Recipes
   // props.button will be different component depending on parent
   const Button = React.cloneElement(props.button, {
-            recipeId: props.recipeInfo.recipe_id,
+            recipeId: props.recipeId,
             recipeDetails: props.recipeDetails
           });
 
@@ -342,18 +347,22 @@ function RecipeCard(props) {
       <section className='recipe-card'>
 
         <ClickableToDetails elementType={'image'}
-                            recipeId={props.recipeInfo.recipe_id}
-                            element={props.recipeInfo.image}
+                            recipeDetails={props.recipeDetails}
+                            fromPath={props.fromPath}
+                            recipeId={props.recipeId}
+                            element={props.recipeImg}
                             button={Button}
                             />
 
         <ClickableToDetails elementType={'title'}
-                            recipeId={props.recipeInfo.recipe_id}
-                            element={props.recipeInfo.title}
+                            recipeDetails={props.recipeDetails}
+                            fromPath={props.fromPath}
+                            recipeId={props.recipeId}
+                            element={props.recipeTitle}
                             button={Button}
                             />
 
-        <RecipeServings servings={props.recipeInfo.servings}/>
+        <RecipeServings servings={props.recipeServings}/>
 
         <RecipeTimeSection times={props.recipeTimes}/>
 
@@ -372,16 +381,42 @@ function RecipeCard(props) {
 
 function RecipeDetails(props) {
   // clickable image and title will history.push() here
-  let {id} = useParams();
+  let { id } = useParams();
+  let { fromPath } = useParams();
   let location = useLocation();
 
-  const Button = location.state.button;
+  console.log('from path', fromPath);
 
-  let details = {};
+  const [details, setDetails] = React.useState(location.state.recipeDetails);
 
-  fetch(`/api/recipe_details/${id}`)
-  .then(res => res.json())
-  .then(data => details = data);
+  const [buttonStatus, setButtonStatus] = React.useState(false);
+
+  if (fromPath === 'saved-recipes') {
+    console.log('in saved-recipes fetch');
+    fetch(`/api/recipe_details/${id}`)
+      .then(res => res.json())
+      .then(data => {
+        alert(data.message);
+        console.log('server data', data);
+        setButtonStatus(data.recipe_details.recipe_info.favorite);
+        setDetails(data.recipe_details)
+        })
+  } else {
+    console.log('recipe details else statement');
+    setButtonStatus(details.is_saved)
+  };
+
+  console.log('recipes details', details);
+  console.log('status supposed to be', details.recipe_info.favorite);
+  console.log('button status in details', buttonStatus)
+
+
+  const getButton = (status) => ({
+      'saved-recipes': <SavedRecipesButton buttonStatus={status} />,
+      'logged-in/search-results': <SearchResultButton buttonStatus={status} />,
+      'search-results': <StaticButton />
+    });
+
 
   return (
     <div>
@@ -401,7 +436,7 @@ function RecipeDetails(props) {
 
         <RecipeInstructions instructions={details.recipe_instructions}/>             
 
-        {Button}
+        {getButton(buttonStatus)[fromPath]}
 
         <SourceUrl url={details.recipe_info.sourceUrl}/>
 

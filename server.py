@@ -289,7 +289,10 @@ def favorite_a_recipe():
 def get_recipe_details(recipe_id):
     """Return information on selected single recipe."""
 
-    pprint('in single recipe details route')
+    pprint('\nin single recipe details route\n')
+
+    print(recipe_id)
+
 
     recipe = crud.get_recipe(recipe_id)
 
