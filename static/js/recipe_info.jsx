@@ -398,24 +398,36 @@ function RecipeDetails(props) {
         .then(res => res.json())
         .then(data => {
           // alert(data.message);
-          setButtonStatus(data.recipe_details.recipe_info.favorite);
-          setDetails(data.recipe_details)
+          setDetails(data.recipe_details);
+          setButtonStatus(data.recipe_details.recipe_info.favorite)
+          })
+    } else if (fromPath === 'user-search-results') {
+      console.log('in else if user-search-recipes fetch');
+      fetch('/api/check_results',
+            {method: "POST",
+             body: JSON.stringify({results_list: [details]}),
+             headers: { 'Content-Type': 'application/json'},
+             credentials:'include'
+            })
+        .then(res => res.json())
+        .then(data => {
+          setDetails(data.checked_recipes[0]);
+          setButtonStatus(data.checked_recipes[0].is_saved)
           })
     } else {
       console.log('recipe details else statement');
+      console.log(details);
       setButtonStatus(details.is_saved)
     };
   }, [buttonStatus]);
-  
 
   console.log('recipes details', details);
-  console.log('status supposed to be', details.recipe_info.favorite);
-  console.log('button status in details', buttonStatus)
 
+  console.log('button status in details', buttonStatus)
 
   const getButton = (status) => ({
       'saved-recipes': <SavedRecipesButton buttonStatus={status} />,
-      'logged-in/search-results': <SearchResultButton buttonStatus={status} />,
+      'user-search-results': <SearchResultButton buttonStatus={status} />,
       'search-results': <StaticButton />
     });
 

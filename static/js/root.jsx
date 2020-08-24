@@ -221,7 +221,7 @@ function SearchResults(props) {
     })
     .then(res => res.json())
     .then(data => {
-      alert(data.message);
+      // alert(data.message);
       updateCheckedRecipes(data.checked_recipes);
       updateSuccess(data.success);
     });
@@ -234,7 +234,7 @@ function SearchResults(props) {
         {!props.resultsList.length ? <p>Searching...</p>
           : (checkedRecipes.map((recipe) => 
               <RecipeCard key={recipe.recipe_info.recipe_id}
-                          fromPath={success ? 'logged-in/search-results': 'search-results'}
+                          fromPath={success ? 'user-search-results': 'search-results'}
                           recipeDetails={recipe}
                           recipeImg={recipe.recipe_info.image}
                           recipeTitle={recipe.recipe_info.title}
@@ -316,8 +316,9 @@ function App() {
   //   .then(savedData => {
   //     setSavedList(savedData.saved_recipes); 
   //   })
-  // };
-
+  // // };
+  // const [loggedIn, setLoggedIn] = React.useState[false];
+  
   const newUser = true;
 
 
