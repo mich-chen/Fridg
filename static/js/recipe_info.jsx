@@ -391,20 +391,22 @@ function RecipeDetails(props) {
 
   const [buttonStatus, setButtonStatus] = React.useState(false);
 
-  if (fromPath === 'saved-recipes') {
-    console.log('in saved-recipes fetch');
-    fetch(`/api/recipe_details/${id}`)
-      .then(res => res.json())
-      .then(data => {
-        alert(data.message);
-        console.log('server data', data);
-        setButtonStatus(data.recipe_details.recipe_info.favorite);
-        setDetails(data.recipe_details)
-        })
-  } else {
-    console.log('recipe details else statement');
-    setButtonStatus(details.is_saved)
-  };
+  React.useEffect(() => {
+    if (fromPath === 'saved-recipes') {
+      console.log('in saved-recipes fetch');
+      fetch(`/api/saved_recipe_details/${id}`)
+        .then(res => res.json())
+        .then(data => {
+          // alert(data.message);
+          setButtonStatus(data.recipe_details.recipe_info.favorite);
+          setDetails(data.recipe_details)
+          })
+    } else {
+      console.log('recipe details else statement');
+      setButtonStatus(details.is_saved)
+    };
+  }, [buttonStatus]);
+  
 
   console.log('recipes details', details);
   console.log('status supposed to be', details.recipe_info.favorite);
