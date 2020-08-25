@@ -45,10 +45,13 @@ function Logout() {
   let history = useHistory();
   console.log('in logout component');
 
+  const {loggedIn, setLoggedIn} = React.useContext(AuthContext);
+
   React.useEffect(() => {
     fetch('/api/logout')
     .then(res => res.json())
     .then(data => alert(data.message))
+    .then(setLoggedIn(false))
   },[]);
 
   const handleClick = () => {
@@ -126,7 +129,8 @@ function Login(props) {
 
   // set onChange listener for change in textbox
   return (
-   <div name='login'>
+   <div name='login' 
+        style={{display: (loggedIn ? 'none' : 'block')}}>
     <section className='login-form'>
       <h3> Log in to see your saved recipes! </h3>
       <br></br>
@@ -363,10 +367,45 @@ function App() {
   const [data, setData] = React.useState([]);
   console.log((data));
 
-  const [loggedIn, setLoggedIn] = React.useState(false);
+  const [loggedIn, setLoggedIn] = React.useState(null);
+  // each time setLoggedIn is updated in App, useEffect will fetch logged in from server to persist data during reloads
+  React.useEffect(() => {
+    console.log('in app useEffect');
+    fetch('/api/check_session')
+      .then(res => res.json())
+      .then(data => setLoggedIn(data.in_session))
+  }, [loggedIn]);
 
-  const newUser = true;
+  console.log('app loggedIn status', loggedIn);
 
+  // enum to conditionally render navbar links with loggedIn 
+  const NavLinks = {
+    true: (<nav>
+            <li> 
+              <Link to="/saved-recipes">Saved Recipes</Link>
+            </li>
+            <li> 
+              <Link to="/search-results">Search Reults</Link>
+            </li>
+            <li>
+              <Link to="/logout">Log Out</Link>
+            </li>
+          </nav>
+      ),
+
+    false: (<nav>
+              <li>
+                <Link to="/login">Log In</Link>
+              </li>
+              <li>
+                <Link to="/create-account">Create An Account</Link>
+              </li>
+              <li> 
+                <Link to="/search-results">Search Reults</Link>
+              </li>
+          </nav>
+      )
+  };
 
     // use React Router for front-end routing
     return (
@@ -380,30 +419,11 @@ function App() {
                 </li>
 
                 <li>
-                  <Link to="/login">Log In</Link>
-                </li>
-
-                <li>
-                  <Link to="/create-account">Create An Account</Link>
-                </li>
-
-                <li> 
-                  <Link to="/search-results">Search Reults</Link>
-                </li>
-
-                <li> 
-                  <Link to="/saved-recipes">
-                    Saved Recipes
-                  </Link>
-                </li>
-
-                <li>
                   <Link to="/test-page">Test</Link>
                 </li>
+                
+                {NavLinks[loggedIn]}
 
-                <li>
-                  <Link to="/logout">Log Out</Link>
-                </li>
               </ul>
 
               <SearchBar 
