@@ -405,8 +405,12 @@ function RecipeDetails(props) {
 
   // enum to conditionally render buttons by path name and button status
   const getButton = (status) => ({
-      'saved-recipes': <SavedRecipesButton buttonStatus={status} />,
-      'user-search-results': <SearchResultButton buttonStatus={status} />,
+      'saved-recipes': <SavedRecipesButton buttonStatus={status}
+                                           recipeDetails={details}
+                                           recipeId={details.recipe_info.recipe_id} />,
+      'user-search-results': <SearchResultButton buttonStatus={status}
+                                                 recipeDetails={details}
+                                                 recipeId={details.recipe_info.recipe_id} />,
       'search-results': <StaticButton />
     });
 
