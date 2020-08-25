@@ -9,28 +9,6 @@ const useLocation = ReactRouterDOM.useLocation;
 const useParams = ReactRouterDOM.useParams;
 
 
-function Homepage() {
-  let history = useHistory();
-  const handleClick = () => {
-    history.push("create-account")
-  }
-
-  return (
-    <div>
-      <h1> Hello! Welcome to the Homepage! </h1>
-      <br></br>
-
-      <Login />
-      <br></br>
-      OR
-      <br></br>
-      <button onClick={handleClick}>
-        Create New Account!
-      </button>
-    </div>
-    );
-}
-
 
 function TestPage() {
   // testing how to call two functions in one onClick
@@ -51,7 +29,6 @@ function TestPage() {
     console.log('test2')
   };
 
-
   return (
     <div>
       Test react div
@@ -63,34 +40,67 @@ function TestPage() {
   );
 }
 
+
 function Logout() {
   let history = useHistory();
   console.log('in logout component');
 
-  fetch('/api/logout')
-  .then(res => res.json())
-  .then(data => alert(data.message));
+  React.useEffect(() => {
+    fetch('/api/logout')
+    .then(res => res.json())
+    .then(data => alert(data.message))
+  },[]);
+
+  const handleClick = () => {
+    history.push('/')
+  }
 
   return (
     <div>
-      {history.push("/")}
+      Logged out! 
+
+      <button onClick={handleClick}> 
+        Click here to go back to home!
+      </button>
     </div>
     );
 }
+
+
+function Homepage(props) {
+  let history = useHistory();
+
+  const handleClick = () => {
+    history.push('create-account')
+  };
+
+  return (
+    <div id='homepage'>
+      <h1> Hello! Welcome to the Homepage! </h1>
+      <br></br>
+
+      <Login />
+      <br></br>
+      
+      Don't have an account? Click here to start!
+      <button onClick={handleClick}>
+        Create New Account!
+      </button>
+    </div>
+    );
+}
+
 
 function Login(props) {
   // set state for email and password
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const loginData = {'email': email, 'password': password};
 
-  // if new user then true, will be prop when rendering from "/create-user" route
-  // applies when clicked create account button from homepage
-  // or when click create account in navbar
-  const newUser = props.newUser;
+  const [loggedIn, setLoggedIn] = React.useContext(AuthContext);
+  console.log('authcontext', loggedIn);
 
-  const checkLogin = () => {
-    // create javascript object to stringify to server
-    const loginData = {'email': email, 'password': password};
+  const checkLogin = () => { 
     console.log(loginData);
     fetch('/api/login', {
       method: 'POST',
@@ -99,21 +109,14 @@ function Login(props) {
       credentials:'include'
     })
     .then(response => response.json())
-    .then(data => alert(data.message))
+    .then(data => {
+      alert(data.message);
+      console.log('data', data.success);
+      setLoggedIn(data.success)
+    })
   };
 
-  const createAccount = () => {
-    const newAccountData = {'email': email, 'password': password};
-    console.log(newAccountData);
-    fetch('/api/create_account', {
-      method: 'POST',
-      body: JSON.stringify(newAccountData),
-      headers: { 'Content-Type': 'application/json'},
-      credentials:'include'
-    })
-    .then(response => response.json())
-    .then(data => alert(data.message))
-  };
+  console.log(loggedIn);
 
   // reset form fields after user clicks submit
   const resetForm = () => {
@@ -122,40 +125,98 @@ function Login(props) {
   };
 
   // set onChange listener for change in textbox
-  // update state when change in textbox
-  // value of textbox will be the state
   return (
-    <div name='login-form'>
-      <h3> {newUser ? 'Enter email and password to get started!': 'Log in to see your saved recipes! :)'} </h3>
-      Email:
-        <input 
-        type='text'
-        id='email'
-        onChange={(e) => {setEmail(e.target.value)}}
-        value={email}>
-        </input>
-      Password:
-        <input 
-        type='password'
-        id='password'
-        onChange={(e) => {setPassword(e.target.value)}}
-        value={password}>
-        </input>
-      {newUser ? 
-        <button onClick={() => {
-          createAccount();
-          resetForm()}}>
-        Create Account
-        </button>
-        : 
-        <button onClick={() => {
-          checkLogin();
-          resetForm()}}>
-        Log in 
-        </button>
-      }
-    </div>
+   <div name='login'>
+    <section className='login-form'>
+      <h3> Log in to see your saved recipes! </h3>
+      <br></br>
+
+      <label> Email: </label>
+        <input id='email'
+               type='text'
+               onChange={(e) => {setEmail(e.target.value)}}
+               value={email} 
+               />
+
+      <label> Password: </label>
+        <input id='password'
+               type='password'
+               onChange={(e) => {setPassword(e.target.value)}}
+               value={password}
+               />
+
+      <br></br>
+
+      <button id='login-btn' 
+              onClick={() => {checkLogin(); resetForm()}} 
+              >
+        Log in
+      </button>
+
+    </section>
+  </div>
   );
+}
+
+
+function CreateAccount(props) {
+  let history = useHistory();
+  // state for email and password for new account
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
+  const newAccountData = {'email': email, 'password': password};
+
+  const createAccount = () => {
+    fetch('/api/create_account', {
+      method: 'POST',
+      body: JSON.stringify(newAccountData),
+      headers: { 'Content-Type': 'application/json'},
+      credentials: 'include'
+    })
+      .then(res => res.json())
+      .then(data => alert(data.message))
+      .then(history.push('/homepage'))
+  };
+
+  // reset form fields after onClick of login button
+  const resetForm = () => {
+    setEmail('');
+    setPassword('');
+  };
+
+  return (
+    <div>
+      <div name='create-account'>
+        <section className='create-account-form'>
+          <h3> Create a New Account to start saving recipes! </h3>
+          <br> </br>
+
+          <label> Email: </label>
+            <input id='email'
+                   type='text'
+                   onChange={(e) => {setEmail(e.target.value)}}
+                   value={email} 
+                   />
+
+          <label> Password: </label>
+            <input id='password'
+                   type='password'
+                   onChange={(e) => {setPassword(e.target.value)}}
+                   value={password}
+                   />
+
+          <br></br>
+
+          <button id='create-account-btn' 
+                  onClick={() => {createAccount(); resetForm()}} 
+                  >
+            Create Account
+          </button>
+
+        </section>
+      </div>
+    </div>
+    );
 }
 
 
@@ -293,116 +354,107 @@ function SearchBar(props) {
     );
 }
 
-
-
-
-
-
-
+const AuthContext = React.createContext(null);
+// creating instance of context
 
 function App() {
   console.log('in app component');
   // data is from external API after clicking SearchBar button
   const [data, setData] = React.useState([]);
   console.log((data));
-  // console.log(typeof(data));
 
-  // // set state of user's saved recipes list of objects with recipe details
-  // const [savedList, setSavedList] = React.useState([]);
-  // // update state of saved recipes, and pass state as prop to SavedRecipes component
-  // const getSavedRecipesList = () => {
-  //   fetch('/api/saved_recipes')
-  //   .then(res => res.json())
-  //   .then(savedData => {
-  //     setSavedList(savedData.saved_recipes); 
-  //   })
-  // // };
-  // const [loggedIn, setLoggedIn] = React.useState[false];
-  
+  const [loggedIn, setLoggedIn] = React.useState(false);
+
   const newUser = true;
 
 
     // use React Router for front-end routing
     return (
-    <Router>
-      <div>
-        <nav>
-          <ul>
-            <li>
-            <Link to="/">Homepage</Link>
-            </li>
+      <AuthContext.Provider value={[loggedIn, setLoggedIn]}>
+        <Router>
+          <div>
+            <nav>
+              <ul>
+                <li>
+                  <Link to="/homepage">Homepage</Link>
+                </li>
 
-            <li>
-              <Link to="/login">Log In</Link>
-            </li>
+                <li>
+                  <Link to="/login">Log In</Link>
+                </li>
 
-            <li>
-              <Link to="/create-account">Create An Account</Link>
-            </li>
+                <li>
+                  <Link to="/create-account">Create An Account</Link>
+                </li>
 
-            <li> 
-              <Link to="/search-results">Search Reults</Link>
-            </li>
+                <li> 
+                  <Link to="/search-results">Search Reults</Link>
+                </li>
 
-            <li> 
-              <Link to="/saved-recipes">
-                Saved Recipes
-              </Link>
-            </li>
+                <li> 
+                  <Link to="/saved-recipes">
+                    Saved Recipes
+                  </Link>
+                </li>
 
-            <li>
-              <Link to="/test-page">Test</Link>
-            </li>
+                <li>
+                  <Link to="/test-page">Test</Link>
+                </li>
 
-            <li>
-              <Link to="/logout">Log Out</Link>
-            </li>
-          </ul>
+                <li>
+                  <Link to="/logout">Log Out</Link>
+                </li>
+              </ul>
 
-          <SearchBar 
-            setData={setData}
-            />
+              <SearchBar 
+                setData={setData}
+                />
 
-        </nav>
+            </nav>
 
-        <Switch>
-          <Route path="/:fromPath/recipe-details/:id" >
-            <RecipeDetails />
-          </Route>
+            <Switch>
+              <Route path="/:fromPath/recipe-details/:id" >
+                <RecipeDetails />
+              </Route>
 
-          <Route exact path="/saved-recipes">
-            <SavedRecipes 
-            />
-          </Route>
+              <Route exact path="/saved-recipes">
+                <SavedRecipes 
+                />
+              </Route>
 
-          <Route exact path="/search-results">
-            <SearchResults 
-              resultsList={data}
-            />
-          </Route>
+              <Route exact path="/search-results">
+                <SearchResults 
+                  resultsList={data}
+                />
+              </Route>
 
-          <Route exact path="/login">
-            <Login />
-          </Route>
+              <Route exact path="/login">
+                <Login />
+              </Route>
 
-          <Route exact path="/create-account">
-            <Login newUser={newUser} />
-          </Route>
+              <Route exact path="/create-account">
+                <Login newUser={newUser} />
+              </Route>
 
-          <Route exact path="/logout">
-            <Logout />
-          </Route>
+              <Route exact path="/logout">
+                <Logout />
+              </Route>
 
-          <Route exact path="/test-page">
-            <TestPage />
-          </Route>
+              <Route exact path="/test-page">
+                <TestPage />
+              </Route>
 
-          <Route exact path="/">
-            <Homepage />
-          </Route>
-        </Switch>
-      </div>
-    </Router>
+              <Route path="/homepage">
+                <Homepage />
+              </Route>
+
+              <Route exact path="/">
+                <Homepage />
+              </Route>
+            </Switch>
+          </div>
+        </Router>
+    </AuthContext.Provider>
   );
 }
 

@@ -110,7 +110,7 @@ function ClickableTitle(props) {
 function ClickableToDetails(props) {
   let history = useHistory();
 
-  const Button = React.cloneElement(props.button);
+  // const Button = React.cloneElement(props.button);
 
   const goToDetails = () => {
     console.log('in go to details func');
@@ -220,30 +220,11 @@ function SearchResultButton(props) {
 }
 
 
-// function ToFavoriteBtn(props) {
-//   console.log('to favorite button component');
-
-//   const [buttonText, setButtonText] = React.useState('Saved! Not favorited!');
-
-//   const handleClick = () => {
-//     props.favoriteThisRecipe();
-//     setButtonText('Favorite <3')
-//   };
-
-//   return (
-//     <button id='favorited-btn'
-//             onClick={handleClick}> 
-//       {buttonText}
-//     </button>
-//     );
-// }
-
-
 function FavoritedBtn(props) {
-  const text = 'Favorited <3';
+  const text = 'Favorited &hearts;';
 
   return (
-    <button id='favorited-btn'> {text}  </button>
+    <button id='favorited-btn'> Favorited &hearts;  </button>
     );
 }
 
@@ -351,7 +332,6 @@ function RecipeCard(props) {
                             fromPath={props.fromPath}
                             recipeId={props.recipeId}
                             element={props.recipeImg}
-                            button={Button}
                             />
 
         <ClickableToDetails elementType={'title'}
@@ -359,7 +339,6 @@ function RecipeCard(props) {
                             fromPath={props.fromPath}
                             recipeId={props.recipeId}
                             element={props.recipeTitle}
-                            button={Button}
                             />
 
         <RecipeServings servings={props.recipeServings}/>
@@ -388,9 +367,9 @@ function RecipeDetails(props) {
   console.log('from path', fromPath);
 
   const [details, setDetails] = React.useState(location.state.recipeDetails);
-
   const [buttonStatus, setButtonStatus] = React.useState(false);
 
+  // if logged-in user, fetch data for details and button status from server
   React.useEffect(() => {
     if (fromPath === 'saved-recipes') {
       console.log('in saved-recipes fetch');
@@ -422,9 +401,9 @@ function RecipeDetails(props) {
   }, [buttonStatus]);
 
   console.log('recipes details', details);
-
   console.log('button status in details', buttonStatus)
 
+  // enum to conditionally render buttons by path name and button status
   const getButton = (status) => ({
       'saved-recipes': <SavedRecipesButton buttonStatus={status} />,
       'user-search-results': <SearchResultButton buttonStatus={status} />,
@@ -448,7 +427,7 @@ function RecipeDetails(props) {
 
         <RecipeEquipment equipment={details.recipe_equipment}/>
 
-        <RecipeInstructions instructions={details.recipe_instructions}/>             
+        <RecipeInstructions instructions={details.recipe_instructions}/> 
 
         {getButton(buttonStatus)[fromPath]}
 
@@ -458,39 +437,3 @@ function RecipeDetails(props) {
     </div>
     );
 }
-
-
-// function RecipeCardList(props) {
-//   // list of search results checked if saved, dict key called is_saved (boolean)
-//   const recipesList = props.recipesList;
-
-//   // const initialSaved = recipesList.is_saved;
-//   // const initialFavorite = props.isFavorite;
-//   // const [isSaved, setIsSaved] = React.useState(initialSaved);
-//   // const [isFavorite, setIsFavorite] = React.useState(initialFavorite);
-
-//   return (
-//     <div>
-//       <section id="search-results">
-//         <ul>
-//           {(recipesList.map((recipe) => 
-//               <RecipeCard key={recipe.recipe_info.recipe_id}
-//                           recipe_info={recipe.recipe_info}
-//                           recipe_times={recipe.recipe_times}
-//                           recipe_ingredients={recipe.recipe_ingredients}
-//                           recipe_instructions={recipe.recipe_instructions}
-//                           recipe_equipment={recipe.recipe_equipment} 
-//                           isSaved={props.isSaved}
-//                           // setIsSaved={setIsSaved}
-//                           isFavorite={props.isFavorite}
-//                           // setIsFavorite={setIsFavorite}
-//                           button={props.button}
-//                 />)) 
-//           } 
-//         </ul>
-//       </section>
-//     </div>
-
-//     <RecipeCard />
-//     );
-// }

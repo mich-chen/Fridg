@@ -61,13 +61,15 @@ def process_login():
         session['email'] = email
         # set new message
         message = 'Valid user. Successfully logged in.'
+        success = True
 
     # if password does not match, and email already exists in db
     else:
         # set new message
         message = 'Incorrect email or password. Try again.'
+        success = False
 
-    return jsonify({'message': message})
+    return jsonify({'success': success, 'message': message})
 
 
 @app.route('/api/create_account', methods=["POST"])
@@ -89,12 +91,14 @@ def create_account():
         # create session for user
         session['email'] = email
         message = 'Successfully created new account!'
+        success = True
 
     # if returned an object from db, then email already exists
     else:
         message = 'Email exists already! You cannot create new account with that email. Try again.'
+        success = False
 
-    return jsonify({'message': message})
+    return jsonify({'success': success, 'message': message})
 
 
 @app.route('/api/logout')
@@ -400,32 +404,6 @@ def check_if_saved_recipe():
     return jsonify({'checked_recipes': recipes_list, 'success': True, 'message': 'Checked results for any saved recipes!'})
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-# @app.route('/api/get_favorited_list')
-# def get_favorited_list():
-#     """Return a list of user's favorited saved recipes."""
-
-#     print('\nin getting favorited saved recipes list route\n')
-
-#     # list of recipe ids of user's favorited saved recipes
-#     favorited_list = crud.get_favorited_saved_recipes(session.get['email'])
-#     print('\n')
-#     print(favorited_list)
-#     print('\n')
-
-#     return jsonify(favorited_list)
 
 
 if __name__ == '__main__':
