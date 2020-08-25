@@ -189,7 +189,7 @@ function CreateAccount(props) {
       <div name='create-account'>
         <section className='create-account-form'>
           <h3> Create a New Account to start saving recipes! </h3>
-          <br> </br>
+          <br></br>
 
           <label> Email: </label>
             <input id='email'
@@ -433,7 +433,7 @@ function App() {
               </Route>
 
               <Route exact path="/create-account">
-                <Login newUser={newUser} />
+                <CreateAccount />
               </Route>
 
               <Route exact path="/logout">
