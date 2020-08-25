@@ -97,7 +97,7 @@ function Login(props) {
   const [password, setPassword] = React.useState('');
   const loginData = {'email': email, 'password': password};
 
-  const [loggedIn, setLoggedIn] = React.useContext(AuthContext);
+  const {loggedIn, setLoggedIn} = React.useContext(AuthContext);
   console.log('authcontext', loggedIn);
 
   const checkLogin = () => { 
@@ -370,7 +370,7 @@ function App() {
 
     // use React Router for front-end routing
     return (
-      <AuthContext.Provider value={[loggedIn, setLoggedIn]}>
+      <AuthContext.Provider value={{loggedIn, setLoggedIn}}>
         <Router>
           <div>
             <nav>
