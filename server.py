@@ -101,6 +101,17 @@ def create_account():
     return jsonify({'success': success, 'message': message})
 
 
+@app.route('/api/check_session')
+def check_if_logged_in():
+    """Check if active session/logged in user."""
+    print('\nin checking session route\n')
+
+    if session.get('email'):
+        return jsonify({'in_session': True})
+    else:
+        return jsonify({'in_session': False})
+
+
 @app.route('/api/logout')
 def process_logout():
     """Remove user's session after logout."""
