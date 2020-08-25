@@ -73,6 +73,8 @@ function Logout() {
 function Homepage(props) {
   let history = useHistory();
 
+  const authContext = React.useContext(AuthContext);
+
   const handleClick = () => {
     history.push('create-account')
   };
@@ -80,15 +82,22 @@ function Homepage(props) {
   return (
     <div id='homepage'>
       <h1> Hello! Welcome to the Homepage! </h1>
+
+      <SearchBar />
+
       <br></br>
 
       <Login />
       <br></br>
       
-      Don't have an account? Click here to start!
-      <button onClick={handleClick}>
-        Create New Account!
-      </button>
+      <div style={{display: (authContext.loggedIn ? 'none' : 'block')}}>
+        <p>Don't have an account? Click here to start!</p>
+
+        <button onClick={handleClick}>
+          Create New Account!
+        </button>
+      </div>
+
     </div>
     );
 }
