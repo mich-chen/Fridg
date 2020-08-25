@@ -18,7 +18,7 @@ class User(db.Model):
     password = db.Column(db.String)
 
     # list of user's saved recipes
-    saved_recipes = db.relationship('Saved_Recipe')
+    saved_recipes = db.relationship('Saved_Recipe', lazy='joined')
 
     def __repr__(self):
         return f'<User user_id={self.user_id} email={self.email}>'
@@ -35,13 +35,13 @@ class Saved_Recipe(db.Model):
     recipe_id = db.Column(db.Integer,
                           db.ForeignKey('recipes.recipe_id'))
     user_id = db.Column(db.Integer,
-                              db.ForeignKey('users.user_id'))
+                        db.ForeignKey('users.user_id'))
     favorite = db.Column(db.Boolean)
 
     # recipe that was saved
-    recipe = db.relationship('Recipe')
+    recipe = db.relationship('Recipe', lazy='joined')
     # user who saved the recipe
-    user = db.relationship('User')
+    user = db.relationship('User', lazy='joined')
 
     def __repr__(self):
         return f'<User\'s selected recipes recipe={self.recipe_id} user={self.user_id} is_favorite={self.favorite}>'
@@ -63,13 +63,13 @@ class Recipe(db.Model):
     ready_mins = db.Column(db.Integer)
 
     # list of recipe's ingredients
-    ingredients = db.relationship('Recipe_Ingredient')
+    ingredients = db.relationship('Recipe_Ingredient', lazy='joined')
     # list of recipe's instructions by steps (length is number of steps)
-    instructions = db.relationship('Instructions')
+    instructions = db.relationship('Instructions', lazy='joined')
     # list of instances this recipe is saved by many different users
-    saved_recipe_users = db.relationship('Saved_Recipe')
+    saved_recipe_users = db.relationship('Saved_Recipe', lazy='joined')
     # list of recipe's equipment(s)
-    equipment = db.relationship('Equipment')
+    equipment = db.relationship('Equipment', lazy='joined')
 
 
     def __repr__(self):
@@ -86,7 +86,7 @@ class Ingredient(db.Model):
     name = db.Column(db.String)
 
     # list of recipes this ingredient is part of
-    recipes = db.relationship('Recipe_Ingredient')
+    recipes = db.relationship('Recipe_Ingredient', lazy='joined')
 
     def __repr__(self):
         return f'<Ingredient ingredient_id={self.ingredient_id} name={self.name}>'
@@ -108,9 +108,9 @@ class Recipe_Ingredient(db.Model):
     unit = db.Column(db.String)
 
     # the recipe's ingredient
-    ingredient = db.relationship('Ingredient')
+    ingredient = db.relationship('Ingredient', lazy='joined')
     # the recipe the ingredient is part of
-    recipe = db.relationship('Recipe')
+    recipe = db.relationship('Recipe', lazy='joined')
 
     def __repr__(self):
         return f'<Recipe Ingredient recipe={self.recipe_id} ingredient={self.ingredient.name}>'
@@ -131,7 +131,7 @@ class Instructions(db.Model):
 
 
     # recipe the instructions are for
-    recipe = db.relationship('Recipe')
+    recipe = db.relationship('Recipe', lazy='joined')
 
     def __repr__(self):
         return f'<Instructions recipe={self.recipe_id} step={self.step_num}>'
@@ -150,7 +150,7 @@ class Equipment(db.Model):
     equipment = db.Column(db.String)
 
     # recipe the equipment is part of
-    recipe = db.relationship('Recipe')
+    recipe = db.relationship('Recipe', lazy='joined')
 
     def __repr__(self):
         return f'<Equipment recipe={self.recipe_id} equipment={self.equipment}>'
