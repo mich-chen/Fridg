@@ -11,8 +11,7 @@ const useParams = ReactRouterDOM.useParams;
 
 
 function TestPage() {
-  // testing how to call two functions in one onClick
-
+  // test component for javascript and react
   const [test, setTest] = React.useState(false);
 
   React.useEffect(() =>{
@@ -41,38 +40,6 @@ function TestPage() {
 }
 
 
-function Logout() {
-  let history = useHistory();
-  console.log('in logout component');
-
-  const {loggedIn, setLoggedIn} = React.useContext(AuthContext);
-
-  React.useEffect(() => {
-    fetch('/api/logout')
-    .then(res => res.json())
-    .then(data => {
-      alert(data.message);
-      setLoggedIn(false)
-    })
-  },[]);
-
-  const handleClick = () => {
-    
-    history.push('/')
-  };
-
-  return (
-    <div>
-      Logged out! 
-
-      <button onClick={handleClick}> 
-        Click here to go back to home!
-      </button>
-    </div>
-    );
-}
-
-
 function Homepage(props) {
   let history = useHistory();
 
@@ -88,7 +55,6 @@ function Homepage(props) {
       <h1> Hello! Welcome to the Homepage! </h1>
 
       <SearchBar setData={props.setData}/>
-
       <br></br>
 
       <Login />
@@ -101,152 +67,15 @@ function Homepage(props) {
           Create New Account!
         </button>
       </div>
-
-    </div>
-    );
-}
-
-
-function Login(props) {
-  // set state for email and password
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
-  const loginData = {'email': email, 'password': password};
-
-  const {loggedIn, setLoggedIn} = React.useContext(AuthContext);
-  console.log('login authcontext', loggedIn);
-
-  const checkLogin = () => { 
-    console.log(loginData);
-    fetch('/api/login', {
-      method: 'POST',
-      body: JSON.stringify(loginData),
-      headers: { 'Content-Type': 'application/json'},
-      credentials:'include'
-    })
-    .then(response => response.json())
-    .then(data => {
-      alert(data.message);
-      console.log('data', data.success);
-      setLoggedIn(data.success)
-    })
-  };
-
-  console.log(loggedIn);
-
-  // reset form fields after user clicks submit
-  const resetForm = () => {
-    setEmail('');
-    setPassword('')
-  };
-
-  // set onChange listener for change in textbox
-  return (
-   <div name='login' 
-        style={{display: (loggedIn ? 'none' : 'block')}}>
-    <section className='login-form'>
-      <h3> Log in to see your saved recipes! </h3>
-      <br></br>
-
-      <label> Email: </label>
-        <input id='email'
-               type='text'
-               onChange={(e) => {setEmail(e.target.value)}}
-               value={email} 
-               />
-
-      <label> Password: </label>
-        <input id='password'
-               type='password'
-               onChange={(e) => {setPassword(e.target.value)}}
-               value={password}
-               />
-
-      <br></br>
-
-      <button id='login-btn' 
-              onClick={() => {checkLogin(); resetForm()}} 
-              >
-        Log in
-      </button>
-
-    </section>
-  </div>
-  );
-}
-
-
-function CreateAccount(props) {
-  let history = useHistory();
-  // state for email and password for new account
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
-  const newAccountData = {'email': email, 'password': password};
-
-  const {loggedIn, setLoggedIn} = React.useContext(AuthContext);
-  console.log('login authcontext', loggedIn);
-
-  const createAccount = () => {
-    fetch('/api/create_account', {
-      method: 'POST',
-      body: JSON.stringify(newAccountData),
-      headers: { 'Content-Type': 'application/json'},
-      credentials: 'include'
-    })
-      .then(res => res.json())
-      .then(data => {
-        alert(data.message);
-        setLoggedIn(data.success)
-      })
-      .then(history.push('/homepage'))
-  };
-
-  // reset form fields after onClick of login button
-  const resetForm = () => {
-    setEmail('');
-    setPassword('');
-  };
-
-  return (
-    <div>
-      <div name='create-account'>
-        <section className='create-account-form'>
-          <h3> Create a New Account to start saving recipes! </h3>
-          <br></br>
-
-          <label> Email: </label>
-            <input id='email'
-                   type='text'
-                   onChange={(e) => {setEmail(e.target.value)}}
-                   value={email} 
-                   />
-
-          <label> Password: </label>
-            <input id='password'
-                   type='password'
-                   onChange={(e) => {setPassword(e.target.value)}}
-                   value={password}
-                   />
-
-          <br></br>
-
-          <button id='create-account-btn' 
-                  onClick={() => {createAccount(); resetForm()}} 
-                  >
-            Create Account
-          </button>
-
-        </section>
-      </div>
     </div>
     );
 }
 
 
 function SavedRecipes(props) {
+  // user's list of saved recipes
   const [savedList, setSavedList] = React.useState([]);
-  // update state of saved recipes, and pass state as prop to SavedRecipes component
-  // const getSavedRecipesList = () => {
+
   React.useEffect(() => {
     fetch('/api/saved_recipes')
     .then(res => res.json())
@@ -282,16 +111,11 @@ function SavedRecipes(props) {
 
 
 function SearchResults(props) {
-  // resultsList is data from App component and Spoonacular's data.
+  // resultsList is data from Spoonacular's API.
   const resultsList = props.resultsList;
   console.log('outside resultsList', resultsList);
-  // console.log('results list', resultsList);
-  // list of saved recipes (will be empty if not logged in or none saved)
-  // const savedList = props.savedList;
-  // list of results recipes that are not saved
-  
+  // check search results for any user's saved recipes
   const [checkedRecipes, updateCheckedRecipes] = React.useState([]);
-
   const [success, updateSuccess] = React.useState(undefined);
 
   React.useEffect(() => {
@@ -305,12 +129,10 @@ function SearchResults(props) {
     })
     .then(res => res.json())
     .then(data => {
-      // alert(data.message);
       updateCheckedRecipes(data.checked_recipes);
       updateSuccess(data.success);
     });
   }, [resultsList, success]);
-
 
   return (
     <div>
@@ -339,10 +161,8 @@ function SearchResults(props) {
 function SearchBar(props) {
   let history = useHistory();
   const [ingredients, setIngredients] = React.useState('');
-  // console.log(typeof(ingredients));
 
   const searchRecipes = () => {
-    // create javascript object to stringify to server
     fetch('/api/search_results', {
       method: 'POST',
       body: JSON.stringify({ingredients: ingredients}),
@@ -362,7 +182,7 @@ function SearchBar(props) {
       <section className='search-bar'>
         What's in your fridge? 
         <input type='text'
-               id='user-search'
+               className='user-search'
                onChange={(e) => {setIngredients(e.target.value)}}
                value={ingredients}>
         </input>
@@ -380,7 +200,7 @@ const AuthContext = React.createContext(null);
 
 function App() {
   console.log('in app component');
-  // data is from external API after clicking SearchBar button
+  // data from external API
   const [data, setData] = React.useState([]);
   console.log((data));
 
@@ -392,8 +212,6 @@ function App() {
       .then(res => res.json())
       .then(data => setLoggedIn(data.in_session))
   }, [loggedIn]);
-
-
 
   console.log('app loggedIn status', loggedIn);
 
