@@ -76,22 +76,6 @@ class Recipe(db.Model):
         return f'<Recipe recipe_id={self.recipe_id} title={self.title}>'
 
 
-class Ingredient(db.Model):
-    """An Ingredient."""
-
-    __tablename__ = 'ingredients'
-
-    ingredient_id = db.Column(db.Integer,
-                         primary_key=True)
-    name = db.Column(db.String)
-
-    # list of recipes this ingredient is part of
-    recipes = db.relationship('Recipe_Ingredient', lazy='joined')
-
-    def __repr__(self):
-        return f'<Ingredient ingredient_id={self.ingredient_id} name={self.name}>'
-
-
 class Recipe_Ingredient(db.Model):
     """A recipe's ingredient."""
 
@@ -102,18 +86,16 @@ class Recipe_Ingredient(db.Model):
                          primary_key=True)
     recipe_id = db.Column(db.Integer,
                           db.ForeignKey('recipes.recipe_id'))
-    ingredient_id = db.Column(db.Integer,
-                              db.ForeignKey('ingredients.ingredient_id'))
+    ingredient_id = db.Column(db.Integer)
     amount = db.Column(db.Float)
     unit = db.Column(db.String)
+    name = db.Column(db.String)
 
-    # the recipe's ingredient
-    ingredient = db.relationship('Ingredient', lazy='joined')
     # the recipe the ingredient is part of
     recipe = db.relationship('Recipe', lazy='joined')
 
     def __repr__(self):
-        return f'<Recipe Ingredient recipe={self.recipe_id} ingredient={self.ingredient.name}>'
+        return f'<Recipe Ingredient recipe={self.recipe_id} ingredient={self.name}>'
 
 
 class Instructions(db.Model):
@@ -168,10 +150,17 @@ def connect_to_db(flask_app, db_uri='postgresql:///recipes', echo=True):
 
 if __name__ == '__main__':
     from server import app
+    import os
 
     # Call connect_to_db(app, echo=False) if your program output gets
     # too annoying; this will tell SQLAlchemy not to print out every
     # query it executes.
 
+    # Drop and create db
+    os.system('dropdb recipes')
+    os.system('createdb recipes')
+
     connect_to_db(app)
+    # create tables
+    db.create_all()
 

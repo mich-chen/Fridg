@@ -100,7 +100,7 @@ def parse_saved_recipe_ingredients(saved_recipe):
     recipe_ingredients_list = []
     for ingredient in recipe_ingredients:
         info = {}
-        info['name'] = ingredient.ingredient.name
+        info['name'] = ingredient.name
         info['amount'] = ingredient.amount
         info['unit'] = ingredient.unit
         recipe_ingredients_list.append(info)

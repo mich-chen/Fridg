@@ -76,7 +76,7 @@ def process_login():
 def create_account():
     """Create new account and store in db."""
 
-    print('in create account route')
+    print('\nin create account route\n')
     # unencode from JSON
     data = request.get_json()
     email = data['email']
@@ -218,9 +218,10 @@ def add_recipe_to_db():
     complex_ingredients = recipe_details['recipe_ingredients']
     for ingredient in complex_ingredients:
         ingredient_id = ingredient['id']
+        name = ingredient['originalName']
         amount = ingredient['amount']
         unit = ingredient['unit']
-        crud.add_recipe_ingredient(recipe=recipe_id, ingredient_id=ingredient_id, amount=amount, unit=unit)
+        crud.add_recipe_ingredient(recipe=recipe_id, ingredient_id=ingredient_id, amount=amount, unit=unit, name=name)
 
     # ordered list of recipe's instructions (no numbers)
     instructions_list = recipe_details['recipe_instructions']
