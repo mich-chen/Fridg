@@ -73,7 +73,8 @@ function Logout() {
 function Homepage(props) {
   let history = useHistory();
 
-  const authContext = React.useContext(AuthContext);
+  const {loggedIn} = React.useContext(AuthContext);
+  console.log(loggedIn);
 
   const handleClick = () => {
     history.push('create-account')
@@ -83,14 +84,14 @@ function Homepage(props) {
     <div id='homepage'>
       <h1> Hello! Welcome to the Homepage! </h1>
 
-      <SearchBar />
+      <SearchBar setData={props.setData}/>
 
       <br></br>
 
       <Login />
       <br></br>
       
-      <div style={{display: (authContext.loggedIn ? 'none' : 'block')}}>
+      <div style={{display: (loggedIn ? 'none' : 'block')}}>
         <p>Don't have an account? Click here to start!</p>
 
         <button onClick={handleClick}>
@@ -110,7 +111,7 @@ function Login(props) {
   const loginData = {'email': email, 'password': password};
 
   const {loggedIn, setLoggedIn} = React.useContext(AuthContext);
-  console.log('authcontext', loggedIn);
+  console.log('login authcontext', loggedIn);
 
   const checkLogin = () => { 
     console.log(loginData);
@@ -179,6 +180,9 @@ function CreateAccount(props) {
   const [password, setPassword] = React.useState('');
   const newAccountData = {'email': email, 'password': password};
 
+  const {loggedIn, setLoggedIn} = React.useContext(AuthContext);
+  console.log('login authcontext', loggedIn);
+
   const createAccount = () => {
     fetch('/api/create_account', {
       method: 'POST',
@@ -187,7 +191,10 @@ function CreateAccount(props) {
       credentials: 'include'
     })
       .then(res => res.json())
-      .then(data => alert(data.message))
+      .then(data => {
+        alert(data.message);
+        setLoggedIn(data.success)
+      })
       .then(history.push('/homepage'))
   };
 
@@ -261,7 +268,7 @@ function SavedRecipes(props) {
                             recipeServings={recipe.recipe_info.servings}
                             recipeTimes={recipe.recipe_times}
                             recipeIngredients={recipe.recipe_ingredients}
-                            button={<SavedRecipesButton buttonStatus={recipe.recipe_info.favorite}/>}
+                            buttonStatus={recipe.recipe_info.favorite}
                             />
                         ))
         }
@@ -308,7 +315,7 @@ function SearchResults(props) {
         {!props.resultsList.length ? <p>Searching...</p>
           : (checkedRecipes.map((recipe) => 
               <RecipeCard key={recipe.recipe_info.recipe_id}
-                          fromPath={success ? 'user-search-results': 'search-results'}
+                          fromPath={'search-results'}
                           recipeDetails={recipe}
                           recipeImg={recipe.recipe_info.image}
                           recipeTitle={recipe.recipe_info.title}
@@ -316,9 +323,7 @@ function SearchResults(props) {
                           recipeServings={recipe.recipe_info.servings}
                           recipeTimes={recipe.recipe_times}
                           recipeIngredients={recipe.recipe_ingredients}
-                          button={success ? <SearchResultButton buttonStatus={recipe.is_saved}/>
-                          : <StaticButton />
-                                     }
+                          buttonStatus={recipe.is_saved}
                           />
                       ))
         }
@@ -385,6 +390,8 @@ function App() {
       .then(data => setLoggedIn(data.in_session))
   }, [loggedIn]);
 
+
+
   console.log('app loggedIn status', loggedIn);
 
   // enum to conditionally render navbar links with loggedIn 
@@ -433,15 +440,18 @@ function App() {
                 
                 {NavLinks[loggedIn]}
 
+                <SearchBar 
+                  setData={setData}
+                  />
+
               </ul>
 
-              <SearchBar 
-                setData={setData}
-                />
+
 
             </nav>
 
             <Switch>
+
               <Route path="/:fromPath/recipe-details/:id" >
                 <RecipeDetails />
               </Route>
@@ -474,11 +484,11 @@ function App() {
               </Route>
 
               <Route path="/homepage">
-                <Homepage />
+                <Homepage setData={setData}/>
               </Route>
 
               <Route exact path="/">
-                <Homepage />
+                <Homepage setData={setData}/>
               </Route>
             </Switch>
           </div>
