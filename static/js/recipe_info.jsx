@@ -317,11 +317,18 @@ function SourceUrl(props) {
 function RecipeCard(props) {
   // pass data as props to children and Recipe Details component
   // parent is either Search Results or Saved Recipes
-  // props.button will be different component depending on parent
-  const Button = React.cloneElement(props.button, {
-            recipeId: props.recipeId,
-            recipeDetails: props.recipeDetails
-          });
+  const {loggedIn} = React.useContext(AuthContext);
+
+  // enum to conditionally render buttons by path name and button status
+  const getButton = (status, loggedIn) => ({
+      'saved-recipes': <SavedRecipesButton buttonStatus={status}
+                                           recipeDetails={props.recipeDetails}
+                                           recipeId={props.recipeId} />,
+      'search-results': (loggedIn ? <SearchResultButton buttonStatus={status}
+                                                        recipeDetails={props.recipeDetails}
+                                                        recipeId={props.recipeId} />
+                                  : <StaticButton />)
+    });
 
   return (
     <div>
@@ -347,7 +354,7 @@ function RecipeCard(props) {
 
         <RecipeIngredients ingredients={props.recipeIngredients}/>           
 
-        {Button}
+        {getButton(props.buttonStatus, loggedIn)[props.fromPath]}
 
       </section>
     </div>
@@ -369,6 +376,11 @@ function RecipeDetails(props) {
   const [details, setDetails] = React.useState(location.state.recipeDetails);
   const [buttonStatus, setButtonStatus] = React.useState(false);
 
+  const {loggedIn, setLoggedIn} = React.useContext(AuthContext);
+  console.log('recipe details auth', loggedIn);
+
+
+
   // if logged-in user, fetch data for details and button status from server
   React.useEffect(() => {
     if (fromPath === 'saved-recipes') {
@@ -380,7 +392,7 @@ function RecipeDetails(props) {
           setDetails(data.recipe_details);
           setButtonStatus(data.recipe_details.recipe_info.favorite)
           })
-    } else if (fromPath === 'user-search-results') {
+    } else if (fromPath === 'search-results' && loggedIn) {
       console.log('in else if user-search-recipes fetch');
       fetch('/api/check_results',
             {method: "POST",
@@ -404,14 +416,14 @@ function RecipeDetails(props) {
   console.log('button status in details', buttonStatus)
 
   // enum to conditionally render buttons by path name and button status
-  const getButton = (status) => ({
+  const getButton = (status, loggedIn) => ({
       'saved-recipes': <SavedRecipesButton buttonStatus={status}
                                            recipeDetails={details}
                                            recipeId={details.recipe_info.recipe_id} />,
-      'user-search-results': <SearchResultButton buttonStatus={status}
-                                                 recipeDetails={details}
-                                                 recipeId={details.recipe_info.recipe_id} />,
-      'search-results': <StaticButton />
+      'search-results': (loggedIn ? <SearchResultButton buttonStatus={status}
+                                                        recipeDetails={details}
+                                                        recipeId={details.recipe_info.recipe_id} />
+                                  : <StaticButton />)
     });
 
 
