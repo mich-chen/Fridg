@@ -28,13 +28,24 @@ function TestPage() {
     console.log('test2')
   };
 
+  const test3 = () => {
+    if (window.confirm('Are you sure you want to remove this item?')) {
+      console.log('confirmation alert yes');
+      // document.getElementById('test-delete').remove()
+      document.getElementById('test-delete').innerHTML = 'new text'
+    }
+    
+  };
+
   return (
     <div>
       Test react div
 
-      <button onClick={() => setTest(true)}>
+      <button onClick={test3}>
         {test ? 'test is true': 'test is false'}
       </button>
+
+      <p id='test-delete'> Test text to delete </p>
     </div>
   );
 }

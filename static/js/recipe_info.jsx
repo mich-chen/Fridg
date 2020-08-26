@@ -174,6 +174,50 @@ function SavedBtn(props) {
 }
 
 
+function FavoritedBtn(props) {
+  const text = 'Favorited &hearts;';
+
+  return (
+    <button id='favorited-btn'> Favorited &hearts;  </button>
+    );
+}
+
+
+function RemoveBtn(props) {
+
+  const toggleBtn = () => {
+    document.getElementById('remove-btn').innerHTML = 'Removed!'
+  };
+
+  const removeRecipe = () => {
+    fetch('/api/remove_recipe', {
+      method: 'POST',
+      body: JSON.stringify({recipe_id: props.recipeId}),
+      headers: {'Content-Type': 'application/json'},
+      credentials: 'include'
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data.message, data.success)
+      })
+      .then(toggleBtn)
+  }
+
+  const handleClick = () => {
+    if (window.confirm('Are you sure you want to remove this recipe?')) {
+      console.log('confirmed remove recipe')
+      removeRecipe();
+    }
+  };
+
+  return (
+    <button id='remove-btn' onClick={handleClick}> 
+      Remove Recipe
+    </button>
+    );
+}
+
+
 function SearchResultButton(props) {
   console.log('in search results Button component');
   // isSaved is boolean passed from parent component
@@ -216,15 +260,6 @@ function SearchResultButton(props) {
                        />}
       </section>
     </div>
-    );
-}
-
-
-function FavoritedBtn(props) {
-  const text = 'Favorited &hearts;';
-
-  return (
-    <button id='favorited-btn'> Favorited &hearts;  </button>
     );
 }
 
@@ -416,14 +451,22 @@ function RecipeDetails(props) {
   console.log('button status in details', buttonStatus)
 
   // enum to conditionally render buttons by path name and button status
-  const getButton = (status, loggedIn) => ({
-      'saved-recipes': <SavedRecipesButton buttonStatus={status}
-                                           recipeDetails={details}
-                                           recipeId={details.recipe_info.recipe_id} />,
-      'search-results': (loggedIn ? <SearchResultButton buttonStatus={status}
-                                                        recipeDetails={details}
-                                                        recipeId={details.recipe_info.recipe_id} />
-                                  : <StaticButton />)
+  const getButtons = (status, loggedIn) => ({
+      'saved-recipes': (<div>
+                          <SavedRecipesButton buttonStatus={status}
+                                              recipeDetails={details}
+                                              recipeId={details.recipe_info.recipe_id} />
+                          <RemoveBtn recipeId={details.recipe_info.recipe_id} />
+                        </div>
+                        ),
+      'search-results': (loggedIn ? <div>
+                                      <SearchResultButton buttonStatus={status}
+                                                          recipeDetails={details}
+                                                          recipeId={details.recipe_info.recipe_id} />
+                                      <RemoveBtn recipeId={details.recipe_info.recipe_id} />
+                                    </div>
+                          
+                          : <StaticButton />)
     });
 
 
@@ -431,23 +474,23 @@ function RecipeDetails(props) {
     <div>
       <section className='recipe-details'>
 
-        <StaticImg image={details.recipe_info.image}/>
+        <StaticImg image={details.recipe_info.image} />
 
-        <StaticTitle title={details.recipe_info.title}/>
+        <StaticTitle title={details.recipe_info.title} />
 
-        <RecipeTimeSection times={details.recipe_times}/>
+        <RecipeTimeSection times={details.recipe_times} />
 
-        <RecipeServings servings={details.recipe_info.servings}/>
+        <RecipeServings servings={details.recipe_info.servings} />
 
-        <RecipeIngredients ingredients={details.recipe_ingredients}/>
+        <RecipeIngredients ingredients={details.recipe_ingredients} />
 
-        <RecipeEquipment equipment={details.recipe_equipment}/>
+        <RecipeEquipment equipment={details.recipe_equipment} />
 
-        <RecipeInstructions instructions={details.recipe_instructions}/> 
+        <RecipeInstructions instructions={details.recipe_instructions} /> 
 
-        {getButton(buttonStatus, loggedIn)[fromPath]}
+        {getButtons(buttonStatus, loggedIn)[fromPath]}
 
-        <SourceUrl url={details.recipe_info.sourceUrl}/>
+        <SourceUrl url={details.recipe_info.sourceUrl} />
 
       </section>
     </div>
