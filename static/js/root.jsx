@@ -50,13 +50,16 @@ function Logout() {
   React.useEffect(() => {
     fetch('/api/logout')
     .then(res => res.json())
-    .then(data => alert(data.message))
-    .then(setLoggedIn(false))
+    .then(data => {
+      alert(data.message);
+      setLoggedIn(false)
+    })
   },[]);
 
   const handleClick = () => {
+    
     history.push('/')
-  }
+  };
 
   return (
     <div>
