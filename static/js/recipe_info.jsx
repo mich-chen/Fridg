@@ -445,7 +445,7 @@ function RecipeDetails(props) {
 
         <RecipeInstructions instructions={details.recipe_instructions}/> 
 
-        {getButton(buttonStatus)[fromPath]}
+        {getButton(buttonStatus, loggedIn)[fromPath]}
 
         <SourceUrl url={details.recipe_info.sourceUrl}/>
 
