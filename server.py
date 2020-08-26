@@ -199,9 +199,9 @@ def add_recipe_to_db():
         return jsonify({'success': False, 'message': 'You need to create an account to save a recipe!'})
 
     # find if recipe already exists in db, spoonacular's recipe id is db's recipe_id primary key
+    existing_recipe = crud.get_recipe(recipe_id)
     if crud.get_recipe(recipe_id):
         print('recipe already in db')
-        print(crud.get_recipe(recipe_id))
         return jsonify({'success': True, 'message': 'Recipe already in db, proceed to saving'})
 
     title = recipe_details['recipe_info']['title']
@@ -238,8 +238,6 @@ def add_recipe_to_db():
         pprint(equipment)
         crud.add_equipment(recipe=recipe_id, equipment=equipment)
 
-    # created_recipe = db.session.query(Recipe).all()
-    # print(created_recipe)
 
     return jsonify({'success': True, 'message': 'Recipe added to db!'})
 
@@ -271,7 +269,7 @@ def add_recipe_to_saved():
                 return jsonify({'success': True, 'message': message})
 
     # if selected recipe NOT in saved, or user's saved recipes is empty
-    print('\nselected recipe NOT in db, or user"s saved recipes is empty\n')
+    print('\nselected recipe NOT in db, or user\'s saved recipes is empty\n')
     user = crud.get_user_by_email(session.get('email'))
     print(user, user.user_id)
     crud.save_a_recipe(user=user.user_id, recipe=recipe_id, is_favorite=False)
@@ -413,6 +411,30 @@ def check_if_saved_recipe():
     pprint(recipes_list)
 
     return jsonify({'checked_recipes': recipes_list, 'success': True, 'message': 'Checked results for any saved recipes!'})
+
+
+@app.route('/api/remove_recipe', methods=["POST"])
+def remove_from_saved():
+    """Remove recipe from user's saved recipes list."""
+
+    print('\nin remove recipe route\n')
+
+    data = request.get_json()
+    recipe_id = data['recipe_id']
+
+    email = session.get('email')
+
+    removed = crud.remove_recipe(recipe_id, email)
+
+    if removed:
+        success = True
+    else:
+        success = False
+
+    return jsonify({'success': success, 'message': 'Recipe removed from saved'})
+
+
+
 
 
 

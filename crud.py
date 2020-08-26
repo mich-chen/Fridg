@@ -155,6 +155,18 @@ def add_equipment(recipe, equipment):
 
     return equipment
 
+
+def remove_recipe(recipe_id, email):
+    """Remove recipe from user's saved recipes."""
+
+    recipe = db.session.query(Saved_Recipe).filter(Saved_Recipe.recipe_id == recipe_id, User.email == email).first()
+
+    # delete from database
+    db.session.delete(recipe)
+    db.session.commit()
+
+    return True
+
 if __name__ == '__main__':
     from server import app
     connect_to_db(app)
