@@ -312,19 +312,23 @@ function ShoppingListBtn(props) {
 
 function MissingIngredient(props) {
   console.log('missing ing props', props.ingredient);
-  const ingredient = props.ingredient;
+  // const ingredient = props.ingredient;
+  const {checkedBoxes, handleCheck, name, amount, unit} = props.ingredient;
+
+  const missingIngredient = `${amount} ${unit} ${name}`;
+  console.log('check status !!', !!props.checkedBoxes[missingIngredient]);
 
   return (
     <div>
       <form>
-        <input name={ingredient.name}
+        <input id={name}
                type='checkbox'
-               checked={ingredient.checked}
-               onChange={ingredient.handleCheck} />
-        <label> {ingredient.amount} {ingredient.unit} {ingredient.name} </label>
+               value={missingIngredient}
+               checked={props.checkedBoxes.has(missingIngredient)}
+               onChange={handleCheck} />
+        <label> {amount} {unit} {name} </label>
       </form>
     </div>
-
     );
 }
 
@@ -332,26 +336,31 @@ function MissingIngredient(props) {
 function MissingIngredientsList(props) {
   console.log('missing ingredients component');
 
-  const [checked, setChecked] = React.useState(false);
+  const [checkedBoxes, setCheckedBoxes] = React.useState(new Set());
+  // !!undefined === false
+  // !undefined === true
 
   const handleCheck = (e) => {
     // use stopPropagation instead of preventDefault to allow box to be checked on one click
     e.stopPropagation();
-    setChecked(e.target.checked);
-    console.log('in ')
+    if (checkedBoxes.has(e.target.value)) {
+      checkedBoxes.delete(e.target.value)
+    } else {
+      setCheckedBoxes(checkedBoxes.add(e.target.value));
+    };
+    console.log('checked Boxes values', checkedBoxes);
   };
-  console.log(checked ? 'yes checked' : 'no check');
 
   let missingIngredients = [];
   for (const ingredient of props.missingIngredients) {
     const PROPS = {
       handleCheck: handleCheck,
-      checked: checked,
+      checkedBoxes: checkedBoxes,
       amount: ingredient.amount,
       name: ingredient.name,
       unit: ingredient.unit
     };
-    missingIngredients.push(<MissingIngredient ingredient={PROPS} key={props.missingIngredients.indexOf(ingredient)} />)
+    missingIngredients.push(<MissingIngredient ingredient={PROPS} checkedBoxes={checkedBoxes} key={props.missingIngredients.indexOf(ingredient)} />)
   }
 
 
