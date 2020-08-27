@@ -39,54 +39,11 @@ function RecipeTimeSection(props) {
 }
 
 
-function Ingredient(props){
-  return (
-    <li>{props.amount} {props.unit} {props.name} </li>
-    );
-}
-
-
-function RecipeIngredients(props) {
-  console.log('in recipe ingredients component');
-  console.log(props.ingredients);
-
-  return (
-    <div>
-      <section className='recipe-ingredients'>
-        <label>Ingredients: </label>
-          <ul>
-            {props.ingredients.map((ingredient) => 
-                <Ingredient key={props.ingredients.indexOf(ingredient)}
-                            amount={ingredient.amount}
-                            unit={ingredient.unit}
-                            name={ingredient.name}
-                  />
-              )}
-          </ul>
-      </section>
-    </div>
-    );
-}
-
-
 // ***** Recipe Card components route to Recipe Details *****
 
 
-function StaticImg(props) {
-  return (
-    <img id='static-recipe-img' src={`${props.image}`} />
-    );
-}
-
-
-function StaticTitle(props) {
-  return (
-    <h3 id='static-recipe-title'> {props.title}</h3>
-    );
-}
-
-
 function ClickableImg(props) {
+  console.log('clickable image');
   return (
     <img id='clickable-recipe-img' 
          src={`${props.image}`} 
@@ -297,12 +254,54 @@ function SavedRecipesButton(props) {
 // ***** Components specific for Recipe Details (not shared with Recipe Card) *****
 
 
+function StaticImg(props) {
+  return (
+    <img id='static-recipe-img' src={`${props.image}`} />
+    );
+}
+
+
+function StaticTitle(props) {
+  return (
+    <h3 id='static-recipe-title'> {props.title}</h3>
+    );
+}
+
+
+function Ingredient(props){
+  return (
+    <li>{props.amount} {props.unit} {props.name} </li>
+    );
+}
+
+
+function RecipeIngredients(props) {
+  console.log('in recipe ingredients component');
+
+  return (
+    <div>
+      <section className='recipe-ingredients'>
+        <label>Ingredients: </label>
+          <ul>
+            {props.ingredients.map((ingredient) => 
+                <Ingredient key={props.ingredients.indexOf(ingredient)}
+                            amount={ingredient.amount}
+                            unit={ingredient.unit}
+                            name={ingredient.name}
+                  />
+              )}
+          </ul>
+      </section>
+    </div>
+    );
+}
+
+
 function RecipeEquipment(props) {
   const equipmentList = [];
   for (const equipment in props.equipment) {
-    console.log(equipment);
     equipmentList.push(equipment)
-  }
+  };
 
   return (
     <div>
@@ -356,9 +355,13 @@ function RecipeCard(props) {
 
   // enum to conditionally render buttons by path name and button status
   const getButton = (status, loggedIn) => ({
-      'saved-recipes': <SavedRecipesButton buttonStatus={status}
-                                           recipeDetails={props.recipeDetails}
-                                           recipeId={props.recipeId} />,
+      'saved-recipes': (<div>
+                          <SavedRecipesButton buttonStatus={status}
+                                              recipeDetails={props.recipeDetails}
+                                              recipeId={props.recipeId} />
+                          <RemoveBtn recipeId={props.recipeId} />
+                        </div>
+                        ),
       'search-results': (loggedIn ? <SearchResultButton buttonStatus={status}
                                                         recipeDetails={props.recipeDetails}
                                                         recipeId={props.recipeId} />
@@ -385,9 +388,7 @@ function RecipeCard(props) {
 
         <RecipeServings servings={props.recipeServings}/>
 
-        <RecipeTimeSection times={props.recipeTimes}/>
-
-        <RecipeIngredients ingredients={props.recipeIngredients}/>           
+        <RecipeTimeSection times={props.recipeTimes}/>           
 
         {getButton(props.buttonStatus, loggedIn)[props.fromPath]}
 
