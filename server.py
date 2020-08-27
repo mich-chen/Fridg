@@ -181,7 +181,7 @@ def search_results():
         recipe_data['recipe_ingredients'] = helper_functions.parse_recipe_ingredients(recipe)
         recipe_data['recipe_instructions'] = helper_functions.parse_recipe_instructions(recipe)
         recipe_data['recipe_equipment'] = helper_functions.parse_recipe_equipment(recipe)
-        recipe_data['missed_ingredients'] = helper_functions.parse_missed_ingredients(recipe)
+        recipe_data['missing_ingredients'] = helper_functions.parse_missed_ingredients(recipe)
         recipe_results.append(recipe_data)
     pprint(recipes_complex_data)
 
