@@ -296,7 +296,8 @@ function RecipeIngredients(props) {
 function ShoppingListBtn(props) {
 
   const handleClick = () => {
-    console.log('shopping list button handleclick')
+    console.log('shopping list button handleclick');
+    alert('You must log in or create account to send shopping list!')
   };
 
   return (
