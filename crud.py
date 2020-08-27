@@ -4,11 +4,11 @@ Create, Read, Update, Delete."""
 
 from model import db, User, Saved_Recipe, Recipe, Recipe_Ingredient, Instructions, Equipment, connect_to_db
 
-def create_user(email, password):
+def create_user(email, password, phone):
     """Create an user."""
 
     # Instantiate an User 
-    user = User(email=email, password=password)
+    user = User(email=email, password=password, phone=phone)
 
     # add new instance of user to db and commit
     db.session.add(user)

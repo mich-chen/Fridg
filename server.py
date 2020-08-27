@@ -16,6 +16,9 @@ from model import connect_to_db, db
 import crud # operations for db
 import helper_functions
 
+# import twilio SDK
+from twilio.rest import Client
+
 
 # instance of Flask class, store as app
 app = Flask(__name__)
@@ -23,8 +26,12 @@ app = Flask(__name__)
 app.secret_key = "secretkey"
 app.jinja_env.undefined = StrictUndefined
 
-# secret key from api
+# Spoonacular API key
 API_KEY = os.environ["SPOONACULAR_KEY"]
+# Twilio account SID
+TWILIO_SID = os.environ["TWILIO_SID"]
+# Twilio Auth Token
+TWILIO_TOKEN = os.environ["TWILIO_TOKEN"]
 
 
 @app.route('/', defaults={'path': ''})
@@ -81,13 +88,15 @@ def create_account():
     data = request.get_json()
     email = data['email']
     password = data['password']
+    phone = '+1' + data['phone']
+    print(phone)
 
     # function to check if email exists in db
     existing_user = crud.get_user_by_email(email=email)
 
     # if no return from db for this email
     if existing_user == None:
-        new_user = crud.create_user(email=email, password=password)
+        new_user = crud.create_user(email=email, password=password, phone=phone)
         # create session for user
         session['email'] = email
         message = 'Successfully created new account!'
@@ -431,6 +440,19 @@ def remove_from_saved():
 
     return jsonify({'success': success, 'message': 'Recipe removed from saved'})
 
+
+@app.route('/api/send-shopping-list')
+def send_shopping_list():
+    """Send shopping list of ingredients to user's phone via Twilio API."""
+    
+    client = Client(TWILIO_SID, TWILIO_TOKEN)
+
+    message = client.messages.create(
+        to="+15599403988",
+        from_="+1415818-0714",
+        body=" ")
+
+    print(message.sid)
 
 
 

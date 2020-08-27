@@ -18,7 +18,9 @@ function Login(props) {
 
   // send login info to db to login or check credentials
   // update login context of app
-  const checkLogin = () => { 
+  const checkLogin = (e) => { 
+    e.preventDefault();
+
     console.log(loginData);
     fetch('/api/login', {
       method: 'POST',
@@ -44,7 +46,7 @@ function Login(props) {
   return (
    <div name='login' 
         style={{display: (loggedIn ? 'none' : 'block')}}>
-    <section className='login-form'>
+    <form className='login-form'>
       <h3> Log in to see your saved recipes! </h3>
       <br></br>
 
@@ -53,6 +55,7 @@ function Login(props) {
                type='text'
                onChange={(e) => {setEmail(e.target.value)}}
                value={email} 
+               required
                />
 
       <label> Password: </label>
@@ -60,17 +63,18 @@ function Login(props) {
                type='password'
                onChange={(e) => {setPassword(e.target.value)}}
                value={password}
+               required
                />
 
       <br></br>
 
       <button id='login-btn' 
-              onClick={() => {checkLogin(); resetForm()}} 
+              onClick={(e) => {checkLogin(e); resetForm()}} 
               >
         Log in
       </button>
 
-    </section>
+    </form>
   </div>
   );
 }
@@ -80,17 +84,21 @@ function Login(props) {
 
 
 function CreateAccount(props) {
+
   let history = useHistory();
   // state for email and password for new account
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
-  const newAccountData = {'email': email, 'password': password};
+  const [phone, setPhone] = React.useState('');
+  const newAccountData = {'email': email, 'password': password, 'phone': phone};
 
   const {loggedIn, setLoggedIn} = React.useContext(AuthContext);
   console.log('create account authcontext', loggedIn);
 
   // add account information to db, then push to homepage
-  const createAccount = () => {
+  const createAccount = (e) => {
+    e.preventDefault();
+
     fetch('/api/create_account', {
       method: 'POST',
       body: JSON.stringify(newAccountData),
@@ -110,11 +118,12 @@ function CreateAccount(props) {
     setEmail('');
     setPassword('');
   };
+  console.log(phone);
 
   return (
     <div>
       <div name='create-account'>
-        <section className='create-account-form'>
+        <form className='create-account-form'>
           <h3> Create a New Account to start saving recipes! </h3>
           <br></br>
 
@@ -123,6 +132,7 @@ function CreateAccount(props) {
                    type='text'
                    onChange={(e) => {setEmail(e.target.value)}}
                    value={email} 
+                   required
                    />
 
           <label> Password: </label>
@@ -130,17 +140,28 @@ function CreateAccount(props) {
                    type='password'
                    onChange={(e) => {setPassword(e.target.value)}}
                    value={password}
+                   required
+                   />
+
+          <label> Phone: </label>
+            +1 <input id='phone'
+                   type='tel'
+                   onChange={(e) => {setPhone(e.target.value)}}
+                   value={phone}
+                   placeholder='Enter in 10-digit format'
+                   maxLength='10'
+                   required
                    />
 
           <br></br>
 
           <button id='create-account-btn' 
-                  onClick={() => {createAccount(); resetForm()}} 
+                  onClick={(e) => {createAccount(e); resetForm()}} 
                   >
             Create Account
           </button>
 
-        </section>
+        </form>
       </div>
     </div>
     );

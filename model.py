@@ -14,8 +14,9 @@ class User(db.Model):
     user_id = db.Column(db.Integer,
                          autoincrement=True,
                          primary_key=True)
-    email = db.Column(db.String)
-    password = db.Column(db.String)
+    email = db.Column(db.String, nullable=False)
+    password = db.Column(db.String, nullable=False)
+    phone = db.Column(db.String(12), nullable=False)
 
     # list of user's saved recipes
     saved_recipes = db.relationship('Saved_Recipe', lazy='joined')

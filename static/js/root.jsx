@@ -34,18 +34,26 @@ function TestPage() {
       // document.getElementById('test-delete').remove()
       document.getElementById('test-delete').innerHTML = 'new text'
     }
-    
   };
+
+  const test4 = (e) => {
+    e.preventDefault();
+    console.log('prevented default')
+  };
+
+
 
   return (
     <div>
-      Test react div
+    <form>
+        Test react div
 
-      <button onClick={test3}>
-        {test ? 'test is true': 'test is false'}
-      </button>
+        <button onClick={(e) => {test2(); test4(e)}}>
+          {test ? 'test is true': 'test is false'}
+        </button>
 
-      <p id='test-delete'> Test text to delete </p>
+        <p id='test-delete'> Test text to delete </p>
+      </form>
     </div>
   );
 }
