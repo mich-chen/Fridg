@@ -23,7 +23,16 @@ def parse_recipe_details(complex_data):
 def parse_recipe_ingredients(complex_data):
     """Parse recipe's ingredients we need from bulk/complex API endpoint."""
 
-    recipe_ingredients = complex_data['extendedIngredients']
+    complex_ingredients = complex_data['extendedIngredients']
+
+    recipe_ingredients = []
+    for ingredient in complex_ingredients:
+        ingredient_dict = {}
+        ingredient_dict['id'] = ingredient['id']
+        ingredient_dict['name'] = ingredient['originalName']
+        ingredient_dict['amount'] = ingredient['amount']
+        ingredient_dict['unit'] = ingredient['measures']['us']['unitShort']
+        recipe_ingredients.append(ingredient_dict)
 
     return recipe_ingredients
 

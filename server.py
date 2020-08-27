@@ -173,7 +173,7 @@ def search_results():
         recipe_data['recipe_instructions'] = helper_functions.parse_recipe_instructions(recipe)
         recipe_data['recipe_equipment'] = helper_functions.parse_recipe_equipment(recipe)
         recipe_results.append(recipe_data)
-    # pprint(recipe_results)
+    pprint(recipe_results)
 
     return jsonify(recipe_results)
 
@@ -204,7 +204,7 @@ def add_recipe_to_db():
 
     if existing_recipe != None:
         print('\nrecipe already in db')
-        return jsonify({'success': True, 'message': 'Recipe already in db, proceed to saving'})
+        return jsonify({'success': True, 'message': 'Recipe already in db, procdeed to saving'})
 
     print('\n in else statement add recipe to db\n')
     title = recipe_details['recipe_info']['title']
@@ -221,7 +221,7 @@ def add_recipe_to_db():
     complex_ingredients = recipe_details['recipe_ingredients']
     for ingredient in complex_ingredients:
         ingredient_id = ingredient['id']
-        name = ingredient['originalName']
+        name = ingredient['name']
         amount = ingredient['amount']
         unit = ingredient['unit']
         crud.add_recipe_ingredient(recipe=recipe_id, ingredient_id=ingredient_id, amount=amount, unit=unit, name=name)
