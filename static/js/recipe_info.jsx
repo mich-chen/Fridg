@@ -293,6 +293,22 @@ function RecipeIngredients(props) {
 }
 
 
+function ShoppingListBtn(props) {
+
+  const handleClick = () => {
+    console.log('shopping list button handleclick')
+  };
+
+  return (
+    <div className="shopping-list-btn">
+      <button id='shopping-list-btn' onClick={handleClick}>
+        Send shopping list to phone!
+      </button>
+    </div>
+    );
+}
+
+
 function MissingIngredient(props) {
   console.log('missing ing props', props.ingredient);
   const ingredient = props.ingredient;
@@ -339,9 +355,7 @@ function MissingIngredientsList(props) {
 
 
   return (
-    <div className='missing-ingredients'>
-      <h4> Currently missing ingredients </h4>
-
+    <div className='missing-ingredients-list'>
       <ul>
         {missingIngredients}
       </ul>
@@ -349,6 +363,19 @@ function MissingIngredientsList(props) {
     );
 }
 
+
+function MissingIngredientsContainer(props) {
+  return(
+    <div className='missing-ingredients-container'>
+      <h4> Currently missing ingredients </h4>
+      <p> Check the ingredients you'd like to add for a shopping list! </p>
+
+      <MissingIngredientsList {...props} />
+
+      <ShoppingListBtn />
+    </div>
+    );
+}
 
 
 function RecipeEquipment(props) {
@@ -523,7 +550,7 @@ function RecipeDetails(props) {
 
         <RecipeIngredients ingredients={details.recipe_ingredients} />
 
-        <MissingIngredientsList missingIngredients={details.missing_ingredients}/>
+        <MissingIngredientsContainer missingIngredients={details.missing_ingredients}/>
 
         <RecipeEquipment equipment={details.recipe_equipment} />
 
