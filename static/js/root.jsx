@@ -111,14 +111,13 @@ function SavedRecipes(props) {
         {!savedList.length ? <p>You haven't saved any recipes yet!</p>
           : (savedList.map((recipe) => 
                 <RecipeCard key={recipe.recipe_info.recipe_id}
-                            recipeDetails={recipe}
                             fromPath={'saved-recipes'}
+                            recipeDetails={recipe}
                             recipeImg={recipe.recipe_info.image}
                             recipeTitle={recipe.recipe_info.title}
                             recipeId={recipe.recipe_info.recipe_id}
                             recipeServings={recipe.recipe_info.servings}
                             recipeTimes={recipe.recipe_times}
-                            recipeIngredients={recipe.recipe_ingredients}
                             buttonStatus={recipe.recipe_info.favorite}
                             />
                         ))
@@ -166,7 +165,6 @@ function SearchResults(props) {
                           recipeId={recipe.recipe_info.recipe_id}
                           recipeServings={recipe.recipe_info.servings}
                           recipeTimes={recipe.recipe_times}
-                          recipeIngredients={recipe.recipe_ingredients}
                           buttonStatus={recipe.is_saved}
                           />
                       ))

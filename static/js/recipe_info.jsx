@@ -43,7 +43,6 @@ function RecipeTimeSection(props) {
 
 
 function ClickableImg(props) {
-  console.log('clickable image');
   return (
     <img id='clickable-recipe-img' 
          src={`${props.image}`} 
@@ -54,7 +53,6 @@ function ClickableImg(props) {
 
 
 function ClickableTitle(props) {
-  console.log('clickable title');
   return (
     <h3 id='clickable-recipe-title'
         onClick={props.onClick}> 
@@ -66,22 +64,22 @@ function ClickableTitle(props) {
 
 function ClickableToDetails(props) {
   let history = useHistory();
-
-  // const Button = React.cloneElement(props.button);
+  console.log(props);
+  const {recipeImg, recipeTitle, elementType, element, fromPath, recipeId, ...others} = props;
 
   const goToDetails = () => {
     console.log('in go to details func');
-    history.push({pathname: `/${props.fromPath}/recipe-details/${props.recipeId}`,
-                  state: {recipeDetails: props.recipeDetails}
+    history.push({pathname: `/${fromPath}/recipe-details/${recipeId}`,
+                  state: {...others}
                 })
   };
 
   return (
     <div>
       <section className='clickable-to-details'>
-        {props.elementType === 'image' ? <ClickableImg image={props.element}                                          onClick={goToDetails}
+        {props.elementType === 'image' ? <ClickableImg image={recipeImg}                                          onClick={goToDetails}
                                        />
-         : <ClickableTitle title={props.element} 
+         : <ClickableTitle title={recipeTitle} 
                         onClick={goToDetails}
                         />
           }
@@ -352,12 +350,15 @@ function RecipeCard(props) {
   // pass data as props to children and Recipe Details component
   // parent is either Search Results or Saved Recipes
   const {loggedIn} = React.useContext(AuthContext);
+  // console.log('spread?', {...props});
+
+  const {recipeServings, recipeTimes, buttonStatus, ...others} = props;
+  console.log('others spread', {...others});
 
   // enum to conditionally render buttons by path name and button status
   const getButton = (status, loggedIn) => ({
       'saved-recipes': (<div>
                           <SavedRecipesButton buttonStatus={status}
-                                              recipeDetails={props.recipeDetails}
                                               recipeId={props.recipeId} />
                           <RemoveBtn recipeId={props.recipeId} />
                         </div>
@@ -372,25 +373,15 @@ function RecipeCard(props) {
     <div>
       <section className='recipe-card'>
 
-        <ClickableToDetails elementType={'image'}
-                            recipeDetails={props.recipeDetails}
-                            fromPath={props.fromPath}
-                            recipeId={props.recipeId}
-                            element={props.recipeImg}
-                            />
+        <ClickableToDetails {...others} elementType='image' />
 
-        <ClickableToDetails elementType={'title'}
-                            recipeDetails={props.recipeDetails}
-                            fromPath={props.fromPath}
-                            recipeId={props.recipeId}
-                            element={props.recipeTitle}
-                            />
+        <ClickableToDetails {...others} elementType='title' />
 
-        <RecipeServings servings={props.recipeServings}/>
+        <RecipeServings servings={recipeServings}/>
 
-        <RecipeTimeSection times={props.recipeTimes}/>           
+        <RecipeTimeSection times={recipeTimes}/>           
 
-        {getButton(props.buttonStatus, loggedIn)[props.fromPath]}
+        {getButton(buttonStatus, loggedIn)[props.fromPath]}
 
       </section>
     </div>
@@ -403,19 +394,16 @@ function RecipeCard(props) {
 
 function RecipeDetails(props) {
   // clickable image and title will history.push() here
-  let { id } = useParams();
-  let { fromPath } = useParams();
+  let { id, fromPath } = useParams();
   let location = useLocation();
 
-  console.log('from path', fromPath);
-
-  const [details, setDetails] = React.useState(location.state.recipeDetails);
+  const {recipeDetails, ...others} = location.state;
+  // set initial state as recipe details passed from search results as props
+  const [details, setDetails] = React.useState(recipeDetails);
   const [buttonStatus, setButtonStatus] = React.useState(false);
-
+  // user authenication true/false
   const {loggedIn, setLoggedIn} = React.useContext(AuthContext);
   console.log('recipe details auth', loggedIn);
-
-
 
   // if logged-in user, fetch data for details and button status from server
   React.useEffect(() => {
@@ -442,8 +430,6 @@ function RecipeDetails(props) {
           setButtonStatus(data.checked_recipes[0].is_saved)
           })
     } else {
-      console.log('recipe details else statement');
-      console.log(details);
       setButtonStatus(details.is_saved)
     };
   }, [buttonStatus]);
@@ -455,7 +441,6 @@ function RecipeDetails(props) {
   const getButtons = (status, loggedIn) => ({
       'saved-recipes': (<div>
                           <SavedRecipesButton buttonStatus={status}
-                                              recipeDetails={details}
                                               recipeId={details.recipe_info.recipe_id} />
                           <RemoveBtn recipeId={details.recipe_info.recipe_id} />
                         </div>
