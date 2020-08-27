@@ -448,6 +448,7 @@ def send_shopping_list():
 
     data = request.get_json()
     phone = data['phone']
+    shopping_list = data['shopping_list']
     # pass phone as string to 'to=' in message
     
     client = Client(TWILIO_SID, TWILIO_TOKEN)
