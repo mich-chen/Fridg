@@ -77,12 +77,10 @@ function ClickableToDetails(props) {
   return (
     <div>
       <section className='clickable-to-details'>
-        {props.elementType === 'image' ? <ClickableImg image={recipeImg}                                          onClick={goToDetails}
-                                       />
-         : <ClickableTitle title={recipeTitle} 
-                        onClick={goToDetails}
-                        />
-          }
+        {props.elementType === 'image' 
+         ? <ClickableImg image={recipeImg} onClick={goToDetails} />
+         : <ClickableTitle title={recipeTitle} onClick={goToDetails} />
+        }
       </section>
     </div>
     );
@@ -295,6 +293,64 @@ function RecipeIngredients(props) {
 }
 
 
+function MissingIngredient(props) {
+  console.log('missing ing props', props.ingredient);
+  const ingredient = props.ingredient;
+
+  return (
+    <div>
+      <form>
+        <input name={ingredient.name}
+               type='checkbox'
+               checked={ingredient.checked}
+               onChange={ingredient.handleCheck} />
+        <label> {ingredient.amount} {ingredient.unit} {ingredient.name} </label>
+      </form>
+    </div>
+
+    );
+}
+
+
+function MissingIngredientsList(props) {
+  console.log('missing ingredients component');
+
+  const [checked, setChecked] = React.useState(false);
+
+  const handleCheck = (e) => {
+    // use stopPropagation instead of preventDefault to allow box to be checked on one click
+    e.stopPropagation();
+    setChecked(e.target.checked);
+    console.log('in ')
+  };
+  console.log(checked ? 'yes checked' : 'no check');
+
+  let missingIngredients = [];
+  for (const ingredient of props.missingIngredients) {
+    const PROPS = {
+      handleCheck: handleCheck,
+      checked: checked,
+      amount: ingredient.amount,
+      name: ingredient.name,
+      unit: ingredient.unit
+    };
+    missingIngredients.push(<MissingIngredient ingredient={PROPS} key={props.missingIngredients.indexOf(ingredient)} />)
+  }
+
+
+  return (
+    <div className='missing-ingredients'>
+      <h4> Currently missing ingredients </h4>
+
+      <ul>
+        {missingIngredients}
+      </ul>
+    </div>
+    );
+}
+
+
+
 function RecipeEquipment(props) {
   const equipmentList = [];
   for (const equipment in props.equipment) {
@@ -350,10 +406,8 @@ function RecipeCard(props) {
   // pass data as props to children and Recipe Details component
   // parent is either Search Results or Saved Recipes
   const {loggedIn} = React.useContext(AuthContext);
-  // console.log('spread?', {...props});
 
   const {recipeServings, recipeTimes, buttonStatus, ...others} = props;
-  console.log('others spread', {...others});
 
   // enum to conditionally render buttons by path name and button status
   const getButton = (status, loggedIn) => ({
@@ -455,7 +509,6 @@ function RecipeDetails(props) {
                           : <StaticButton />)
     });
 
-
   return (
     <div>
       <section className='recipe-details'>
@@ -469,6 +522,8 @@ function RecipeDetails(props) {
         <RecipeServings servings={details.recipe_info.servings} />
 
         <RecipeIngredients ingredients={details.recipe_ingredients} />
+
+        <MissingIngredientsList missingIngredients={details.missing_ingredients}/>
 
         <RecipeEquipment equipment={details.recipe_equipment} />
 

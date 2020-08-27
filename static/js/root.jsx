@@ -41,6 +41,13 @@ function TestPage() {
     console.log('prevented default')
   };
 
+  const [checked, setChecked] = React.useState(false);
+  const handleCheck = (e) => {
+    // used stopPropagation instead of preventDefault to allow button to be checked on one click
+    e.stopPropagation();
+    setChecked(e.target.checked);
+  };
+  console.log(checked ? 'yes checked' : 'no check');
 
 
   return (
@@ -53,6 +60,19 @@ function TestPage() {
         </button>
 
         <p id='test-delete'> Test text to delete </p>
+      </form>
+
+      <br />
+
+      <h3> Currently missing ingredients </h3>
+      <br />
+
+      <form>
+        <input id='ingredient-id'
+               type='checkbox'
+               checked={checked}
+               onChange={handleCheck} />
+        <label htmlFor='ingredient-id'> Ingredient name </label>
       </form>
     </div>
   );
