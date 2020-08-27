@@ -95,7 +95,7 @@ function SavedRecipes(props) {
     })
   }, []);
 
-  console.log(savedList);
+  console.log('saved list of recipes', savedList);
 
   return (
     <div>
