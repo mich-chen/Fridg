@@ -156,7 +156,7 @@ def search_results():
                "sort": "max-used-ingredients",
                "instructionsRequired": True,
                "fillIngredients": True,
-               "ignorePantry": True,
+               # "ignorePantry": True,
                # "offset": 5,
                "number": 3,
                } 
@@ -181,8 +181,9 @@ def search_results():
         recipe_data['recipe_ingredients'] = helper_functions.parse_recipe_ingredients(recipe)
         recipe_data['recipe_instructions'] = helper_functions.parse_recipe_instructions(recipe)
         recipe_data['recipe_equipment'] = helper_functions.parse_recipe_equipment(recipe)
+        recipe_data['missed_ingredients'] = helper_functions.parse_missed_ingredients(recipe)
         recipe_results.append(recipe_data)
-    pprint(recipe_results)
+    pprint(recipes_complex_data)
 
     return jsonify(recipe_results)
 
@@ -441,12 +442,17 @@ def remove_from_saved():
     return jsonify({'success': success, 'message': 'Recipe removed from saved'})
 
 
-@app.route('/api/send-shopping-list')
+@app.route('/api/send-shopping-list', methods=["POST"])
 def send_shopping_list():
     """Send shopping list of ingredients to user's phone via Twilio API."""
+
+    data = request.get_json()
+    phone = data['phone']
+    # pass phone as string to 'to=' in message
     
     client = Client(TWILIO_SID, TWILIO_TOKEN)
 
+    # "+15599403988"
     message = client.messages.create(
         to="+15599403988",
         from_="+1415818-0714",

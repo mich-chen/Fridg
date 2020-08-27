@@ -88,7 +88,7 @@ class Recipe_Ingredient(db.Model):
     recipe_id = db.Column(db.Integer,
                           db.ForeignKey('recipes.recipe_id'))
     ingredient_id = db.Column(db.Integer)
-    amount = db.Column(db.Float)
+    amount = db.Column(db.Float(precision=2))
     unit = db.Column(db.String)
     name = db.Column(db.String)
 

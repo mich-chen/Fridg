@@ -4,6 +4,10 @@ import crud
 from model import connect_to_db, db
 from pprint import pprint
 
+
+# ***** Parse Spoonacular's API Endpoint data (Complex Search data) *****
+
+
 def parse_recipe_details(complex_data):
     """Parse only details we need from bulk/complex API endpoint.
 
@@ -29,8 +33,8 @@ def parse_recipe_ingredients(complex_data):
     for ingredient in complex_ingredients:
         ingredient_dict = {}
         ingredient_dict['id'] = ingredient['id']
-        ingredient_dict['name'] = ingredient['originalName']
-        ingredient_dict['amount'] = ingredient['amount']
+        ingredient_dict['name'] = ingredient['name']
+        ingredient_dict['amount'] = round(ingredient['amount'], 2)
         ingredient_dict['unit'] = ingredient['measures']['us']['unitShort']
         recipe_ingredients.append(ingredient_dict)
 
@@ -69,6 +73,9 @@ def parse_recipe_instructions(complex_data):
     return instructions_list
 
 def parse_recipe_equipment(complex_data):
+    """Parse equipment name from complex API endpoint.
+
+    Equipment name is both key and value, therefore, no duplicate keys."""
 
     recipe_equipments = {}
 
@@ -82,6 +89,28 @@ def parse_recipe_equipment(complex_data):
     # key is equipment with value as dict of equipment names -> so no duplicates
 
     return recipe_equipments
+
+
+def parse_missed_ingredients(complex_data):
+    """Parse missed ingredients from complex API endpoint.
+
+    Only need missed ingredient amount, unit(short), and name."""
+
+    # list of ingredient dictionaries
+    complex_ingredients = complex_data['missedIngredients']
+
+    missed_ingredients = []
+    for ingredient in complex_ingredients:
+        ingredient_dict = {}
+        ingredient_dict['name'] = ingredient['name']
+        ingredient_dict['amount'] = round(ingredient['amount'],2)
+        ingredient_dict['unit'] = ingredient['unitShort']
+        missed_ingredients.append(ingredient_dict)
+
+    return missed_ingredients
+
+
+# ***** Parsing recipes from db (sqlAlchemy objects) *****
 
 
 def parse_saved_recipe_details(saved_recipe):
