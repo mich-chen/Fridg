@@ -89,6 +89,14 @@ def get_recipe(recipe_id):
     return recipe
 
 
+def retrieve_recipe(id_num):
+    """Return recipe_id if exists in db."""
+
+    recipe = Recipe.query.filter_by(recipe_id=id_num).first()
+    
+    return recipe
+
+
 def create_recipe(recipe_id, title, image, servings, sourceUrl, cooking_mins, prep_mins, ready_mins):
     """Create a recipe."""
 

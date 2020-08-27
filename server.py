@@ -199,11 +199,14 @@ def add_recipe_to_db():
         return jsonify({'success': False, 'message': 'You need to create an account to save a recipe!'})
 
     # find if recipe already exists in db, spoonacular's recipe id is db's recipe_id primary key
-    existing_recipe = crud.get_recipe(recipe_id)
-    if crud.get_recipe(recipe_id):
-        print('recipe already in db')
+    existing_recipe = crud.retrieve_recipe(recipe_id)
+    print(existing_recipe)
+
+    if existing_recipe != None:
+        print('\nrecipe already in db')
         return jsonify({'success': True, 'message': 'Recipe already in db, proceed to saving'})
 
+    print('\n in else statement add recipe to db\n')
     title = recipe_details['recipe_info']['title']
     image = recipe_details['recipe_info']['image']
     servings = recipe_details['recipe_info']['servings']
@@ -404,10 +407,7 @@ def check_if_saved_recipe():
 
     for recipe in recipes_list:
         recipe_id = recipe['recipe_info']['recipe_id']
-        if recipe_id in saved_ids:
-            recipe['is_saved'] = True
-        else:
-            recipe['is_saved'] = False
+        recipe['is_saved'] = recipe_id in saved_ids
 
     pprint(recipes_list)
 
@@ -424,17 +424,12 @@ def remove_from_saved():
     recipe_id = data['recipe_id']
 
     email = session.get('email')
-
+    # remove_recipe returns boolean True
     removed = crud.remove_recipe(recipe_id, email)
-
-    if removed:
-        success = True
-    else:
-        success = False
+    # success is boolean
+    success = removed
 
     return jsonify({'success': success, 'message': 'Recipe removed from saved'})
-
-
 
 
 
