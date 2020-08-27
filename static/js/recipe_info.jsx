@@ -486,6 +486,8 @@ function RecipeDetails(props) {
   const {loggedIn, setLoggedIn} = React.useContext(AuthContext);
   console.log('recipe details auth', loggedIn);
 
+  console.log('has own property', details.hasOwnProperty('missing_ingredients'));
+
   // if logged-in user, fetch data for details and button status from server
   React.useEffect(() => {
     if (fromPath === 'saved-recipes') {
@@ -516,7 +518,6 @@ function RecipeDetails(props) {
   }, [buttonStatus]);
 
   console.log('recipes details', details);
-  console.log('button status in details', buttonStatus)
 
   // enum to conditionally render buttons by path name and button status
   const getButtons = (status, loggedIn) => ({
@@ -550,7 +551,10 @@ function RecipeDetails(props) {
 
         <RecipeIngredients ingredients={details.recipe_ingredients} />
 
-        <MissingIngredientsContainer missingIngredients={details.missing_ingredients}/>
+        {details.hasOwnProperty('missing_ingredients') ? 
+          <MissingIngredientsContainer missingIngredients={details.missing_ingredients} />
+          : null
+        }
 
         <RecipeEquipment equipment={details.recipe_equipment} />
 
