@@ -1,3 +1,5 @@
+const { Badge, Button, Col, Container, Form, FormControl, InputGroup, ListGroup, Navbar, Row, Table, Modal } = ReactBootstrap;
+
 const Router = ReactRouterDOM.BrowserRouter;
 const Route = ReactRouterDOM.Route;
 const Link = ReactRouterDOM.Link;
@@ -10,23 +12,33 @@ const useParams = ReactRouterDOM.useParams;
 
 
 
+function TestComponent() {
+  return(
+    <div>test component div</div>
+    );
+}
+
+
 function TestPage() {
   // test component for javascript and react
   const [test, setTest] = React.useState(false);
+  const [email, setEmail] = React.useState('');
+  const [show, setShow] = React.useState(false);
+
+  const handleShow = () => {setShow(true)}
+  const handleClose = () => {setShow(false)}
+
+  const testModal = () => {
+    console.log('handled Saved Changes modal button');
+  };
+
+  console.log('test email', email);
 
   React.useEffect(() =>{
     test ? console.log('in useEffect, test is true') : console.log('in useEffect, test is false')
     // setTest(true)
     console.log('in useEffect')
   }, [test]);
-
-  const test1 = () => {
-    console.log('test1')
-  };
-
-  const test2 = () => {
-    console.log('test2')
-  };
 
   const test3 = () => {
     if (window.confirm('Are you sure you want to remove this item?')) {
@@ -53,28 +65,70 @@ function TestPage() {
 
   return (
     <div>
-    <form>
-        Test react div
+      Test react div
 
-        <button onClick={(e) => {test2(); test4(e)}}>
-          {test ? 'test is true': 'test is false'}
-        </button>
+      <Button variant='primary' onClick={handleShow}>
+        Launch test modal
+      </Button>
 
-        <p id='test-delete'> Test text to delete </p>
-      </form>
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Modal Title</Modal.Title>
+          text in modal header? 
+        </Modal.Header>
+
+        <Modal.Body>
+          <TestComponent />
+        </Modal.Body>
+
+        <Modal.Footer>
+          text in footer
+          <Button variant='secondary' onClick={handleClose}>
+            Close
+          </Button>
+
+          <Button variant='primary' onClick={() => {handleClose(); testModal()}}>
+            Save Changes
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+
+
+
+
+      <Form>
+        <Form.Group controlId='testForm.ControlEmail'>
+          <Form.Label> Test input type=email</Form.Label>
+          <FormControl type='email' 
+                        palceholder='email@email.com'
+                        value={email}
+                        onChange={(e) => {setEmail(e.target.value)}}
+                        />
+
+          <Button onClick={test4}>
+            {test ? 'test is true': 'test is false'}
+          </Button>
+
+          <p id='test-delete'> Test text to delete </p>
+        </Form.Group>
+      </Form>
 
       <br />
 
       <h3> Currently missing ingredients </h3>
       <br />
 
-      <form>
-        <input id='test-checkbox'
-               type='checkbox'
-               checked={false}
-               onChange={handleCheck} />
-        <label htmlFor='ingredient-id'> Ingredient name </label>
-      </form>
+      <Form>
+        <Form.Group controlId='testForm.ControlCheckbox'>
+          <Form.Label>Test check box </Form.Label>
+          <InputGroup.Checkbox id='test-checkbox'
+                 type='checkbox'
+                 checked={false}
+                 onChange={handleCheck} />
+          <Form.Label htmlFor='ingredient-id'> Ingredient name </Form.Label>
+        </Form.Group>
+      </Form>
     </div>
   );
 }
@@ -233,10 +287,14 @@ function SearchBar(props) {
     );
 }
 
+
 const AuthContext = React.createContext(null);
 // creating instance of context
 
+
+
 function App() {
+
   console.log('in app component');
   // data from external API
   const [data, setData] = React.useState([]);
