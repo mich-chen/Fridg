@@ -45,7 +45,8 @@ function TestPage() {
   const handleCheck = (e) => {
     // used stopPropagation instead of preventDefault to allow button to be checked on one click
     e.stopPropagation();
-    setChecked(e.target.checked);
+    // setChecked(e.target.checked);
+    document.getElementById('test-checkbox').checked = true;
   };
   console.log(checked ? 'yes checked' : 'no check');
 
@@ -68,9 +69,9 @@ function TestPage() {
       <br />
 
       <form>
-        <input id='ingredient-id'
+        <input id='test-checkbox'
                type='checkbox'
-               checked={checked}
+               checked={false}
                onChange={handleCheck} />
         <label htmlFor='ingredient-id'> Ingredient name </label>
       </form>
