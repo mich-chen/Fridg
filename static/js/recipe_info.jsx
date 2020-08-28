@@ -293,101 +293,6 @@ function RecipeIngredients(props) {
 }
 
 
-function ShoppingListBtn(props) {
-
-  const handleClick = () => {
-    console.log('shopping list button handleclick');
-    alert('You must log in or create account to send shopping list!')
-  };
-
-  return (
-    <div className="shopping-list-btn">
-      <button id='shopping-list-btn' onClick={handleClick}>
-        Send shopping list to phone!
-      </button>
-    </div>
-    );
-}
-
-
-function MissingIngredient(props) {
-  console.log('missing ing props', props.ingredient);
-  // const ingredient = props.ingredient;
-  const {checkedBoxes, handleCheck, name, amount, unit} = props.ingredient;
-
-  const missingIngredient = `${amount} ${unit} ${name}`;
-  console.log('check status !!', !!props.checkedBoxes[missingIngredient]);
-
-  return (
-    <div>
-      <form>
-        <input id={name}
-               type='checkbox'
-               value={missingIngredient}
-               checked={props.checkedBoxes.has(missingIngredient)}
-               onChange={handleCheck} />
-        <label> {amount} {unit} {name} </label>
-      </form>
-    </div>
-    );
-}
-
-
-function MissingIngredientsList(props) {
-  console.log('missing ingredients component');
-
-  const [checkedBoxes, setCheckedBoxes] = React.useState(new Set());
-  // !!undefined === false
-  // !undefined === true
-
-  const handleCheck = (e) => {
-    // use stopPropagation instead of preventDefault to allow box to be checked on one click
-    e.stopPropagation();
-    if (checkedBoxes.has(e.target.value)) {
-      checkedBoxes.delete(e.target.value)
-    } else {
-      setCheckedBoxes(checkedBoxes.add(e.target.value));
-    };
-    console.log('checked Boxes values', checkedBoxes);
-  };
-
-  let missingIngredients = [];
-  for (const ingredient of props.missingIngredients) {
-    const PROPS = {
-      handleCheck: handleCheck,
-      checkedBoxes: checkedBoxes,
-      amount: ingredient.amount,
-      name: ingredient.name,
-      unit: ingredient.unit
-    };
-    missingIngredients.push(<MissingIngredient ingredient={PROPS} checkedBoxes={checkedBoxes} key={props.missingIngredients.indexOf(ingredient)} />)
-  }
-
-
-  return (
-    <div className='missing-ingredients-list'>
-      <ul>
-        {missingIngredients}
-      </ul>
-    </div>
-    );
-}
-
-
-function MissingIngredientsContainer(props) {
-  return(
-    <div className='missing-ingredients-container'>
-      <h4> Currently missing ingredients </h4>
-      <p> Check the ingredients you'd like to add for a shopping list! </p>
-
-      <MissingIngredientsList {...props} />
-
-      <ShoppingListBtn />
-    </div>
-    );
-}
-
-
 function RecipeEquipment(props) {
   const equipmentList = [];
   for (const equipment in props.equipment) {
@@ -434,6 +339,117 @@ function SourceUrl(props) {
     </a>
     );
 }
+
+
+// ***** Missing Ingredients Shopping List *****
+
+
+function MissingItem(props) {
+  console.log('each missing item');
+  const {checkedBoxes, handleCheck, amount, unit, name} = props;
+  const missingIngredient = `${amount} ${unit} ${name}`;
+
+  return (
+    <div>
+      <form className='missing-ingredient-item'>
+        <input id={name}
+               type='checkbox'
+               value={missingIngredient}
+               checked={checkedBoxes.hasOwnProperty(missingIngredient)}
+               onChange={handleCheck} />
+        <label> {amount} {unit} {name} </label>
+      </form>
+    </div>
+    );
+}
+
+
+function MissingIngredientsList(props) {
+  console.log('missing ingredients component');
+  console.log('big props', props);
+  const {missingIngredients, ...others} = props;
+
+  return (
+    <div className='missing-ingredients-list'>
+      <ul>
+        {missingIngredients.map((ingredient) => 
+          <MissingItem key={missingIngredients.indexOf(ingredient)}
+                       {...others}
+                       amount={ingredient.amount}
+                       unit={ingredient.unit}
+                       name={ingredient.name} />
+        )}
+      </ul>
+    </div>
+    );
+}
+
+
+function ShoppingListBtn(props) {
+  const {loggedIn} = React.useContext(AuthContext);
+
+  const handleClick = () => {
+    console.log('shopping list button handleclick');
+    if (!loggedIn) {
+      alert('You must log in or create account to send shopping list!')
+    } else {
+      fetch('/api/shopping-list', {
+        method: 'POST',
+        body: JSON.stringify({shopping_list: props.shoppingList,
+                              recipe_title: props.title}),
+        headers: {'Content-Type': 'application/json'},
+        credentials: 'include'
+      })
+      .then(res => res.json())
+      .then(data => alert(data.message))
+    }
+  };
+
+  return (
+    <div className="shopping-list-btn">
+      <button id='shopping-list-btn' onClick={handleClick}>
+        {loggedIn ? 'Send shopping list to phone!' : 'Log in or create account for shopping list!'}
+      </button>
+    </div>
+    );
+}
+
+
+function MissingIngredientsContainer(props) {
+  const [checkedBoxes, setCheckedBoxes] = React.useState({});
+  const [shoppingList, setShoppingList] = React.useState({});
+  console.log('shopping list', shoppingList);
+
+  const {title, missingIngredients} = props;
+
+  const handleCheck = (e) => {
+    e.stopPropagation();
+    let newChecked = {...checkedBoxes};
+
+    if (checkedBoxes.hasOwnProperty(e.target.value)) {
+      delete newChecked[e.target.value];
+      setCheckedBoxes(newChecked);
+    } else {
+      newChecked[e.target.value] = e.target.value;
+      setCheckedBoxes(newChecked);
+    };
+    setShoppingList(newChecked)
+  };
+
+  return(
+    <div className='missing-ingredients-container'>
+      <h4> Currently missing ingredients </h4>
+      <p> Check the ingredients you'd like to add for a shopping list! </p>
+
+      <MissingIngredientsList missingIngredients={missingIngredients}
+                              checkedBoxes={checkedBoxes}
+                              handleCheck={handleCheck} />
+
+      <ShoppingListBtn shoppingList={shoppingList} title={title}/>
+    </div>
+    );
+}
+
 
 
 // ***** Recipe Card as Parent Component to Recipe Details *****
@@ -562,7 +578,7 @@ function RecipeDetails(props) {
         <RecipeIngredients ingredients={details.recipe_ingredients} />
 
         {details.hasOwnProperty('missing_ingredients') ? 
-          <MissingIngredientsContainer missingIngredients={details.missing_ingredients} />
+          <MissingIngredientsContainer missingIngredients={details.missing_ingredients} title={details.recipe_info.title}/>
           : null
         }
 
