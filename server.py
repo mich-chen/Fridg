@@ -442,24 +442,43 @@ def remove_from_saved():
     return jsonify({'success': success, 'message': 'Recipe removed from saved'})
 
 
-@app.route('/api/send-shopping-list', methods=["POST"])
+@app.route('/api/shopping-list', methods=["POST"])
 def send_shopping_list():
     """Send shopping list of ingredients to user's phone via Twilio API."""
 
-    data = request.get_json()
-    phone = data['phone']
-    shopping_list = data['shopping_list']
     # pass phone as string to 'to=' in message
+    email = session.get('email')
+    phone = crud.get_user_phone(email)
+    print(phone)
+
+    data = request.get_json()
+    shopping_list = data['shopping_list']
+    recipe_title = data['recipe_title']
+    items = shopping_list.keys()
+
+    list_items = [item for item in items]
+    print(list_items)
+    print(shopping_list)
+
+    final = "\n".join(list_items)
     
     client = Client(TWILIO_SID, TWILIO_TOKEN)
 
     # "+15599403988"
     message = client.messages.create(
         to="+15599403988",
-        from_="+1415818-0714",
-        body=" ")
+        from_="+14158180714",
+        body=f'{recipe_title} shopping list:\n'
+             f'{final}'
+             )
+        # body="""trying to make
+        # this 
+        # i
+        # )
 
     print(message.sid)
+
+    return jsonify({'success': True, 'message': 'Shopping list sent to your phone!'})
 
 
 
