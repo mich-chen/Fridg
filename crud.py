@@ -24,6 +24,12 @@ def get_user_by_email(email):
     return db.session.query(User).filter_by(email=email).first()
 
 
+def get_user_phone(email):
+    """Return user's phone number by email."""
+    phone = db.session.query(User.phone).filter_by(email=email).first()
+
+    return phone
+
 def save_a_recipe(user, recipe, is_favorite):
     """Saves a recipe user picked."""
 
