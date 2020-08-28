@@ -7,7 +7,7 @@ const SERVER_PATH = {
 // ***** Log In component *****
 
 
-function Login(props) {
+function Login() {
   // set state for email and password
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
@@ -48,25 +48,28 @@ function Login(props) {
         style={{display: (loggedIn ? 'none' : 'block')}}>
     <form className='login-form'>
       <h3> Log in to see your saved recipes! </h3>
-      <br></br>
+      <br/>
 
       <label> Email: </label>
         <input id='email'
                type='text'
                onChange={(e) => {setEmail(e.target.value)}}
                value={email} 
+               placeholder="email@email.com"
                required
                />
+      <br/>
 
       <label> Password: </label>
         <input id='password'
                type='password'
                onChange={(e) => {setPassword(e.target.value)}}
                value={password}
+               placeholder='password'
                required
                />
 
-      <br></br>
+      <br/>
 
       <button id='login-btn' 
               onClick={(e) => {checkLogin(e); resetForm()}} 
@@ -83,7 +86,7 @@ function Login(props) {
 // ***** Create New Account Component *****
 
 
-function CreateAccount(props) {
+function CreateAccount() {
 
   let history = useHistory();
   // state for email and password for new account
@@ -110,13 +113,14 @@ function CreateAccount(props) {
         alert(data.message);
         setLoggedIn(data.success)
       })
-      .then(history.push('/homepage'))
+      // .then(history.push('/homepage'))
   };
 
   // reset form fields after onClick of create account button
   const resetForm = () => {
     setEmail('');
     setPassword('');
+    setPhone('');
   };
   console.log(phone);
 
@@ -125,7 +129,7 @@ function CreateAccount(props) {
       <div name='create-account'>
         <form className='create-account-form'>
           <h3> Create a New Account to start saving recipes! </h3>
-          <br></br>
+          <br/>
 
           <label> Email: </label>
             <input id='email'
@@ -134,6 +138,7 @@ function CreateAccount(props) {
                    value={email} 
                    required
                    />
+          <br/>
 
           <label> Password: </label>
             <input id='password'
@@ -142,6 +147,7 @@ function CreateAccount(props) {
                    value={password}
                    required
                    />
+          <br/>
 
           <label> Phone: </label>
             +1 <input id='phone'
@@ -153,7 +159,7 @@ function CreateAccount(props) {
                    required
                    />
 
-          <br></br>
+          <br/>
 
           <button id='create-account-btn' 
                   onClick={(e) => {createAccount(e); resetForm()}} 
