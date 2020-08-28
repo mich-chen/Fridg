@@ -114,8 +114,54 @@ function ActionBtn(props) {
 
 function StaticButton(props) {
   // Button to render if user is not logged in
+  let history = useHistory();
+  const [show, setShow] = React.useState(false);
+  const [newUser, setNewUser] = React.useState(false);
+
+  const handleShow = () => {setShow(true)};
+  const handleClose = () => {setShow(false)};
+  const handleNewUser = () => {setNewUser(true)};
+  const handleExistingUser = () => {setNewUser(false)};
+
+  const MODALFOOTER = {
+    false: (
+      <React.Fragment>
+        New user?
+        <Button variant='link' onClick={handleNewUser}>
+        Create account
+        </Button>
+      </React.Fragment>
+      ),
+    true: (
+      <React.Fragment>
+        Have an account?
+        <Button variant='link' onClick={handleExistingUser}>
+          Log in
+        </Button>
+      </React.Fragment>
+      )
+  };
+
   return (
-    <button id='static-btn'> Log In To Save! </button>
+    <React.Fragment>
+      <Button variant='primary' onClick={handleShow}>
+        Log in to Save!
+      </Button>
+
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          Log In To Save This Recipe!
+        </Modal.Header>
+
+        <Modal.Body>
+          {!newUser ? <Login /> : <CreateAccount />}
+        </Modal.Body>
+
+        <Modal.Footer>
+          {MODALFOOTER[newUser]}
+        </Modal.Footer>
+      </Modal>
+    </React.Fragment>
     );
 }
 
