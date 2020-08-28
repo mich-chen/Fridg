@@ -112,7 +112,7 @@ function ActionBtn(props) {
 }
 
 
-function StaticButton(props) {
+function ModalButton(props) {
   // Button to render if user is not logged in
   let history = useHistory();
   const [show, setShow] = React.useState(false);
@@ -519,7 +519,7 @@ function RecipeCard(props) {
       'search-results': (loggedIn ? <SearchResultButton buttonStatus={status}
                                                         recipeDetails={props.recipeDetails}
                                                         recipeId={props.recipeId} />
-                                  : <StaticButton />)
+                                  : <ModalButton />)
     });
 
   return (
@@ -606,7 +606,7 @@ function RecipeDetails(props) {
                                       <RemoveBtn recipeId={details.recipe_info.recipe_id} />
                                     </div>
                           
-                          : <StaticButton />)
+                          : <ModalButton />)
     });
 
   return (
