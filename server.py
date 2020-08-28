@@ -452,15 +452,9 @@ def send_shopping_list():
     print(phone)
 
     data = request.get_json()
-    shopping_list = data['shopping_list']
+    list_items = data['shopping_list']
     recipe_title = data['recipe_title']
-    items = shopping_list.keys()
-
-    list_items = [item for item in items]
-    print(list_items)
-    print(shopping_list)
-
-    final = "\n".join(list_items)
+    shopping_list = "\n".join(list_items.keys())
     
     client = Client(TWILIO_SID, TWILIO_TOKEN)
 
@@ -469,12 +463,8 @@ def send_shopping_list():
         to="+15599403988",
         from_="+14158180714",
         body=f'{recipe_title} shopping list:\n'
-             f'{final}'
+             f'{shopping_list}'
              )
-        # body="""trying to make
-        # this 
-        # i
-        # )
 
     print(message.sid)
 
