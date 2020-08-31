@@ -38,6 +38,9 @@ class Saved_Recipe(db.Model):
     user_id = db.Column(db.Integer,
                         db.ForeignKey('users.user_id'))
     favorite = db.Column(db.Boolean)
+    tried = db.Column(db.Boolean)
+    rating = db.Column(db.Integer)
+    comment = db.Column(db.String)
 
     # recipe that was saved
     recipe = db.relationship('Recipe', lazy='joined')
