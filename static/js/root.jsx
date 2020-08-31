@@ -25,8 +25,8 @@ function TestPage() {
   const [email, setEmail] = React.useState('');
   const [show, setShow] = React.useState(false);
 
-  const handleShow = () => {setShow(true)}
-  const handleClose = () => {setShow(false)}
+  const handleShow = () => {setShow(true)};
+  const handleClose = () => {setShow(false)};
 
   const testModal = () => {
     console.log('handled Saved Changes modal button');
@@ -62,10 +62,29 @@ function TestPage() {
   };
   console.log(checked ? 'yes checked' : 'no check');
 
+  const [filled, setFilled] = React.useState(false);
+  const [selected, setSelected] = React.useState(false);
+
+  const handleMouseEnter = () => {
+    setFilled(true)
+  };
+
+  const handleMouseLeave = () => {
+    setFilled(false)
+  };
+
+  const handleStarClick = (e) => {
+    if (selected) {
+      setSelected(false)
+    } else {
+      setSelected(true)
+    };
+  };
+
 
   return (
     <div>
-      Test react div
+      Test react div <i className="fas fa-user"></i>
 
       <Button variant='primary' onClick={handleShow}>
         Launch test modal
@@ -93,10 +112,6 @@ function TestPage() {
         </Modal.Footer>
       </Modal>
 
-
-
-
-
       <Form>
         <Form.Group controlId='testForm.ControlEmail'>
           <Form.Label> Test input type=email</Form.Label>
@@ -113,6 +128,17 @@ function TestPage() {
           <p id='test-delete'> Test text to delete </p>
         </Form.Group>
       </Form>
+
+      <br />
+
+      <button id='mouse-over-btn' 
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+              onClick={handleStarClick}>
+        {selected ? 'filled star' 
+          : filled ? 'filled star' 
+          : 'unfilled star'}
+      </button>
 
       <br />
 
@@ -311,6 +337,10 @@ function App() {
 
   console.log('app loggedIn status', loggedIn);
 
+  const [show, setShow] = React.useState(false);
+  const handleShow = () => {setShow(true)};
+  const handleClose = () => {setShow(false)};
+
   // enum to conditionally render navbar links with loggedIn 
   const NavLinks = {
     true: (<nav>
@@ -328,10 +358,12 @@ function App() {
 
     false: (<nav>
               <li>
-                <Link to="/login">Log In</Link>
+                <Link to="/login" onClick={handleShow}>
+                  Log In
+                </Link>
               </li>
               <li>
-                <Link to="/create-account">Create An Account</Link>
+                <Link to="/create-account" onClick={handleShow}>Create An Account</Link>
               </li>
               <li> 
                 <Link to="/search-results">Search Reults</Link>
@@ -385,11 +417,13 @@ function App() {
               </Route>
 
               <Route exact path="/login">
-                <Login />
+                <UserAuthModal show={show}
+                               handleClose={handleClose}/>
               </Route>
 
               <Route exact path="/create-account">
-                <CreateAccount />
+                <UserAuthModal show={show}
+                               handleClose={handleClose}/>
               </Route>
 
               <Route exact path="/logout">
