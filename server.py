@@ -478,6 +478,7 @@ def get_user_thoughts(recipe_id):
     email = session.get('email')
     saved_recipe = crud.get_a_saved_recipe(recipe_id, email)
     thoughts = crud.get_user_thoughts(saved_recipe)
+    pprint(thoughts)
 
     return jsonify({'thoughts': thoughts, 'message': 'retrieved user\'s food for thought!'})
 
@@ -489,13 +490,22 @@ def update_user_thoughts():
     data = request.get_json()
     tried = bool(data.get('tried'))
     rating = data.get('rating')
+    pprint(rating)
     comment = data.get('comment')
+    pprint(comment)
     recipe_id = data.get('recipe_id')
 
     email = session.get('email')
     saved_recipe = crud.get_a_saved_recipe(recipe_id, email)
 
-    crud.update_user_thoughts(saved_recipe=saved_recipe, tried=tried, rating=rating, comment=comment)
+    if tried != None:
+        crud.update_tried(saved_recipe=saved_recipe, tried=tried)
+
+    if rating != None:
+        crud.update_rating(saved_recipe=saved_recipe, rating=rating)
+
+    if comment != None:
+        crud.update_comment(saved_recipe=saved_recipe, comment=comment)
 
     return jsonify({'success': True, 'message': 'updated user\'s food for thought!'})
 

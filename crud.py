@@ -67,15 +67,28 @@ def get_a_saved_recipe(recipe_id, email):
     return saved_recipe
 
 
-def update_user_thoughts(saved_recipe, tried=None, rating=None, comment=None):
-    """Add/update user's thoughts and commons on a saved recipe.
-
-    Updating tried (boolean), rating, and comment (string). Receive a saved_recipe object."""
+def update_tried(saved_recipe, tried):
+    """Add/update user's tried."""
 
     saved_recipe.tried = tried
-    saved_recipe.rating = rating
-    saved_recipe.comment = comment
+    db.session.commit()
 
+    return saved_recipe
+
+
+def update_comment(saved_recipe, comment):
+    """Add/update user's comment."""
+
+    saved_recipe.comment = comment
+    db.session.commit()
+
+    return saved_recipe
+
+
+def update_rating(saved_recipe, rating):
+    """Add/update user's rating."""
+
+    saved_recipe.rating = rating
     db.session.commit()
 
     return saved_recipe
