@@ -1,9 +1,3 @@
-const SERVER_PATH = {
-  login: '/api/login',
-  createAccount: '/api/create_account'
-}
-
-
 // ***** Log In component *****
 
 
@@ -136,6 +130,7 @@ function CreateAccount() {
                    type='text'
                    onChange={(e) => {setEmail(e.target.value)}}
                    value={email} 
+                   placeholder="email@email.com"
                    required
                    />
           <br/>
@@ -145,6 +140,7 @@ function CreateAccount() {
                    type='password'
                    onChange={(e) => {setPassword(e.target.value)}}
                    value={password}
+                   placeholder='password'
                    required
                    />
           <br/>
@@ -170,6 +166,57 @@ function CreateAccount() {
         </form>
       </div>
     </div>
+    );
+}
+
+
+// ***** User Authentication Modal *****
+
+
+function UserAuthModal(props) {
+  // const [show, setShow] = React.useState(false);
+  const [newUser, setNewUser] = React.useState(false);
+
+  // const handleShow = () => {setShow(true)};
+  // const handleClose = () => {setShow(false)};
+  const handleNewUser = () => {setNewUser(true)};
+  const handleExistingUser = () => {setNewUser(false)};
+
+  const MODALFOOTER = {
+    false: (
+      <React.Fragment>
+        New user?
+        <Button variant='link' onClick={handleNewUser}>
+        Create account
+        </Button>
+      </React.Fragment>
+      ),
+    true: (
+      <React.Fragment>
+        Have an account?
+        <Button variant='link' onClick={handleExistingUser}>
+          Log in
+        </Button>
+      </React.Fragment>
+      )
+  };
+
+  return (
+    <React.Fragment>
+      <Modal show={props.show} onHide={props.handleClose}>
+        <Modal.Header closeButton>
+          Log In to Access All The Yummy Features!
+        </Modal.Header>
+
+        <Modal.Body>
+          {!newUser ? <Login /> : <CreateAccount />}
+        </Modal.Body>
+
+        <Modal.Footer>
+          {MODALFOOTER[newUser]}
+        </Modal.Footer>
+      </Modal>
+    </React.Fragment>
     );
 }
 
