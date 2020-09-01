@@ -33,9 +33,34 @@ function Tried(props) {
 
 
 function Comment(props) {
+  let { id } = useParams();
+  const {comment, setComment} = props;
+  console.log(comment);
+
+  const handleComment = () => {
+    const newComment = document.getElementById('comment').value;
+    fetch('/api/user_thoughts', {
+    method: 'POST',
+    body: JSON.stringify({comment: newComment, recipe_id: id}),
+    headers: {'Content-Type': 'application/json'},
+    credentials: 'include'
+    })
+    .then(res => res.json())
+    .then(data => alert(data.message));
+    setComment(newComment);
+    document.getElementById('comment').value = ''
+  };
+  
   return (
     <div>
-      <label> 
+      <div>
+        <Form.Label> Recipe Comment: </Form.Label>
+        <p> {comment} </p>
+        <FormControl id='comment' as="textarea"></FormControl>
+        <Button variant='primary' type='submit' onClick={handleComment}>
+          Save comment
+        </Button>
+      </div>
     </div>
     );
 }
@@ -65,6 +90,8 @@ function FoodForThoughtsContainer(props) {
   return (
     <div>
       <Tried tried={tried} setTried={setTried} />
+
+      <Comment comment={comment} setComment={setComment} />
     </div>
     );
 }
