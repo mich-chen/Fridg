@@ -66,13 +66,48 @@ function Comment(props) {
 }
 
 
+function Rating(props) {
+  let { id } = useParams();
+  const {selected, setSelected} = props;
+
+  const STARS = [
+    { name: 'star1', value: 1 },
+    { name: 'star2', value: 2 },
+    { name: 'star3', value: 3 },
+    { name: 'star4', value: 4 },
+    { name: 'star5', value: 5 }
+  ];
+
+  return(
+    <div>
+      <label>How'd it go?</label>
+      <ToggleButtonGroup className='rating'  
+                         type='checkbox'
+                         onChange={handleRating}
+                         value={selected}
+                         >
+        {STARS.map((star, idx) => (
+          <ToggleButton key={idx}
+                        type='checkbox'
+                        variant='primary'
+                        checked={selected.includes(star.value)}
+                        value={star.value}
+                        onClick={handleClick}
+                        >
+            {STAR_TEXT['unfilled']}
+          </ToggleButton>  
+          ))}
+
+      </ToggleButtonGroup>
+    </div>
+    );
+}
+
 function FoodForThoughtsContainer(props) {
   let { id } = useParams();
   const [tried, setTried] = React.useState(null);
   const [rating, setRating] = React.useState(0);
   const [comment, setComment] = React.useState('');
-
-  const [checked, setChecked] = React.useState(false);
   const [selected, setSelected] = React.useState([]);
   console.log('selected', selected);
 
