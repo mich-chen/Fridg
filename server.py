@@ -478,7 +478,7 @@ def get_user_thoughts(recipe_id):
     email = session.get('email')
     saved_recipe = crud.get_a_saved_recipe(recipe_id, email)
     thoughts = crud.get_user_thoughts(saved_recipe)
-    pprint(thoughts)
+    print('\nuser thoughts', thoughts)
 
     return jsonify({'thoughts': thoughts, 'message': 'retrieved user\'s food for thought!'})
 
@@ -486,7 +486,7 @@ def get_user_thoughts(recipe_id):
 @app.route('/api/user_thoughts', methods=["POST"])
 def update_user_thoughts():
     """Update a user's thoughts on a saved recipe."""
-
+    print('\nin user thought to db route\n')
     data = request.get_json()
     tried = bool(data.get('tried'))
     rating = data.get('rating')
@@ -502,6 +502,7 @@ def update_user_thoughts():
         crud.update_tried(saved_recipe=saved_recipe, tried=tried)
 
     if rating != None:
+        print('in rating is none')
         crud.update_rating(saved_recipe=saved_recipe, rating=rating)
 
     if comment != None:
