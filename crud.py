@@ -99,7 +99,7 @@ def get_user_thoughts(saved_recipe):
 
     thoughts = {}
     thoughts['tried'] = saved_recipe.tried
-    thoughts['rating'] = list(range(1, saved_recipe.rating + 1))
+    thoughts['rating'] = saved_recipe.rating
     thoughts['comment'] = saved_recipe.comment
 
     return thoughts
