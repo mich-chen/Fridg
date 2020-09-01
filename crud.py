@@ -81,6 +81,17 @@ def update_user_thoughts(saved_recipe, tried=None, rating=None, comment=None):
     return saved_recipe
 
 
+def get_user_thoughts(saved_recipe):
+    """Get tried, rating, and comments on a user's saved recipe."""
+
+    thoughts = {}
+    thoughts['tried'] = saved_recipe.tried
+    thoughts['rating'] = saved_recipe.rating
+    thoughts['comment'] = saved_recipe.comment
+
+    return thoughts
+
+
 def favorite_a_saved_recipe(recipe_id, email):
     """Favorite a saved recipe from db."""
 
