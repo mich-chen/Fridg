@@ -489,6 +489,7 @@ def update_user_thoughts():
     print('\nin user thought to db route\n')
     data = request.get_json()
     tried = bool(data.get('tried'))
+    pprint(tried)
     rating = data.get('rating')
     pprint(rating)
     comment = data.get('comment')
