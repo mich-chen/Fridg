@@ -471,6 +471,36 @@ def send_shopping_list():
     return jsonify({'success': True, 'message': 'Shopping list sent to your phone!'})
 
 
+@app.route('/api/user_thoughts/<recipe_id>')
+def get_user_thoughts(recipe_id):
+    """Get a user's thoughts on a saved recipe from db."""
+
+    email = session.get('email')
+    saved_recipe = crud.get_a_saved_recipe(recipe_id, email)
+    thoughts = crud.get_user_thoughts(saved_recipe)
+
+    return jsonify({'thoughts': thoughts, 'message': 'retrieved user\'s food for thought!'})
+
+
+@app.route('/api/user_thoughts', methods=["POST"])
+def update_user_thoughts():
+    """Update a user's thoughts on a saved recipe."""
+
+    data = request.get_json()
+    tried = bool(data.get('tried'))
+    rating = data.get('rating')
+    comment = data.get('comment')
+    recipe_id = data.get('recipe_id')
+
+    email = session.get('email')
+    saved_recipe = crud.get_a_saved_recipe(recipe_id, email)
+
+    crud.update_user_thoughts(saved_recipe=saved_recipe, tried=tried, rating=rating, comment=comment)
+
+    return jsonify({'success': True, 'message': 'updated user\'s food for thought!'})
+
+
+
 
 
 if __name__ == '__main__':
