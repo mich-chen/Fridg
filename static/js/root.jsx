@@ -15,7 +15,6 @@ function Homepage(props) {
   let history = useHistory();
   const [appear, setAppear] = React.useState(false);
   const {loggedIn} = React.useContext(AuthContext);
-  // () => {handleClick(), props.handleShow()
   const handleClick = () => {
     history.push('create-account')
   };
@@ -166,17 +165,15 @@ function SearchBar(props) {
     );
 }
 
-
-const AuthContext = React.createContext(null);
 // creating instance of context
+const AuthContext = React.createContext(null);
+
 
 function App() {
-
   console.log('in app component');
-  // data from external API
+  // data from Spoonacular API search results
   const [data, setData] = React.useState([]);
   console.log((data));
-
   const [loggedIn, setLoggedIn] = React.useState(null);
   // each time setLoggedIn is updated in App, useEffect will fetch logged in from server to persist data during reloads
   React.useEffect(() => {
@@ -185,9 +182,8 @@ function App() {
       .then(res => res.json())
       .then(data => setLoggedIn(data.in_session))
   }, [loggedIn]);
-
   console.log('app loggedIn status', loggedIn);
-
+  // state for handling showing modal in nav links
   const [show, setShow] = React.useState(false);
   const handleShow = () => {setShow(true)};
   const handleClose = () => {setShow(false)};
@@ -240,14 +236,9 @@ function App() {
                 
                 {NavLinks[loggedIn]}
 
-                <SearchBar 
-                  setData={setData}
-                  />
+                <SearchBar setData={setData} />
 
               </ul>
-
-
-
             </nav>
 
             <Switch>
@@ -262,9 +253,7 @@ function App() {
               </Route>
 
               <Route exact path="/search-results">
-                <SearchResults 
-                  resultsList={data}
-                />
+                <SearchResults resultsList={data} />
               </Route>
 
               <Route exact path="/login">
@@ -290,13 +279,11 @@ function App() {
               </Route>
 
               <Route path="/homepage">
-                <Homepage setData={setData}
-                          handleShow={handleShow} />
+                <Homepage setData={setData} />
               </Route>
 
               <Route exact path="/">
-                <Homepage setData={setData}
-                          handleShow={handleShow} />
+                <Homepage setData={setData} />
               </Route>
             </Switch>
           </div>
