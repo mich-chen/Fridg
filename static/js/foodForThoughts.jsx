@@ -72,7 +72,7 @@ function Comment(props) {
 
 function Rating(props) {
   let { id } = useParams();
-  const {selected, setSelected, rating} = props;
+  const {rating, setRating} = props;
   
   const STARS = [
     { value: 1 },
@@ -82,14 +82,20 @@ function Rating(props) {
     { value: 5 }
   ];
 
+  // font awesome icons 
+  const STAR_TEXT = {
+    filled: <i className="fas fa-star"></i>,
+    unfilled: <i className="far fa-star"></i>
+  };
+
   const handleRating = (e) => {
     // make array from 1 to selected value
-    let newSelected = [];
+    let newRating = [];
     for (let i = 1; i <= e.target.value; i += 1) {
-      newSelected.push(i)
+      newRating.push(i)
     };
     // update stars with array of new rating
-    setRating(newSelected);
+    setRating(newRating);
     
     fetch('/api/user_thoughts', {
       method: 'POST',
@@ -99,11 +105,6 @@ function Rating(props) {
       })
     .then(res => res.json())
     .then(data => alert(data.message))
-  };
-  // font awesome icons 
-  const STAR_TEXT = {
-    filled: <i className="fas fa-star"></i>,
-    unfilled: <i className="far fa-star"></i>
   };
 
   return(
@@ -135,7 +136,6 @@ function FoodForThoughtsContainer(props) {
   const [tried, setTried] = React.useState(null);
   const [rating, setRating] = React.useState([]);
   const [comment, setComment] = React.useState('');
-  const [selected, setSelected] = React.useState([]);
   // update state of each section from db data or set as default nulls
   React.useEffect(() => {
     fetch(`/api/user_thoughts/${id}`)
@@ -155,8 +155,7 @@ function FoodForThoughtsContainer(props) {
 
       <br/>
 
-      <Rating selected={selected} 
-              setSelected={setSelected}
+      <Rating setRating={setRating}
               rating={rating} />
 
       <br/>
