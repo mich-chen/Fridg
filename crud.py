@@ -110,7 +110,7 @@ def get_user_thoughts(saved_recipe):
     return thoughts
 
 
-def favorite_a_saved_recipe(recipe_id, email):
+def favorite_a_recipe(recipe_id, email):
     """Favorite a saved recipe from db."""
 
     favorited_recipe = Saved_Recipe.query.filter(Saved_Recipe.recipe_id == recipe_id, User.email == email).join(User).first()

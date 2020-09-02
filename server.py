@@ -290,15 +290,13 @@ def add_recipe_to_saved():
 
 @app.route('/api/favorite_a_recipe', methods=["POST"])
 def favorite_a_recipe():
-    """Make a selected recipe a favorite.
-
-    set is_favorite in db to True."""
+    """Favorite a saved recipe."""
 
     print('\nin favorited route\n')
     # unencode from JSON
     data = request.get_json()
     recipe_id = data['recipe_id']
-    crud.favorite_a_saved_recipe(recipe_id, session.get('email'))
+    crud.favorite_a_recipe(recipe_id, session.get('email'))
 
     return jsonify({'success': True,'message': 'successfully favorited this recipe!'})
 
