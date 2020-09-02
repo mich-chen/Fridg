@@ -16,7 +16,7 @@ def create_user(email, password, phone):
     db.session.add(user)
     db.session.commit()
 
-    return user
+    return 
 
 
 def get_user_by_email(email):
@@ -45,7 +45,7 @@ def save_a_recipe(user, recipe, is_favorite):
     db.session.add(saved_recipe)
     db.session.commit()
 
-    return saved_recipe
+    return
 
 
 def get_saved_recipes(email):
@@ -118,7 +118,7 @@ def favorite_a_saved_recipe(recipe_id, email):
 
     db.session.commit()
 
-    return favorited_recipe
+    return
 
 
 def get_favorited_saved_recipes(email):
@@ -142,7 +142,7 @@ def create_recipe(recipe_id, title, image, servings, sourceUrl, cooking_mins, pr
     db.session.add(recipe)
     db.session.commit()
 
-    return recipe
+    return
 
 
 def get_recipe(recipe_id):
@@ -171,7 +171,7 @@ def add_recipe_ingredient(recipe, ingredient_id, amount, unit, name):
     db.session.add(recipe_ingredient)
     db.session.commit()
 
-    return recipe_ingredient
+    return
 
 
 def add_instructions(recipe, step_num, step_instruction):
@@ -184,7 +184,7 @@ def add_instructions(recipe, step_num, step_instruction):
     db.session.add(instructions)
     db.session.commit()
 
-    return instructions
+    return
 
 
 def add_equipment(recipe, equipment):
@@ -197,7 +197,7 @@ def add_equipment(recipe, equipment):
     db.session.add(equipment)
     db.session.commit()
 
-    return equipment
+    return
 
 
 def remove_recipe(recipe_id, email):
