@@ -121,15 +121,6 @@ def favorite_a_recipe(recipe_id, email):
     return
 
 
-def get_favorited_saved_recipes(email):
-    """show user's favorited saved recipes."""
-
-    # list of user's saved recipes where favorite == True (favorited saved recipe)
-    favorited_recipes = db.session.query(Saved_Recipe.recipe_id).filter(User.email == email).group_by(Saved_Recipe.favorite,Saved_Recipe.recipe_id).having(Saved_Recipe.favorite == True).join(User).all()
-
-    return favorited_recipes
-
-
 # ***** Recipe class crud functions *****
 
 def create_recipe(recipe_id, title, image, servings, sourceUrl, cooking_mins, prep_mins, ready_mins):
