@@ -66,7 +66,6 @@ def parse_recipe_instructions(complex_data):
     # each 'step' is a dictionary in complex instructions list
     for i, step in enumerate(complex_instructions):
         # create new key with the numbered step and its instructions
-        # instructions[str(i + 1)] = step['step']
         instructions_list.append(step['step'])
     # add each recipe's parsed instructions into the full list
 
@@ -80,7 +79,6 @@ def parse_recipe_equipment(complex_data):
     recipe_equipments = {}
 
     # make equipments be a set so unique and no duplicates
-
     complex_instructions = complex_data['analyzedInstructions'][0]['steps']
     for step in complex_instructions:
         # each equipment is a dictionary in the list of equipments
@@ -190,55 +188,17 @@ def parse_saved_recipe_equipment(saved_recipe):
 def parse_db_recipe_details(recipe):
     """Return dictionary of a db recipe's details information."""
 
-    # dictionary of dictionaries for recipe's categorized information
-    recipe_details = {}
+    recipe_details = recipe.as_dict()
 
-    # dicitonary of recipe's general information:
-    # recipe_id, title, servings, sourceUrl, image, ingredients (name, amount, unit)
-    recipe_info = {}
-    recipe_info['recipe_id'] = recipe.recipe_id
-    recipe_info['title'] = recipe.title
-    recipe_info['servings'] = recipe.servings
-    recipe_info['sourceUrl'] = recipe.sourceUrl
-    recipe_info['image'] = recipe.image
-    # parse through recipe's ingredients table for info
-    ingredients = recipe.ingredients
-    ingredients_list = []
-    for ingredient in ingredients:
-        info = {}
-        info['name'] = ingredient.ingredient.name
-        info['amount'] = ingredient.amount
-        info['unit'] = ingredient.unit
-        ingredients_list.append(info)
-
-    recipe_times = {}
-    recipe_times['preparationMinutes'] = recipe.prep_mins
-    recipe_times['cookingMinutes'] = recipe.cooking_mins
-    recipe_times['readyInMinutes'] = recipe.ready_mins
-
-    instructions_list = []
-    # list of instructions objects, for each step's instructions
-    instructions_objects = recipe.instructions
-    for instruction in instructions_objects:
-        # add each step's instruction into the full list
-        instructions_list.append(instruction.step_instruction)
-
-    recipe_equipment = {}
-    # list of equipment objects
-    equipment_objects = recipe.equipment
-    for equipment in equipment_objects:
-        # make equipments be dictionary of unique and no duplicates
-        recipe_equipment[equipment.equipment] = equipment.equipment
-
-    recipe_details['recipe_info'] = recipe_info
-    recipe_details['recipe_times'] = recipe_times
-    recipe_details['recipe_ingredients'] = ingredients_list
-    recipe_details['recipe_instructions'] = instructions_list
-    recipe_details['recipe_equipment'] = recipe_equipment
+    ingredients = [ingredient.as_dict() for ingredient in recipe_details['ingredients']]
+    instructions = [instruction.as_dict() for instruction in recipe_details['instructions']]
+    equipment = [equipment.as_dict() for equipment in recipe_details['equipment']]
+    # reassign values from db objects as python dictionaries
+    recipe_details['ingredients'] = ingredients
+    recipe_details['instructions'] = instructionst
+    recipe_details['equipment'] = equipment
 
     return recipe_details
-
-
 
 
 
