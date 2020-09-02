@@ -4,7 +4,7 @@
 function MissingItem(props) {
   const {checkedBoxes, handleCheck, amount, unit, name} = props;
   const missingIngredient = `${amount} ${unit} ${name}`;
-
+  // checkbox with missing ingredent info as a string value for db
   return (
     <div>
       <form className='missing-ingredient-item'>
@@ -13,7 +13,7 @@ function MissingItem(props) {
                value={missingIngredient}
                checked={checkedBoxes.hasOwnProperty(missingIngredient)}
                onChange={handleCheck} />
-        <label> {amount} {unit} {name} </label>
+        {'    '}<label> {amount} {unit} {name} </label>
       </form>
     </div>
     );
@@ -41,7 +41,8 @@ function MissingIngredientsList(props) {
 
 function ShoppingListBtn(props) {
   const {loggedIn} = React.useContext(AuthContext);
-
+  // if logged in, button will send shopping list to user's phone
+  // not logged in, prompts login modal
   const handleClick = () => {
     if (!loggedIn) {
       alert('You must log in or create account to send shopping list!')
@@ -57,12 +58,19 @@ function ShoppingListBtn(props) {
       .then(data => alert(data.message))
     }
   };
+  // not logged in renders modal window prompting log in
+  // logged in renders button to server and send text
+  const SHOPPING_BTN = {
+    true: (<Button id='shopping-list-btn' onClick={handleClick}>
+            Send shopping list to phone!
+          </Button>
+          ),
+    false: (<ModalButton text={'Log in to send to your phone!'} />)
+  };
 
   return (
     <div className="shopping-list-btn">
-      <button id='shopping-list-btn' onClick={handleClick}>
-        {loggedIn ? 'Send shopping list to phone!' : 'Log in or create account for shopping list!'}
-      </button>
+      {SHOPPING_BTN[loggedIn]}
     </div>
     );
 }
