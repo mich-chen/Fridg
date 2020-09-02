@@ -4,6 +4,8 @@ Create, Read, Update, Delete."""
 
 from model import db, User, Saved_Recipe, Recipe, Recipe_Ingredient, Instructions, Equipment, connect_to_db
 
+# ***** User class crud functions *****
+
 def create_user(email, password, phone):
     """Create an user."""
 
@@ -29,6 +31,9 @@ def get_user_phone(email):
     phone = db.session.query(User.phone).filter_by(email=email).first()
 
     return phone
+
+
+# ***** Saved Recipe class crud functions *****
 
 def save_a_recipe(user, recipe, is_favorite):
     """Saves a recipe user picked."""
@@ -125,21 +130,7 @@ def get_favorited_saved_recipes(email):
     return favorited_recipes
 
 
-def get_recipe(recipe_id):
-    """Retrieve a recipe from database."""
-
-    recipe = db.session.query(Recipe).filter(Recipe.recipe_id == recipe_id).join(Saved_Recipe, User, Recipe_Ingredient, Instructions, Equipment).first() 
-
-    return recipe
-
-
-def retrieve_recipe(id_num):
-    """Return recipe_id if exists in db."""
-
-    recipe = Recipe.query.filter_by(recipe_id=id_num).first()
-    
-    return recipe
-
+# ***** Recipe class crud functions *****
 
 def create_recipe(recipe_id, title, image, servings, sourceUrl, cooking_mins, prep_mins, ready_mins):
     """Create a recipe."""
@@ -151,6 +142,22 @@ def create_recipe(recipe_id, title, image, servings, sourceUrl, cooking_mins, pr
     db.session.add(recipe)
     db.session.commit()
 
+    return recipe
+
+
+def get_recipe(recipe_id):
+    """Retrieve a recipe from database."""
+
+    recipe = db.session.query(Recipe).filter(Recipe.recipe_id == recipe_id).join(Saved_Recipe, User, Recipe_Ingredient, Instructions, Equipment).first() 
+
+    return recipe
+
+
+def quick_get_recipe(id_num):
+    """Return recipe_id if exists in db."""
+
+    recipe = Recipe.query.filter_by(recipe_id=id_num).first()
+    
     return recipe
 
 
