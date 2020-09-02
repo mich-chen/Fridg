@@ -186,9 +186,8 @@ def check_if_saved_recipe():
         # if not logged in or in session, then all recipes show as not saved
         for recipe in recipes_list:
             recipe['is_saved'] = False
-        pprint(recipes_list)
 
-        return jsonify({'checked_recipes': recipes_list, 'success': False, 'message': 'You need to create an account to see saved recipes!'})
+        return jsonify({'checked_recipes': recipes_list, 'success': True, 'message': 'You need to create an account to see saved recipes!'})
 
     users_saved_recipes = crud.get_saved_recipes(session.get('email'))
     # set of saved recipe ids
@@ -199,9 +198,8 @@ def check_if_saved_recipe():
         recipe_id = recipe['recipe_id']
         recipe['is_saved'] = recipe_id in saved_ids
 
-    pprint(recipes_list)
-
     return jsonify({'checked_recipes': recipes_list, 'success': True, 'message': 'Checked results for any saved recipes!'})
+
 
 
 @app.route('/api/add_recipe', methods=["POST"])
@@ -212,11 +210,10 @@ def add_recipe_to_db():
     # unencode from JSON
     data = request.get_json()
     recipe_details = data['recipe_details']
-    recipe_id = recipe_details['recipe_info']['recipe_id']
+    recipe_id = recipe_details['recipe_id']
 
     # must log in to save a recipe
     if session.get('email') == None:
-        print('in session == none')
         return jsonify({'success': False, 'message': 'You need to create an account to save a recipe!'})
 
     # find if recipe already exists in db
@@ -227,35 +224,32 @@ def add_recipe_to_db():
         return jsonify({'success': True, 'message': 'Recipe already in db, procdeed to saving'})
 
     print('\n new recipe, adding to db \n')
-    title = recipe_details['recipe_info']['title']
-    image = recipe_details['recipe_info']['image']
-    servings = recipe_details['recipe_info']['servings']
-    sourceUrl = recipe_details['recipe_info']['sourceUrl']
-    cooking_mins = recipe_details['recipe_times']['cookingMinutes']
-    prep_mins = recipe_details['recipe_times']['preparationMinutes']
-    ready_mins = recipe_details['recipe_times']['readyInMinutes']
+    title = recipe_details['title']
+    image = recipe_details['image']
+    servings = recipe_details['servings']
+    sourceUrl = recipe_details['sourceUrl']
+    cooking_mins = recipe_details['cook_mins']
+    prep_mins = recipe_details['prep_mins']
+    ready_mins = recipe_details['ready_mins']
     # add recipe's title, image, and servings to recipes table in db
     crud.create_recipe(recipe_id=recipe_id, title=title, image=image, servings=servings, sourceUrl=sourceUrl, cooking_mins=cooking_mins, prep_mins=prep_mins, ready_mins=ready_mins)
 
-    # complex_ingredients is a list of dictionaries of each ingredient's details
-    complex_ingredients = recipe_details['recipe_ingredients']
-    for ingredient in complex_ingredients:
+    # add each individual ingredient of recipe to db.
+    for ingredient in recipe_details['ingredients']:
         ingredient_id = ingredient['ingredient_id']
         name = ingredient['name']
         amount = ingredient['amount']
         unit = ingredient['unit']
         crud.add_recipe_ingredient(recipe=recipe_id, ingredient_id=ingredient_id, amount=amount, unit=unit, name=name)
 
-    # ordered list of recipe's instructions (no numbers)
-    instructions_list = recipe_details['recipe_instructions']
-    for i, instruction in enumerate(instructions_list):
+    # add each instructions step and string to db
+    for i, instruction in enumerate(recipe_details['instructions']):
         # set step_num by adding 1 to indices
         step_num = i + 1
         step_instruction = instruction
-        # add recipe's instruction step and instructions, one by one to db
         crud.add_instructions(recipe=recipe_id, step_num=step_num, step_instruction=step_instruction)
 
-    # dictionary with equipment name as both key and value
+    # add each key of equipment to db
     for equipment in recipe_details['recipe_equipment']:
         crud.add_equipment(recipe=recipe_id, equipment=equipment)
 
