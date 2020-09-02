@@ -160,6 +160,13 @@ class Instructions(db.Model):
 
     def __repr__(self):
         return f'<Instructions recipe={self.recipe_id} step={self.step_num}>'
+
+    def as_dict(self):
+        return {'instruction_id': self.instruction_id,
+                'recipe_id': self.recipe_id,
+                'step_num': self.step_num,
+                'step_instruction': self.step_instruction,
+                'recipe': self.recipe}
         
 
 class Equipment(db.Model):
@@ -179,6 +186,12 @@ class Equipment(db.Model):
 
     def __repr__(self):
         return f'<Equipment recipe={self.recipe_id} equipment={self.equipment}>'
+
+    def as_dict(self):
+        return {'equipment_id': self.equipment_id,
+                'recipe_id': self.recipe_id,
+                'equipment': self.equipment,
+                'recipe': self.recipe}
     
 
 def connect_to_db(flask_app, db_uri='postgresql:///recipes', echo=True):
