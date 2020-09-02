@@ -12,7 +12,7 @@ function Tried(props) {
       false: 'False'
     };
     const triedValue = values[e.target.value];
-    fetch('/api/user_thoughts', {
+    fetch('/api/update_user_thoughts', {
     method: 'POST',
     body: JSON.stringify({tried: triedValue, recipe_id: id}),
     headers: {'Content-Type': 'application/json'},
@@ -41,7 +41,7 @@ function Comment(props) {
 
   const handleComment = () => {
     const newComment = document.getElementById('comment').value;
-    fetch('/api/user_thoughts', {
+    fetch('/api/update_user_thoughts', {
     method: 'POST',
     body: JSON.stringify({comment: newComment, recipe_id: id}),
     headers: {'Content-Type': 'application/json'},
@@ -97,7 +97,7 @@ function Rating(props) {
     // update stars with array of new rating
     setRating(newRating);
     
-    fetch('/api/user_thoughts', {
+    fetch('/api/update_user_thoughts', {
       method: 'POST',
       body: JSON.stringify({rating: e.target.value, recipe_id: id}),
       headers: {'Content-Type': 'application/json'},

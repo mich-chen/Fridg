@@ -346,7 +346,6 @@ def get_saved_recipes():
 
 
 
-
 @app.route('/api/remove_recipe', methods=["POST"])
 def remove_from_saved():
     """Remove recipe from user's saved recipes list."""
@@ -372,7 +371,6 @@ def send_shopping_list():
     # pass phone as string to 'to=' in message
     email = session.get('email')
     phone = crud.get_user_phone(email)
-    print(phone)
 
     data = request.get_json()
     list_items = data['shopping_list']
@@ -399,18 +397,17 @@ def get_user_thoughts(recipe_id):
     """Get a user's thoughts on a saved recipe from db."""
 
     email = session.get('email')
-    saved_recipe = crud.get_a_saved_recipe(recipe_id, email)
-    thoughts = crud.get_user_thoughts(saved_recipe)
-    if thoughts['rating'] != None:
-        thoughts['rating'] = list(range(1, thoughts['rating'] + 1))
+    saved_recipe_thoughts = crud.get_a_saved_recipe(recipe_id, email)
+    if saved_recipe_thoughts['rating'] != None:
+        saved_recipe_thoughts['rating'] = list(range(1, saved_recipe_thoughts['rating'] + 1))
     else:
-        thoughts['rating'] = []
-    print('\nuser thoughts', thoughts)
+        saved_recipe_thoughts['rating'] = []
+    print('\nuser thoughts', saved_recipe_thoughts)
 
-    return jsonify({'thoughts': thoughts, 'message': 'retrieved user\'s food for thought!'})
+    return jsonify({'thoughts': saved_recipe_thoughts, 'message': 'retrieved user\'s food for thought!'})
 
 
-@app.route('/api/user_thoughts', methods=["POST"])
+@app.route('/api/update_user_thoughts', methods=["POST"])
 def update_user_thoughts():
     """Update a user's thoughts on a saved recipe."""
     print('\nin user thought to db route\n')
