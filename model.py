@@ -56,6 +56,15 @@ class Saved_Recipe(db.Model):
     def __repr__(self):
         return f'<User\'s selected recipes recipe={self.recipe_id} user={self.user_id} is_favorite={self.favorite}>'
 
+    def as_dict(self):
+        return {'saved_id': self.saved_id,
+                'recipe_id': self.recipe_id,
+                'user_id': self.user_id,
+                'favorite': self.favorite,
+                'tried': self.tried,
+                'rating': self.rating,
+                'comment': self.comment}
+
 
 class Recipe(db.Model):
     """A recipe."""
