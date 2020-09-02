@@ -493,11 +493,6 @@ def update_user_thoughts():
     print('\nin user thought to db route\n')
     data = request.get_json()
     tried_str = (data.get('tried'))
-    if tried_str != None:
-        tried = bool(tried_str)
-        crud.update_tried(saved_recipe=saved_recipe, tried=tried)
-        print(tried)
-
     rating = data.get('rating')
     pprint(rating)
     comment = data.get('comment')
@@ -506,6 +501,11 @@ def update_user_thoughts():
 
     email = session.get('email')
     saved_recipe = crud.get_a_saved_recipe(recipe_id, email)
+
+    if tried_str != None:
+        tried = bool(tried_str)
+        crud.update_tried(saved_recipe=saved_recipe, tried=tried)
+        print(tried)
 
     if rating != None:
         print('in rating is none')
