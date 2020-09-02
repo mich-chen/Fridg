@@ -63,7 +63,9 @@ class Saved_Recipe(db.Model):
                 'favorite': self.favorite,
                 'tried': self.tried,
                 'rating': self.rating,
-                'comment': self.comment}
+                'comment': self.comment,
+                'recipe': self.recipe,
+                'user': self.user}
 
 
 class Recipe(db.Model):
@@ -93,6 +95,19 @@ class Recipe(db.Model):
 
     def __repr__(self):
         return f'<Recipe recipe_id={self.recipe_id} title={self.title}>'
+
+    def as_dict(self):
+        return {'recipe_id': self.recipe_id,
+                'title': self.title,
+                'image': self.image,
+                'servings': self.servings,
+                'sourceUrl': self.sourceUrl,
+                'cooking_mins': self.cooking_mins,
+                'prep_mins': self.prep_mins,
+                'ready_mins': self.ready_mins,
+                'ingredients': self.ingredients,
+                'instructions': self.instructions,
+                'equipment': self.equipment}
 
 
 class Recipe_Ingredient(db.Model):
