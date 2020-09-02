@@ -331,25 +331,16 @@ def get_saved_recipes():
     print('\nin get saved recipes route\n')
 
     if session.get('email') == None:
-        print('in session == none')
         return jsonify({'saved_recipes': [], 'success': False, 'message': 'You need to create an account to see saved recipes!'})
 
     # get a list of saved_recipe objects for existing user
     users_saved_recipes = crud.get_saved_recipes(session.get('email'))
-    pprint(len(users_saved_recipes))
 
     saved_recipes = []
-    
-    for recipe in users_saved_recipes:
-        recipe_data = {}
-        # recipe_info key will have 'favorite' boolean
-        recipe_data['recipe_info'] = helper_functions.parse_saved_recipe_details(recipe)
-        recipe_data['recipe_times'] = helper_functions.parse_saved_recipe_times(recipe)
-        recipe_data['recipe_ingredients'] = helper_functions.parse_saved_recipe_ingredients(recipe)
-        recipe_data['recipe_instructions'] = helper_functions.parse_saved_recipe_instructions(recipe)
-        recipe_data['recipe_equipment'] = helper_functions.parse_saved_recipe_equipment(recipe)
-
-        saved_recipes.append(recipe_data)
+    for saved in users_saved_recipes:
+        recipe_details = helper_functions.parse_db_recipe_details(saved['recipe'])
+        recipe_details['favorite'] = saved['favorite']
+        saved_recipes.append(recipe_details)
 
     return jsonify({'saved_recipes': saved_recipes, 'message': 'list of user\'s saved recieps!'})
 
