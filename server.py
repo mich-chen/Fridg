@@ -49,6 +49,7 @@ def homepage():
     return render_template("root.html")
 
 
+
 @app.route('/api/login', methods=["POST"])
 def process_login():
 
@@ -79,6 +80,7 @@ def process_login():
     return jsonify({'success': success, 'message': message})
 
 
+
 @app.route('/api/create_account', methods=["POST"])
 def create_account():
     """Create new account and store in db."""
@@ -89,7 +91,6 @@ def create_account():
     email = data['email']
     password = data['password']
     phone = '+1' + data['phone']
-    print(phone)
 
     # function to check if email exists in db
     existing_user = crud.get_user_by_email(email=email)
@@ -110,6 +111,7 @@ def create_account():
     return jsonify({'success': success, 'message': message})
 
 
+
 @app.route('/api/check_session')
 def check_if_logged_in():
     """Check if active session/logged in user."""
@@ -124,14 +126,11 @@ def check_if_logged_in():
 @app.route('/api/logout')
 def process_logout():
     """Remove user's session after logout."""
-
     print('in logout route')
 
     session.pop('email', None)
-    session.pop('recipes_results', None)
 
     return jsonify({'message': 'Logged out!'})
-    # return redirect('/')
 
 
 
@@ -145,7 +144,6 @@ def search_results():
     # User's input is a string of comma-separated list of ingredients 
     input_ingredients_str = data['ingredients']
     print(input_ingredients_str)
-    # print(request.form)
 
     # spoonacular's api url
     url = "https://api.spoonacular.com/recipes/complexSearch"
@@ -156,23 +154,16 @@ def search_results():
                "sort": "max-used-ingredients",
                "instructionsRequired": True,
                "fillIngredients": True,
-               # "ignorePantry": True,
-               # "offset": 5,
-               "number": 3,
+               "number": 5,
                } 
     # make http request to spoonacular's complexSearch API
     res = requests.get(url, params=payload)
     # convert json into python dictionary -> API is a List of dictionaries
     data = res.json()
-    # print(res.json())
-
     # list of recipes (which are dictionaries about recipe details)
     recipes_complex_data = data['results']
-    # print(type(recipes_complex_data))
-    # pprint(recipes_complex_data)
 
     recipe_results = []
-
     # parse only details we need from api endpoint
     for recipe in recipes_complex_data:
         recipe_data = {}
@@ -188,6 +179,7 @@ def search_results():
     return jsonify(recipe_results)
 
 
+
 @app.route('/api/add_recipe', methods=["POST"])
 def add_recipe_to_db():
     """Add selected recipe to recipes table in db."""
@@ -195,28 +187,22 @@ def add_recipe_to_db():
     pprint('in recipe_to_db route')
     # unencode from JSON
     data = request.get_json()
-    # pprint(data)
-    # information on selected recipe
     recipe_details = data['recipe_details']
-    # pprint(recipe_details)
-    # selected recipe's id
     recipe_id = recipe_details['recipe_info']['recipe_id']
-    print(recipe_id)
 
-    # must log in to save a recipe, if no session avail, prompt message
+    # must log in to save a recipe
     if session.get('email') == None:
         print('in session == none')
         return jsonify({'success': False, 'message': 'You need to create an account to save a recipe!'})
 
-    # find if recipe already exists in db, spoonacular's recipe id is db's recipe_id primary key
-    existing_recipe = crud.retrieve_recipe(recipe_id)
-    print(existing_recipe)
+    # find if recipe already exists in db
+    existing_recipe = crud.quick_get_recipe(recipe_id)
 
     if existing_recipe != None:
         print('\nrecipe already in db')
         return jsonify({'success': True, 'message': 'Recipe already in db, procdeed to saving'})
 
-    print('\n in else statement add recipe to db\n')
+    print('\n new recipe, adding to db \n')
     title = recipe_details['recipe_info']['title']
     image = recipe_details['recipe_info']['image']
     servings = recipe_details['recipe_info']['servings']
@@ -238,22 +224,19 @@ def add_recipe_to_db():
 
     # ordered list of recipe's instructions (no numbers)
     instructions_list = recipe_details['recipe_instructions']
-    # enumerate through list of ordered instructions
     for i, instruction in enumerate(instructions_list):
         # set step_num by adding 1 to indices
         step_num = i + 1
         step_instruction = instruction
-        print(step_num, step_instruction)
         # add recipe's instruction step and instructions, one by one to db
         crud.add_instructions(recipe=recipe_id, step_num=step_num, step_instruction=step_instruction)
 
     # dictionary with equipment name as both key and value
     for equipment in recipe_details['recipe_equipment']:
-        pprint(equipment)
         crud.add_equipment(recipe=recipe_id, equipment=equipment)
 
-
     return jsonify({'success': True, 'message': 'Recipe added to db!'})
+
 
 
 @app.route('/api/save_a_recipe',methods=["POST"])
@@ -271,7 +254,6 @@ def add_recipe_to_saved():
 
     # retrieve session's email to query and check if recipe_id is in their saved recipes.
     users_saved_recipes = crud.get_saved_recipes(session['email'])
-    print(len(users_saved_recipes))
 
     # if user's saved recipes db has data
     if len(users_saved_recipes) > 0:
@@ -285,7 +267,6 @@ def add_recipe_to_saved():
     # if selected recipe NOT in saved, or user's saved recipes is empty
     print('\nselected recipe NOT in db, or user\'s saved recipes is empty\n')
     user = crud.get_user_by_email(session.get('email'))
-    print(user, user.user_id)
     crud.save_a_recipe(user=user.user_id, recipe=recipe_id, is_favorite=False)
     message = 'Recipe saved to saved_recipes!'
 
@@ -302,32 +283,11 @@ def favorite_a_recipe():
     print('\nin favorited route\n')
     # unencode from JSON
     data = request.get_json()
-    # information on selected recipe
     recipe_id = data['recipe_id']
-    pprint(recipe_id)
-
     crud.favorite_a_saved_recipe(recipe_id, session.get('email'))
 
     return jsonify({'success': True,'message': 'successfully favorited this recipe!'})
-
-
-
-@app.route('/api/recipe_details/<recipe_id>')
-def get_recipe_details(recipe_id):
-    """Return information on selected single recipe."""
-
-    pprint('\nin single recipe details route\n')
-
-    print(recipe_id)
-
-
-    recipe = crud.get_recipe(recipe_id)
-
-    recipe_details = helper_functions.parse_db_recipe_details(recipe)
-
-    pprint(recipe_details)
-
-    return jsonify({'recipe_details': recipe_details, 'message': 'returning recipe\'s details!'})
+    
 
 
 @app.route('/api/saved_recipe_details/<recipe_id>')
