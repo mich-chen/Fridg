@@ -83,11 +83,12 @@ function Rating(props) {
   ];
 
   const handleRating = (e) => {
+    // make array from 1 to selected value
     let newSelected = [];
     for (let i = 1; i <= e.target.value; i += 1) {
       newSelected.push(i)
     };
-
+    // update stars with array of new rating
     setRating(newSelected);
     
     fetch('/api/user_thoughts', {
@@ -99,7 +100,7 @@ function Rating(props) {
     .then(res => res.json())
     .then(data => alert(data.message))
   };
-
+  // font awesome icons 
   const STAR_TEXT = {
     filled: <i className="fas fa-star"></i>,
     unfilled: <i className="far fa-star"></i>
@@ -135,12 +136,11 @@ function FoodForThoughtsContainer(props) {
   const [rating, setRating] = React.useState([]);
   const [comment, setComment] = React.useState('');
   const [selected, setSelected] = React.useState([]);
-
+  // update state of each section from db data or set as default nulls
   React.useEffect(() => {
     fetch(`/api/user_thoughts/${id}`)
     .then(res => res.json())
     .then(data => {
-      console.log('data', data.thoughts);
       setTried(data.thoughts.tried);
       setRating(data.thoughts.rating);
       setComment(data.thoughts.comment);
