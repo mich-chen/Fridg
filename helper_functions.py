@@ -9,9 +9,7 @@ from pprint import pprint
 
 
 def parse_API_recipe_details(complex_data):
-    """Parse only details we need from bulk/complex API endpoint.
-
-    Parse only recipe_id, title, servings, sourceUrl, image, and extended ingredients list."""
+    """Parse only details we need from bulk/complex API endpoint."""
 
     recipe_data = {}
 
