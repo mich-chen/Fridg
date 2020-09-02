@@ -168,11 +168,12 @@ function CreateAccount() {
 
 
 function UserAuthModal(props) {
+  // modal window for navbar login and create account link
   const {loggedIn} = React.useContext(AuthContext);
   const [newUser, setNewUser] = React.useState(props.newUser);
   const handleNewUser = () => {setNewUser(true)};
   const handleExistingUser = () => {setNewUser(false)};
-
+  // conditionally render login component or create account
   const MODALFOOTER = {
     false: (
       <React.Fragment>
@@ -245,11 +246,4 @@ function Logout() {
     </div>
     );
 }
-
-
-
-
-
-
-
 
