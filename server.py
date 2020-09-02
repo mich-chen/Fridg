@@ -166,15 +166,9 @@ def search_results():
     recipe_results = []
     # parse only details we need from api endpoint
     for recipe in recipes_complex_data:
-        recipe_data = {}
-        recipe_data['recipe_info'] = helper_functions.parse_recipe_details(recipe)
-        recipe_data['recipe_times'] = helper_functions.parse_recipe_times(recipe)
-        recipe_data['recipe_ingredients'] = helper_functions.parse_recipe_ingredients(recipe)
-        recipe_data['recipe_instructions'] = helper_functions.parse_recipe_instructions(recipe)
-        recipe_data['recipe_equipment'] = helper_functions.parse_recipe_equipment(recipe)
-        recipe_data['missing_ingredients'] = helper_functions.parse_missed_ingredients(recipe)
+        recipe_data = helper_functions.parse_API_recipe_details(recipe)
         recipe_results.append(recipe_data)
-    pprint(recipes_complex_data)
+    pprint(recipe_results)
 
     return jsonify(recipe_results)
 
@@ -216,7 +210,7 @@ def add_recipe_to_db():
     # complex_ingredients is a list of dictionaries of each ingredient's details
     complex_ingredients = recipe_details['recipe_ingredients']
     for ingredient in complex_ingredients:
-        ingredient_id = ingredient['id']
+        ingredient_id = ingredient['ingredient_id']
         name = ingredient['name']
         amount = ingredient['amount']
         unit = ingredient['unit']
@@ -287,7 +281,7 @@ def favorite_a_recipe():
     crud.favorite_a_saved_recipe(recipe_id, session.get('email'))
 
     return jsonify({'success': True,'message': 'successfully favorited this recipe!'})
-    
+
 
 
 @app.route('/api/saved_recipe_details/<recipe_id>')
@@ -301,16 +295,12 @@ def get_saved_recipe_details(recipe_id):
         return jsonify({'recipe_details': [], 'success': False, 'message': 'You need to create an account to see a saved recipe\'s details!'})
 
     email = session.get('email')
-
+    # get recipe as saved recipe for 'favorite' data
     saved_recipe = crud.get_a_saved_recipe(recipe_id, email)
-
-    recipe_details = {}
-
-    recipe_details['recipe_info'] = helper_functions.parse_saved_recipe_details(saved_recipe)
-    recipe_details['recipe_times'] = helper_functions.parse_saved_recipe_times(saved_recipe)
-    recipe_details['recipe_ingredients'] = helper_functions.parse_saved_recipe_ingredients(saved_recipe)
-    recipe_details['recipe_instructions'] = helper_functions.parse_saved_recipe_instructions(saved_recipe)
-    recipe_details['recipe_equipment'] = helper_functions.parse_saved_recipe_equipment(saved_recipe)
+    # represent recipe details as dictionary
+    recipe_details = helper_functions.parse_db_recipe_details(saved_recipe['recipe'])
+    # add 'favorite' boolean data to details
+    recipe_details['favorite'] = saved_recipe['favorite']
 
     return jsonify({'recipe_details': recipe_details, 'message': 'returning a saved recipe\'s details'})
 

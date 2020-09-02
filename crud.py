@@ -69,7 +69,7 @@ def get_a_saved_recipe(recipe_id, email):
 
     saved_recipe = db.session.query(Saved_Recipe).filter(User.email == email).group_by(Saved_Recipe.recipe_id, Saved_Recipe.saved_id).having(Saved_Recipe.recipe_id == recipe_id).join(User, Recipe, Recipe_Ingredient, Instructions, Equipment).first() 
 
-    return saved_recipe
+    return saved_recipe.as_dict()
 
 
 def update_tried(saved_recipe, tried):
