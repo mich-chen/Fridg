@@ -131,6 +131,15 @@ class Recipe_Ingredient(db.Model):
     def __repr__(self):
         return f'<Recipe Ingredient recipe={self.recipe_id} ingredient={self.name}>'
 
+    def as_dict(self):
+        return {'rec_ing_id': self.rec_ing_id,
+                'recipe_id': self.recipe_id,
+                'ingredient_id': self.ingredient_id,
+                'amount': self.amount,
+                'unit': self.unit,
+                'name': self.name,
+                'recipe': self.recipe}
+
 
 class Instructions(db.Model):
     """A recipe's instructions."""
