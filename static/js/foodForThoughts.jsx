@@ -68,7 +68,7 @@ function Comment(props) {
 
 function Rating(props) {
   let { id } = useParams();
-  const {selected, setSelected, rating, setRating} = props;
+  const {selected, setSelected, rating} = props;
   
   console.log('rating', rating);
   console.log('selected', selected);
@@ -145,9 +145,15 @@ function FoodForThoughtsContainer(props) {
   },[]);
 
   return (
-    <div>
-      <Tried tried={tried} setTried={setTried} />
+    <div className='user-thoughts-container'>
+      <h4> Food For Thoughts! </h4>
 
+      <Tried tried={tried} setTried={setTried} />
+      <br/>
+      <Rating selected={selected} 
+              setSelected={setSelected}
+              rating={rating} />
+      <br/>
       <Comment comment={comment} setComment={setComment} />
     </div>
     );
