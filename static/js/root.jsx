@@ -1,4 +1,4 @@
-const { Badge, Button, Col, Container, Form, FormControl, InputGroup, ListGroup, Navbar, Row, Table, Modal } = ReactBootstrap;
+const { Badge, Button, ButtonGroup, Col, Container, Form, FormControl, InputGroup, ListGroup, Navbar, ToggleButton, ToggleButtonGroup, Modal, Alert, OverlayTrigger } = ReactBootstrap;
 
 const Router = ReactRouterDOM.BrowserRouter;
 const Route = ReactRouterDOM.Route;
@@ -10,8 +10,6 @@ const useHistory = ReactRouterDOM.useHistory;
 const useLocation = ReactRouterDOM.useLocation;
 const useParams = ReactRouterDOM.useParams;
 
-
-
 function TestComponent() {
   return(
     <div>test component div</div>
@@ -22,7 +20,6 @@ function TestComponent() {
 function TestPage() {
   // test component for javascript and react
   const [test, setTest] = React.useState(false);
-  const [email, setEmail] = React.useState('');
   const [show, setShow] = React.useState(false);
 
   const handleShow = () => {setShow(true)};
@@ -31,8 +28,6 @@ function TestPage() {
   const testModal = () => {
     console.log('handled Saved Changes modal button');
   };
-
-  console.log('test email', email);
 
   React.useEffect(() =>{
     test ? console.log('in useEffect, test is true') : console.log('in useEffect, test is false')
@@ -46,11 +41,6 @@ function TestPage() {
       // document.getElementById('test-delete').remove()
       document.getElementById('test-delete').innerHTML = 'new text'
     }
-  };
-
-  const test4 = (e) => {
-    e.preventDefault();
-    console.log('prevented default')
   };
 
   const [checked, setChecked] = React.useState(false);
@@ -77,6 +67,7 @@ function TestPage() {
     if (selected) {
       setSelected(false)
     } else {
+      e.target.setAttribute('checked', 'true');
       setSelected(true)
     };
   };
@@ -84,7 +75,8 @@ function TestPage() {
 
   return (
     <div>
-      Test react div <i className="fas fa-user"></i>
+      <div> <i className="fas fa-user"></i> </div>
+      Test react div <i className="fas fa-star"></i>
 
       <Button variant='primary' onClick={handleShow}>
         Launch test modal
@@ -112,23 +104,6 @@ function TestPage() {
         </Modal.Footer>
       </Modal>
 
-      <Form>
-        <Form.Group controlId='testForm.ControlEmail'>
-          <Form.Label> Test input type=email</Form.Label>
-          <FormControl type='email' 
-                        palceholder='email@email.com'
-                        value={email}
-                        onChange={(e) => {setEmail(e.target.value)}}
-                        />
-
-          <Button onClick={test4}>
-            {test ? 'test is true': 'test is false'}
-          </Button>
-
-          <p id='test-delete'> Test text to delete </p>
-        </Form.Group>
-      </Form>
-
       <br />
 
       <button id='mouse-over-btn' 
@@ -138,6 +113,11 @@ function TestPage() {
         {selected ? 'filled star' 
           : filled ? 'filled star' 
           : 'unfilled star'}
+        <i className="fas fa-star"></i>
+      </button>
+
+      <button type='radio' onClick={handleStarClick}>
+        checked
       </button>
 
       <br />
@@ -152,7 +132,7 @@ function TestPage() {
                  type='checkbox'
                  checked={false}
                  onChange={handleCheck} />
-          <Form.Label htmlFor='ingredient-id'> Ingredient name </Form.Label>
+
         </Form.Group>
       </Form>
     </div>
@@ -302,7 +282,8 @@ function SearchBar(props) {
         <input type='text'
                className='user-search'
                onChange={(e) => {setIngredients(e.target.value)}}
-               value={ingredients}>
+               value={ingredients}
+               placeholder='e.g. beef, potato'>
         </input>
 
         <button onClick={searchRecipes}>
@@ -316,8 +297,6 @@ function SearchBar(props) {
 
 const AuthContext = React.createContext(null);
 // creating instance of context
-
-
 
 function App() {
 
@@ -418,12 +397,16 @@ function App() {
 
               <Route exact path="/login">
                 <UserAuthModal show={show}
-                               handleClose={handleClose}/>
+                               handleClose={handleClose}
+                               newUser={false}/>
+                <Homepage setData={setData}/>
               </Route>
 
               <Route exact path="/create-account">
                 <UserAuthModal show={show}
-                               handleClose={handleClose}/>
+                               handleClose={handleClose}
+                               newUser={true}/>
+                <Homepage setData={setData}/>
               </Route>
 
               <Route exact path="/logout">
