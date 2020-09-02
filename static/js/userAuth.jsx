@@ -174,11 +174,11 @@ function CreateAccount() {
 
 
 function UserAuthModal(props) {
-  // const [show, setShow] = React.useState(false);
-  const [newUser, setNewUser] = React.useState(false);
+  const {loggedIn} = React.useContext(AuthContext);
+  const [newUser, setNewUser] = React.useState(props.newUser);
 
-  // const handleShow = () => {setShow(true)};
-  // const handleClose = () => {setShow(false)};
+
+
   const handleNewUser = () => {setNewUser(true)};
   const handleExistingUser = () => {setNewUser(false)};
 
@@ -203,7 +203,7 @@ function UserAuthModal(props) {
 
   return (
     <React.Fragment>
-      <Modal show={props.show} onHide={props.handleClose}>
+      <Modal show={loggedIn ? false : props.show} onHide={props.handleClose} >
         <Modal.Header closeButton>
           Log In to Access All The Yummy Features!
         </Modal.Header>
