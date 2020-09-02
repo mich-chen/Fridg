@@ -67,11 +67,13 @@ function SavedRecipes(props) {
                 <RecipeCard key={recipe.recipe_info.recipe_id}
                             fromPath={'saved-recipes'}
                             recipeDetails={recipe}
-                            recipeImg={recipe.recipe_info.image}
-                            recipeTitle={recipe.recipe_info.title}
+                            img={recipe.recipe_info.image}
+                            title={recipe.recipe_info.title}
                             recipeId={recipe.recipe_info.recipe_id}
-                            recipeServings={recipe.recipe_info.servings}
-                            recipeTimes={recipe.recipe_times}
+                            servings={recipe.recipe_info.servings}
+                            prepMins={recipe.prep_mins}
+                            cookMins={recipe.cook_mins}
+                            readyMins={recipe.ready_mins}
                             buttonStatus={recipe.recipe_info.favorite}
                             />
                         ))
@@ -85,13 +87,9 @@ function SavedRecipes(props) {
 function SearchResults(props) {
   // resultsList is data from Spoonacular's API.
   const resultsList = props.resultsList;
-  // check search results for any user's saved recipes
   const [checkedRecipes, updateCheckedRecipes] = React.useState([]);
-  const [success, updateSuccess] = React.useState(undefined);
-
+  // check search results for any user's saved recipes
   React.useEffect(() => {
-    console.log('in searchResults useEffect');
-    console.log('resultsList', resultsList);
     fetch('/api/check_results', {
       method: 'POST',
       body: JSON.stringify({results_list: resultsList}),
@@ -103,21 +101,24 @@ function SearchResults(props) {
       updateCheckedRecipes(data.checked_recipes);
       updateSuccess(data.success);
     });
-  }, [resultsList, success]);
+  }, [resultsList]);
+
 
   return (
     <div>
       <section id='search-results'>
         {!props.resultsList.length ? <p>Searching...</p>
           : (checkedRecipes.map((recipe) => 
-              <RecipeCard key={recipe.recipe_info.recipe_id}
+              <RecipeCard key={recipe.recipe_id}
                           fromPath={'search-results'}
                           recipeDetails={recipe}
-                          recipeImg={recipe.recipe_info.image}
-                          recipeTitle={recipe.recipe_info.title}
-                          recipeId={recipe.recipe_info.recipe_id}
-                          recipeServings={recipe.recipe_info.servings}
-                          recipeTimes={recipe.recipe_times}
+                          img={recipe.image}
+                          title={recipe.title}
+                          recipeId={recipe.recipe_id}
+                          servings={recipe.servings}
+                          prepMins={recipe.prep_mins}
+                          cookMins={recipe.cook_mins}
+                          readyMins={recipe.ready_mins}
                           buttonStatus={recipe.is_saved}
                           />
                       ))

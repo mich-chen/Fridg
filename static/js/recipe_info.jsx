@@ -22,15 +22,15 @@ function RecipeTimeSection(props) {
         <ul>
           <li id='prep-time'>
             <label>Prep Time: </label>
-            <RecipeTime time={props.times.preparationMinutes} />
+            <RecipeTime time={props.times.prepMins} />
           </li>
           <li id='cook-time'>
             <label>Cook Time: </label>
-            <RecipeTime time={props.times.cookingMinutes} />
+            <RecipeTime time={props.times.cookingMins} />
           </li>
           <li id='ready-time'>
             <label>Ready In: </label>
-            <RecipeTime time={props.times.readyInMinutes} />
+            <RecipeTime time={props.times.readyMins} />
           </li>
         </ul>
       </section>
@@ -64,7 +64,7 @@ function ClickableTitle(props) {
 
 function ClickableToDetails(props) {
   let history = useHistory();
-  const {recipeImg, recipeTitle, elementType, element, fromPath, recipeId, ...others} = props;
+  const {img, title, elementType, element, fromPath, recipeId, ...others} = props;
 
   const goToDetails = () => {
     history.push({pathname: `/${fromPath}/recipe-details/${recipeId}`,
@@ -76,8 +76,8 @@ function ClickableToDetails(props) {
     <div>
       <section className='clickable-to-details'>
         {props.elementType === 'image' 
-         ? <ClickableImg image={recipeImg} onClick={goToDetails} />
-         : <ClickableTitle title={recipeTitle} onClick={goToDetails} />
+         ? <ClickableImg image={img} onClick={goToDetails} />
+         : <ClickableTitle title={title} onClick={goToDetails} />
         }
       </section>
     </div>
@@ -183,7 +183,7 @@ function RecipeCard(props) {
   // pass data as props to children and Recipe Details component
   // parent is either Search Results or Saved Recipes
   const {loggedIn} = React.useContext(AuthContext);
-  const {recipeServings, recipeTimes, buttonStatus, ...others} = props;
+  const {servings, prepMins, cookMins, readyMins, buttonStatus, ...others} = props;
 
   // enum to conditionally render buttons by path name and button status
   const getButton = (status, loggedIn) => ({
@@ -210,9 +210,9 @@ function RecipeCard(props) {
 
         <ClickableToDetails {...others} elementType='title' />
 
-        <RecipeServings servings={recipeServings}/>
+        <RecipeServings servings={servings}/>
 
-        <RecipeTimeSection times={recipeTimes}/>           
+        <RecipeTimeSection times={{propMins, cookMins, readyMins}}/>           
 
         {getButton(buttonStatus, loggedIn)[props.fromPath]}
 
@@ -241,9 +241,9 @@ function RecipeDetails(props) {
         .then(res => res.json())
         .then(data => {
           setDetails(data.recipe_details);
-          setButtonStatus(data.recipe_details.recipe_info.favorite)
+          setButtonStatus(data.favorite)
           })
-    } else if (fromPath === 'search-results' && loggedIn) {
+    } else {
       fetch('/api/check_results',
             {method: "POST",
              body: JSON.stringify({results_list: [details]}),
@@ -255,8 +255,6 @@ function RecipeDetails(props) {
           setDetails(data.checked_recipes[0]);
           setButtonStatus(data.checked_recipes[0].is_saved)
           })
-    } else {
-      setButtonStatus(details.is_saved)
     };
   }, [buttonStatus]);
   console.log('recipes details', details);
@@ -266,18 +264,18 @@ function RecipeDetails(props) {
       'saved-recipes': (<div>
                           <SavedRecipesButton 
                             buttonStatus={status}
-                            recipeId={details.recipe_info.recipe_id} />
+                            recipeId={details.recipe_id} />
                           <RemoveBtn 
-                            recipeId={details.recipe_info.recipe_id} />
+                            recipeId={details.recipe_id} />
                         </div>
                         ),
       'search-results': (loggedIn ? <div>
                                       <SearchResultButton 
                                         buttonStatus={status}
                                         recipeDetails={details}
-                                        recipeId={details.recipe_info.recipe_id} />
+                                        recipeId={details.recipe_id} />
                                       <RemoveBtn 
-                                        ecipeId={details.recipe_info.recipe_id} />
+                                        ecipeId={details.recipe_id} />
                                     </div>
                                   : <ModalButton text={'Log in to Save!'}/>
                         )
@@ -289,28 +287,28 @@ function RecipeDetails(props) {
 
         {fromPath === 'saved-recipes' ? <FoodForThoughtsContainer /> : null}
 
-        <StaticImg image={details.recipe_info.image} />
+        <StaticImg image={details.image} />
 
-        <StaticTitle title={details.recipe_info.title} />
+        <StaticTitle title={details.title} />
 
-        <RecipeTimeSection times={details.recipe_times} />
+        <RecipeTimeSection times={{details.prep_mins, details.cook_mins, details.ready_mins}} />
 
-        <RecipeServings servings={details.recipe_info.servings} />
+        <RecipeServings servings={details.servings} />
 
-        <RecipeIngredients ingredients={details.recipe_ingredients} />
+        <RecipeIngredients ingredients={details.ingredients} />
 
         {details.hasOwnProperty('missing_ingredients') ? 
-          <MissingIngredientsContainer missingIngredients={details.missing_ingredients} title={details.recipe_info.title}/>
+          <MissingIngredientsContainer missingIngredients={details.missing_ingredients} title={details.title}/>
           : null
         }
 
-        <RecipeEquipment equipment={details.recipe_equipment} />
+        <RecipeEquipment equipment={details.equipment} />
 
-        <RecipeInstructions instructions={details.recipe_instructions} /> 
+        <RecipeInstructions instructions={details.instructions} /> 
 
         {getButtons(buttonStatus, loggedIn)[fromPath]}
 
-        <SourceUrl url={details.recipe_info.sourceUrl} />
+        <SourceUrl url={details.sourceUrl} />
 
       </section>
     </div>
