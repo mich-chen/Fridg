@@ -1,5 +1,6 @@
 // ***** User's Food For Thoughts Component *****
 
+// ***** Tried component *****
 
 function Tried(props) {
   let { id } = useParams();
@@ -32,10 +33,11 @@ function Tried(props) {
 }
 
 
+// ***** Comment component *****
+
 function Comment(props) {
   let { id } = useParams();
   const {comment, setComment} = props;
-  console.log(comment);
 
   const handleComment = () => {
     const newComment = document.getElementById('comment').value;
@@ -66,18 +68,18 @@ function Comment(props) {
 }
 
 
+// ***** 5-Star Rating component *****
+
 function Rating(props) {
   let { id } = useParams();
   const {selected, setSelected, rating} = props;
   
-  console.log('rating', rating);
-  console.log('selected', selected);
   const STARS = [
-    { name: 'star1', value: 1 },
-    { name: 'star2', value: 2 },
-    { name: 'star3', value: 3 },
-    { name: 'star4', value: 4 },
-    { name: 'star5', value: 5 }
+    { value: 1 },
+    { value: 2 },
+    { value: 3 },
+    { value: 4 },
+    { value: 5 }
   ];
 
   const handleRating = (e) => {
@@ -85,10 +87,9 @@ function Rating(props) {
     for (let i = 1; i <= e.target.value; i += 1) {
       newSelected.push(i)
     };
-    console.log('newly selected', newSelected);
 
     setRating(newSelected);
-
+    
     fetch('/api/user_thoughts', {
       method: 'POST',
       body: JSON.stringify({rating: e.target.value, recipe_id: id}),
@@ -125,13 +126,15 @@ function Rating(props) {
     );
 }
 
+
+// ***** Food For Thoughts Container Component *****
+
 function FoodForThoughtsContainer(props) {
   let { id } = useParams();
   const [tried, setTried] = React.useState(null);
   const [rating, setRating] = React.useState([]);
   const [comment, setComment] = React.useState('');
   const [selected, setSelected] = React.useState([]);
-  console.log('selected', selected);
 
   React.useEffect(() => {
     fetch(`/api/user_thoughts/${id}`)
@@ -149,12 +152,18 @@ function FoodForThoughtsContainer(props) {
       <h4> Food For Thoughts! </h4>
 
       <Tried tried={tried} setTried={setTried} />
+
       <br/>
+
       <Rating selected={selected} 
               setSelected={setSelected}
               rating={rating} />
+
       <br/>
+
       <Comment comment={comment} setComment={setComment} />
+
+      <br/>
     </div>
     );
 }
