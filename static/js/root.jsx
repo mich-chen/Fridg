@@ -1,4 +1,4 @@
-const { Badge, Button, ButtonGroup, Col, Container, Form, FormControl, InputGroup, ListGroup, Navbar, ToggleButton, ToggleButtonGroup, Modal, Alert, OverlayTrigger } = ReactBootstrap;
+const { Badge, Button, ButtonGroup, Col, Container, Collapse, Form, FormControl, InputGroup, ListGroup, Navbar, ToggleButton, ToggleButtonGroup, Modal, Alert, OverlayTrigger } = ReactBootstrap;
 
 const Router = ReactRouterDOM.BrowserRouter;
 const Route = ReactRouterDOM.Route;
@@ -10,142 +10,12 @@ const useHistory = ReactRouterDOM.useHistory;
 const useLocation = ReactRouterDOM.useLocation;
 const useParams = ReactRouterDOM.useParams;
 
-function TestComponent() {
-  return(
-    <div>test component div</div>
-    );
-}
-
-
-function TestPage() {
-  // test component for javascript and react
-  const [test, setTest] = React.useState(false);
-  const [show, setShow] = React.useState(false);
-
-  const handleShow = () => {setShow(true)};
-  const handleClose = () => {setShow(false)};
-
-  const testModal = () => {
-    console.log('handled Saved Changes modal button');
-  };
-
-  React.useEffect(() =>{
-    test ? console.log('in useEffect, test is true') : console.log('in useEffect, test is false')
-    // setTest(true)
-    console.log('in useEffect')
-  }, [test]);
-
-  const test3 = () => {
-    if (window.confirm('Are you sure you want to remove this item?')) {
-      console.log('confirmation alert yes');
-      // document.getElementById('test-delete').remove()
-      document.getElementById('test-delete').innerHTML = 'new text'
-    }
-  };
-
-  const [checked, setChecked] = React.useState(false);
-  const handleCheck = (e) => {
-    // used stopPropagation instead of preventDefault to allow button to be checked on one click
-    e.stopPropagation();
-    // setChecked(e.target.checked);
-    document.getElementById('test-checkbox').checked = true;
-  };
-  console.log(checked ? 'yes checked' : 'no check');
-
-  const [filled, setFilled] = React.useState(false);
-  const [selected, setSelected] = React.useState(false);
-
-  const handleMouseEnter = () => {
-    setFilled(true)
-  };
-
-  const handleMouseLeave = () => {
-    setFilled(false)
-  };
-
-  const handleStarClick = (e) => {
-    if (selected) {
-      setSelected(false)
-    } else {
-      e.target.setAttribute('checked', 'true');
-      setSelected(true)
-    };
-  };
-
-
-  return (
-    <div>
-      <div> <i className="fas fa-user"></i> </div>
-      Test react div <i className="fas fa-star"></i>
-
-      <Button variant='primary' onClick={handleShow}>
-        Launch test modal
-      </Button>
-
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Modal Title</Modal.Title>
-          text in modal header? 
-        </Modal.Header>
-
-        <Modal.Body>
-          <TestComponent />
-        </Modal.Body>
-
-        <Modal.Footer>
-          text in footer
-          <Button variant='secondary' onClick={handleClose}>
-            Close
-          </Button>
-
-          <Button variant='primary' onClick={() => {handleClose(); testModal()}}>
-            Save Changes
-          </Button>
-        </Modal.Footer>
-      </Modal>
-
-      <br />
-
-      <button id='mouse-over-btn' 
-              onMouseEnter={handleMouseEnter}
-              onMouseLeave={handleMouseLeave}
-              onClick={handleStarClick}>
-        {selected ? 'filled star' 
-          : filled ? 'filled star' 
-          : 'unfilled star'}
-        <i className="fas fa-star"></i>
-      </button>
-
-      <button type='radio' onClick={handleStarClick}>
-        checked
-      </button>
-
-      <br />
-
-      <h3> Currently missing ingredients </h3>
-      <br />
-
-      <Form>
-        <Form.Group controlId='testForm.ControlCheckbox'>
-          <Form.Label>Test check box </Form.Label>
-          <InputGroup.Checkbox id='test-checkbox'
-                 type='checkbox'
-                 checked={false}
-                 onChange={handleCheck} />
-
-        </Form.Group>
-      </Form>
-    </div>
-  );
-}
-
 
 function Homepage(props) {
   let history = useHistory();
-
+  const [appear, setAppear] = React.useState(false);
   const {loggedIn} = React.useContext(AuthContext);
-  console.log(loggedIn);
-
+  // () => {handleClick(), props.handleShow()
   const handleClick = () => {
     history.push('create-account')
   };
@@ -163,9 +33,15 @@ function Homepage(props) {
       <div style={{display: (loggedIn ? 'none' : 'block')}}>
         <p>Don't have an account? Click here to start!</p>
 
-        <button onClick={handleClick}>
+        <Button variant='info' onClick={() => {setAppear(!appear)}}>
           Create New Account!
-        </button>
+        </Button>
+
+        <Collapse in={appear}>
+          <div id='create-account-collapse'>
+            <CreateAccount />
+          </div>
+        </Collapse>
       </div>
     </div>
     );
@@ -173,9 +49,8 @@ function Homepage(props) {
 
 
 function SavedRecipes(props) {
-  // user's list of saved recipes
   const [savedList, setSavedList] = React.useState([]);
-
+  // retrieve list of user's saved recipes
   React.useEffect(() => {
     fetch('/api/saved_recipes')
     .then(res => res.json())
@@ -183,8 +58,7 @@ function SavedRecipes(props) {
       setSavedList(savedData.saved_recipes); 
     })
   }, []);
-
-  console.log('saved list of recipes', savedList);
+  // console.log('saved list of recipes', savedList);
 
   return (
     <div>
@@ -212,7 +86,6 @@ function SavedRecipes(props) {
 function SearchResults(props) {
   // resultsList is data from Spoonacular's API.
   const resultsList = props.resultsList;
-  console.log('outside resultsList', resultsList);
   // check search results for any user's saved recipes
   const [checkedRecipes, updateCheckedRecipes] = React.useState([]);
   const [success, updateSuccess] = React.useState(undefined);
@@ -274,7 +147,6 @@ function SearchBar(props) {
     history.push("/search-results");
   };
 
-
   return (
     <div>
       <section className='search-bar'>
@@ -286,9 +158,9 @@ function SearchBar(props) {
                placeholder='e.g. beef, potato'>
         </input>
 
-        <button onClick={searchRecipes}>
+        <Button onClick={searchRecipes}>
           Let's get cookin!
-          </button>
+          </Button>
       </section>
     </div>
     );
@@ -418,11 +290,13 @@ function App() {
               </Route>
 
               <Route path="/homepage">
-                <Homepage setData={setData}/>
+                <Homepage setData={setData}
+                          handleShow={handleShow} />
               </Route>
 
               <Route exact path="/">
-                <Homepage setData={setData}/>
+                <Homepage setData={setData}
+                          handleShow={handleShow} />
               </Route>
             </Switch>
           </div>
