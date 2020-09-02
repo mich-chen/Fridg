@@ -114,7 +114,6 @@ function ActionBtn(props) {
 
 function ModalButton(props) {
   // Button to render if user is not logged in
-  let history = useHistory();
   const [show, setShow] = React.useState(false);
   const [newUser, setNewUser] = React.useState(false);
 
@@ -150,7 +149,7 @@ function ModalButton(props) {
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          Log In To Save This Recipe!
+          Log In to Access All The Yummy Features!
         </Modal.Header>
 
         <Modal.Body>
@@ -612,6 +611,8 @@ function RecipeDetails(props) {
   return (
     <div>
       <section className='recipe-details'>
+
+        {fromPath === 'saved-recipes' ? <FoodForThoughtsContainer /> : null}
 
         <StaticImg image={details.recipe_info.image} />
 
