@@ -2,11 +2,9 @@
 
 
 function Login() {
-  // set state for email and password
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const loginData = {'email': email, 'password': password};
-
   const {loggedIn, setLoggedIn} = React.useContext(AuthContext);
 
   // send login info to db to login or check credentials
@@ -62,11 +60,12 @@ function Login() {
 
       <br/>
 
-      <button id='login-btn' 
+      <Button id='login-btn' 
+              variant='success'
               onClick={(e) => {checkLogin(e); resetForm()}} 
               >
         Log in
-      </button>
+      </Button>
 
     </form>
   </div>
@@ -76,16 +75,12 @@ function Login() {
 
 // ***** Create New Account Component *****
 
-
 function CreateAccount() {
-
   let history = useHistory();
-  // state for email and password for new account
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [phone, setPhone] = React.useState('');
   const newAccountData = {'email': email, 'password': password, 'phone': phone};
-
   const {loggedIn, setLoggedIn} = React.useContext(AuthContext);
 
   // add account information to db, then push to homepage
@@ -151,11 +146,12 @@ function CreateAccount() {
 
           <br/>
 
-          <button id='create-account-btn' 
+          <Button id='create-account-btn' 
+                  variant='success'
                   onClick={(e) => {createAccount(e); resetForm()}} 
                   >
             Create Account
-          </button>
+          </Button>
 
         </form>
       </div>
@@ -165,7 +161,6 @@ function CreateAccount() {
 
 
 // ***** User Authentication Modal *****
-
 
 function UserAuthModal(props) {
   // modal window for navbar login and create account link
@@ -213,9 +208,7 @@ function UserAuthModal(props) {
 }
 
 
-
 // ***** Log Out Component *****
-
 
 function Logout() {
   let history = useHistory();
@@ -231,7 +224,7 @@ function Logout() {
     })
   },[]);
 
-  // button to go back to homepage
+  // back to homepage
   const handleClick = () => {
     history.push('/')
   };
@@ -240,9 +233,9 @@ function Logout() {
     <div>
       Logged out! 
 
-      <button onClick={handleClick}> 
+      <Button variant='info' onClick={handleClick}> 
         Click here to go back to home!
-      </button>
+      </Button>
     </div>
     );
 }
