@@ -266,18 +266,14 @@ def add_recipe_to_saved():
     print('\n\nin save_a_recipe route')
     # unencode from JSON
     data = request.get_json()
-    # information on selected recipe
     recipe_id = data['recipe_id']
-    pprint(recipe_id)
-
-    # retrieve session's email to query and check if recipe_id is in their saved recipes.
     users_saved_recipes = crud.get_saved_recipes(session['email'])
 
     # if user's saved recipes db has data
     if len(users_saved_recipes) > 0:
-        # loop through list of saved_recipe objects and check matching recipe_id
+        # iterate and check if recipe already saved
         for saved in users_saved_recipes:
-            if saved.recipe_id == recipe_id:
+            if saved['recipe_id'] == recipe_id:
                 print('recipe already saved')
                 message = 'Recipe already exists in user\'s saved list'
                 return jsonify({'success': True, 'message': message})
