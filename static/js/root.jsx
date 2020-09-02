@@ -64,17 +64,17 @@ function SavedRecipes(props) {
       <section id='saved-recipes'>
         {!savedList.length ? <p>You haven't saved any recipes yet!</p>
           : (savedList.map((recipe) => 
-                <RecipeCard key={recipe.recipe_info.recipe_id}
+                <RecipeCard key={recipe.recipe_id}
                             fromPath={'saved-recipes'}
                             recipeDetails={recipe}
-                            img={recipe.recipe_info.image}
-                            title={recipe.recipe_info.title}
-                            recipeId={recipe.recipe_info.recipe_id}
-                            servings={recipe.recipe_info.servings}
+                            img={recipe.image}
+                            title={recipe.title}
+                            recipeId={recipe.recipe_id}
+                            servings={recipe.servings}
                             prepMins={recipe.prep_mins}
                             cookMins={recipe.cook_mins}
                             readyMins={recipe.ready_mins}
-                            buttonStatus={recipe.recipe_info.favorite}
+                            buttonStatus={recipe.favorite}
                             />
                         ))
         }
