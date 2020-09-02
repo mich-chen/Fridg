@@ -59,10 +59,10 @@ def get_saved_recipes(email):
     # if user does not have any saved_recipes
     if user == None:
         return []
-      
-    users_saved_list = user.saved_recipes
 
-    return users_saved_list 
+    saved_list = [saved.as_dict() for saved in user.saved_recipes]
+
+    return saved_list 
 
 def get_a_saved_recipe(recipe_id, email):
     """Return saved recipe object given id and user's email."""
