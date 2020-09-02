@@ -70,16 +70,8 @@ function Rating(props) {
   let { id } = useParams();
   const {selected, setSelected, rating, setRating} = props;
   
-  React.useEffect(() => {
-    const filled = [];
-    for (const i of Array(selected).keys()) {
-      filled.push(i + 1)
-    };
-    setSelected(filled)
-  }, []);
-  
-
-  console.log('effect selected', selected);
+  console.log('rating', rating);
+  console.log('selected', selected);
   const STARS = [
     { name: 'star1', value: 1 },
     { name: 'star2', value: 2 },
@@ -88,68 +80,47 @@ function Rating(props) {
     { name: 'star5', value: 5 }
   ];
 
-  const handleClick = (e) => {
-    console.log('handle click', e.target.value);
-
-  };
-
   const handleRating = (e) => {
-    console.log(e);
-    const highest = Math.max(...e);
-    // Math.max.apply(null, e);
     let newSelected = [];
-    for (const i of Array(highest).keys()) {
-      newSelected.push(i + 1)
+    for (let i = 1; i <= e.target.value; i += 1) {
+      newSelected.push(i)
     };
     console.log('newly selected', newSelected);
-    setSelected(newSelected);
+
+    setRating(newSelected);
 
     fetch('/api/user_thoughts', {
       method: 'POST',
-      body: JSON.stringify({rating: highest, recipe_id: id}),
+      body: JSON.stringify({rating: e.target.value, recipe_id: id}),
       headers: {'Content-Type': 'application/json'},
       credentials: 'include'
       })
     .then(res => res.json())
     .then(data => alert(data.message))
-
-    };
+  };
 
   const STAR_TEXT = {
     filled: <i className="fas fa-star"></i>,
     unfilled: <i className="far fa-star"></i>
   };
-  const handleMouseOver = (e) => {
-    e.target.innerHTML = '&hearts;'
-  };
-
-  const handleMouseLeave = (e) => {
-    e.target.dangerouslySetInnerHTML = STAR_TEXT.unfilled
-  };
 
   return(
     <div>
       <label>How'd it go?</label>
-        <ToggleButtonGroup className='rating'  
-                           type='checkbox'
-                           onChange={handleRating}
-                           value={selected}
-                           >
+        <ButtonGroup toggle className='rating'>
           {STARS.map((star, idx) => (
             <ToggleButton key={idx}
                           type='checkbox'
                           variant='primary'
-                          checked={selected.includes(star.value)}
+                          checked={rating.includes(star.value)}
                           value={star.value}
-                          onClick={handleClick}
-                          onChange={handleMouseOver}
+                          onChange={handleRating}
                           >
-              hello
+              {rating.includes(star.value) ? STAR_TEXT.filled : STAR_TEXT.unfilled}
             </ToggleButton> 
 
             ))}
-
-        </ToggleButtonGroup>
+        </ButtonGroup>
     </div>
     );
 }
@@ -157,7 +128,7 @@ function Rating(props) {
 function FoodForThoughtsContainer(props) {
   let { id } = useParams();
   const [tried, setTried] = React.useState(null);
-  const [rating, setRating] = React.useState(0);
+  const [rating, setRating] = React.useState([]);
   const [comment, setComment] = React.useState('');
   const [selected, setSelected] = React.useState([]);
   console.log('selected', selected);
