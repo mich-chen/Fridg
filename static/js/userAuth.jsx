@@ -8,14 +8,12 @@ function Login() {
   const loginData = {'email': email, 'password': password};
 
   const {loggedIn, setLoggedIn} = React.useContext(AuthContext);
-  console.log('login authcontext', loggedIn);
 
   // send login info to db to login or check credentials
   // update login context of app
   const checkLogin = (e) => { 
     e.preventDefault();
 
-    console.log(loginData);
     fetch('/api/login', {
       method: 'POST',
       body: JSON.stringify(loginData),
@@ -25,7 +23,6 @@ function Login() {
     .then(response => response.json())
     .then(data => {
       alert(data.message);
-      console.log('data', data.success);
       setLoggedIn(data.success)
     })
   };
@@ -90,7 +87,6 @@ function CreateAccount() {
   const newAccountData = {'email': email, 'password': password, 'phone': phone};
 
   const {loggedIn, setLoggedIn} = React.useContext(AuthContext);
-  console.log('create account authcontext', loggedIn);
 
   // add account information to db, then push to homepage
   const createAccount = (e) => {
@@ -102,12 +98,11 @@ function CreateAccount() {
       headers: { 'Content-Type': 'application/json'},
       credentials: 'include'
     })
-      .then(res => res.json())
-      .then(data => {
-        alert(data.message);
-        setLoggedIn(data.success)
-      })
-      // .then(history.push('/homepage'))
+    .then(res => res.json())
+    .then(data => {
+      alert(data.message);
+      setLoggedIn(data.success)
+    })
   };
 
   // reset form fields after onClick of create account button
@@ -116,7 +111,6 @@ function CreateAccount() {
     setPassword('');
     setPhone('');
   };
-  console.log(phone);
 
   return (
     <div>
@@ -176,9 +170,6 @@ function CreateAccount() {
 function UserAuthModal(props) {
   const {loggedIn} = React.useContext(AuthContext);
   const [newUser, setNewUser] = React.useState(props.newUser);
-
-
-
   const handleNewUser = () => {setNewUser(true)};
   const handleExistingUser = () => {setNewUser(false)};
 
