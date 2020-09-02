@@ -24,6 +24,12 @@ class User(db.Model):
     def __repr__(self):
         return f'<User user_id={self.user_id} email={self.email}>'
 
+    def as_dict(self):
+        return {'user_id': self.user_id,
+                'email': self.email, 
+                'phone': self.phone,
+                'saved_recipes': self.saved_recipes}
+
 
 class Saved_Recipe(db.Model):
     """User's saved recipes."""
