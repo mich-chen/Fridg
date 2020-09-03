@@ -208,16 +208,24 @@ function RecipeCard(props) {
     <div>
       <section className='recipe-card'>
 
-        <ClickableToDetails {...others} elementType='image' />
+      <CardColumns>
+          <Card>
+            <ClickableToDetails {...others} elementType='image' />
+            <Card.Body>
+              <Card.Title>
+                <ClickableToDetails {...others} elementType='title' />
+              </Card.Title>
 
-        <ClickableToDetails {...others} elementType='title' />
+              <RecipeServings servings={servings}/>
 
-        <RecipeServings servings={servings}/>
+              <RecipeTimeSection times={{prepMins, cookMins, readyMins}}/>
+            </Card.Body>
 
-        <RecipeTimeSection times={{prepMins, cookMins, readyMins}}/>           
-
-        {getButton(buttonStatus, loggedIn)[props.fromPath]}
-
+            <Card.Footer>
+              {getButton(buttonStatus, loggedIn)[props.fromPath]}
+            </Card.Footer> 
+        </Card>         
+      </CardColumns>
       </section>
     </div>
     );
