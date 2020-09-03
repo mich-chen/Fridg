@@ -64,11 +64,11 @@ def parse_db_recipe_details(recipe):
     recipe_details = recipe.as_dict()
 
     ingredients = [ingredient.as_dict() for ingredient in recipe_details['ingredients']]
-    instructions = [instruction.as_dict() for instruction in recipe_details['instructions']]
+    instructions = [instruction.as_dict()['step_instruction'] for instruction in recipe_details['instructions']]
     equipment = [equipment.as_dict() for equipment in recipe_details['equipment']]
     # reassign values from db objects as python dictionaries
     recipe_details['ingredients'] = ingredients
-    recipe_details['instructions'] = instructionst
+    recipe_details['instructions'] = instructions
     recipe_details['equipment'] = equipment
 
     return recipe_details
