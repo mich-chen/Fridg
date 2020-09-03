@@ -44,9 +44,10 @@ function RecipeTimeSection(props) {
 
 function ClickableImg(props) {
   return (
-    <img id='clickable-recipe-img' 
+    <Card.Img id='clickable-recipe-img' 
          src={`${props.image}`} 
          onClick={props.onClick}
+         variant='top'
       />
     );
 }
@@ -65,7 +66,6 @@ function ClickableTitle(props) {
 function ClickableToDetails(props) {
   let history = useHistory();
   const {img, title, elementType, element, fromPath, recipeId, ...others} = props;
-
 
   const goToDetails = () => {
     history.push({pathname: `/${fromPath}/recipe-details/${recipeId}`,
@@ -90,7 +90,7 @@ function ClickableToDetails(props) {
 
 function StaticImg(props) {
   return (
-    <img id='static-recipe-img' src={`${props.image}`} />
+    <Image id='static-recipe-img' src={`${props.image}`} rounded/>
     );
 }
 

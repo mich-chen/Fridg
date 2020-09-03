@@ -1,4 +1,4 @@
-const { Badge, Button, ButtonGroup, Col, Container, Collapse, Form, FormControl, InputGroup, ListGroup, Navbar, ToggleButton, ToggleButtonGroup, Modal, Alert, OverlayTrigger, CardColumns, Card, CardDeck, CardGroup } = ReactBootstrap;
+const { Badge, Button, ButtonGroup, Col, Container, Collapse, Form, FormControl, InputGroup, ListGroup, Navbar, ToggleButton, ToggleButtonGroup, Modal, Alert, OverlayTrigger, CardColumns, Card, CardDeck, CardGroup, } = ReactBootstrap;
 
 const Router = ReactRouterDOM.BrowserRouter;
 const Route = ReactRouterDOM.Route;
