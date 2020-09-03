@@ -49,15 +49,20 @@ function Homepage(props) {
 
 function SavedRecipes(props) {
   const [savedList, setSavedList] = React.useState([]);
+  const [removed, updateRemoved] = React.useState(false);
   // retrieve list of user's saved recipes
   React.useEffect(() => {
+    console.log('useeffect in saved recipes');
     fetch('/api/saved_recipes')
     .then(res => res.json())
     .then(savedData => {
       setSavedList(savedData.saved_recipes); 
     })
-  }, []);
+  }, [removed]);
   // console.log('saved list of recipes', savedList);
+  const handleRemove = () => {
+    updateRemoved(true);
+  };
 
   return (
     <div>
@@ -72,9 +77,10 @@ function SavedRecipes(props) {
                             recipeId={recipe.recipe_id}
                             servings={recipe.servings}
                             prepMins={recipe.prep_mins}
-                            cookMins={recipe.cook_mins}
+                            cookMins={recipe.cooking_mins}
                             readyMins={recipe.ready_mins}
                             buttonStatus={recipe.favorite}
+                            handleRemove={handleRemove}
                             />
                         ))
         }
@@ -90,6 +96,7 @@ function SearchResults(props) {
   const [checkedRecipes, updateCheckedRecipes] = React.useState([]);
   // check search results for any user's saved recipes
   React.useEffect(() => {
+    console.log('in check results use effect');
     fetch('/api/check_results', {
       method: 'POST',
       body: JSON.stringify({results_list: resultsList}),
@@ -99,9 +106,10 @@ function SearchResults(props) {
     .then(res => res.json())
     .then(data => {
       updateCheckedRecipes(data.checked_recipes);
-      updateSuccess(data.success);
     });
   }, [resultsList]);
+
+  console.log('results', checkedRecipes);
 
 
   return (
@@ -117,7 +125,7 @@ function SearchResults(props) {
                           recipeId={recipe.recipe_id}
                           servings={recipe.servings}
                           prepMins={recipe.prep_mins}
-                          cookMins={recipe.cook_mins}
+                          cookMins={recipe.cooking_mins}
                           readyMins={recipe.ready_mins}
                           buttonStatus={recipe.is_saved}
                           />

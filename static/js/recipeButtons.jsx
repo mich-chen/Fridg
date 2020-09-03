@@ -105,7 +105,8 @@ function RemoveBtn(props) {
       headers: {'Content-Type': 'application/json'},
       credentials: 'include'
     })
-      .then(toggleBtn)
+    .then(toggleBtn)
+    .then(props.handleRemove);
   }
 
   const handleClick = () => {

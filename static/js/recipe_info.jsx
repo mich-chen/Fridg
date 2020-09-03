@@ -26,7 +26,7 @@ function RecipeTimeSection(props) {
           </li>
           <li id='cook-time'>
             <label>Cook Time: </label>
-            <RecipeTime time={props.times.cookingMins} />
+            <RecipeTime time={props.times.cookMins} />
           </li>
           <li id='ready-time'>
             <label>Ready In: </label>
@@ -65,6 +65,7 @@ function ClickableTitle(props) {
 function ClickableToDetails(props) {
   let history = useHistory();
   const {img, title, elementType, element, fromPath, recipeId, ...others} = props;
+
 
   const goToDetails = () => {
     history.push({pathname: `/${fromPath}/recipe-details/${recipeId}`,
@@ -183,7 +184,7 @@ function RecipeCard(props) {
   // pass data as props to children and Recipe Details component
   // parent is either Search Results or Saved Recipes
   const {loggedIn} = React.useContext(AuthContext);
-  const {servings, prepMins, cookMins, readyMins, buttonStatus, ...others} = props;
+  const {servings, prepMins, cookMins, readyMins, buttonStatus, handleRemove, ...others} = props;
 
   // enum to conditionally render buttons by path name and button status
   const getButton = (status, loggedIn) => ({
@@ -192,14 +193,15 @@ function RecipeCard(props) {
                         buttonStatus={status}
                         recipeId={props.recipeId} />
 
-                      <RemoveBtn recipeId={props.recipeId} />
+                      <RemoveBtn recipeId={props.recipeId}
+                                 handleRemove={handleRemove} />
                     </div>
                     ),
     'search-results': (loggedIn ? <SearchResultButton 
                                     buttonStatus={status}
                                     recipeDetails={props.recipeDetails}
                                     recipeId={props.recipeId} />
-                                : <ModalButton />)
+                                : <ModalButton text={'Log in to Save!'} />)
   });
 
   return (
@@ -212,7 +214,7 @@ function RecipeCard(props) {
 
         <RecipeServings servings={servings}/>
 
-        <RecipeTimeSection times={{propMins, cookMins, readyMins}}/>           
+        <RecipeTimeSection times={{prepMins, cookMins, readyMins}}/>           
 
         {getButton(buttonStatus, loggedIn)[props.fromPath]}
 
@@ -259,25 +261,26 @@ function RecipeDetails(props) {
   }, [buttonStatus]);
   console.log('recipes details', details);
 
+  const prepMins = details.prep_mins;
+  const cookMins = details.cooking_mins;
+  const readyMins = details.ready_mins;
+
   // enum to conditionally render buttons by path name and button status
   const getButtons = (status, loggedIn) => ({
-      'saved-recipes': (<div>
-                          <SavedRecipesButton 
-                            buttonStatus={status}
-                            recipeId={details.recipe_id} />
-                          <RemoveBtn 
-                            recipeId={details.recipe_id} />
-                        </div>
-                        ),
+      'saved-recipes':(<div>
+                        <SavedRecipesButton 
+                          buttonStatus={status}
+                          recipeId={details.recipe_id} />
+                        <RemoveBtn recipeId={details.recipe_id} />
+                      </div>
+                      ),
       'search-results': (loggedIn ? <div>
                                       <SearchResultButton 
                                         buttonStatus={status}
                                         recipeDetails={details}
                                         recipeId={details.recipe_id} />
-                                      <RemoveBtn 
-                                        ecipeId={details.recipe_id} />
                                     </div>
-                                  : <ModalButton text={'Log in to Save!'}/>
+                          : <ModalButton text={'Log in to Save!'}/>
                         )
     });
 
@@ -291,7 +294,7 @@ function RecipeDetails(props) {
 
         <StaticTitle title={details.title} />
 
-        <RecipeTimeSection times={{details.prep_mins, details.cook_mins, details.ready_mins}} />
+        <RecipeTimeSection times={{prepMins, cookMins, readyMins}} />
 
         <RecipeServings servings={details.servings} />
 
