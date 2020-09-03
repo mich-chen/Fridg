@@ -62,10 +62,11 @@ def parse_db_recipe_details(recipe):
     """Return dictionary of a db recipe's details information."""
 
     recipe_details = recipe.as_dict()
+    print(recipe_details)
 
     ingredients = [ingredient.as_dict() for ingredient in recipe_details['ingredients']]
     instructions = [instruction.as_dict()['step_instruction'] for instruction in recipe_details['instructions']]
-    equipment = [equipment.as_dict() for equipment in recipe_details['equipment']]
+    equipment = {equipment.as_dict()['equipment']: equipment.as_dict()['equipment'] for equipment in recipe_details['equipment']}
     # reassign values from db objects as python dictionaries
     recipe_details['ingredients'] = ingredients
     recipe_details['instructions'] = instructions

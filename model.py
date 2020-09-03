@@ -137,8 +137,7 @@ class Recipe_Ingredient(db.Model):
                 'ingredient_id': self.ingredient_id,
                 'amount': self.amount,
                 'unit': self.unit,
-                'name': self.name,
-                'recipe': self.recipe}
+                'name': self.name}
 
 
 class Instructions(db.Model):
@@ -165,8 +164,7 @@ class Instructions(db.Model):
         return {'instruction_id': self.instruction_id,
                 'recipe_id': self.recipe_id,
                 'step_num': self.step_num,
-                'step_instruction': self.step_instruction,
-                'recipe': self.recipe}
+                'step_instruction': self.step_instruction}
         
 
 class Equipment(db.Model):
@@ -190,8 +188,7 @@ class Equipment(db.Model):
     def as_dict(self):
         return {'equipment_id': self.equipment_id,
                 'recipe_id': self.recipe_id,
-                'equipment': self.equipment,
-                'recipe': self.recipe}
+                'equipment': self.equipment}
     
 
 def connect_to_db(flask_app, db_uri='postgresql:///recipes', echo=True):

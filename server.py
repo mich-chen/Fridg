@@ -186,6 +186,7 @@ def check_if_saved_recipe():
         # if not logged in or in session, then all recipes show as not saved
         for recipe in recipes_list:
             recipe['is_saved'] = False
+        pprint(recipes_list)
 
         return jsonify({'checked_recipes': recipes_list, 'success': True, 'message': 'You need to create an account to see saved recipes!'})
 
@@ -211,7 +212,7 @@ def add_recipe_to_db():
     data = request.get_json()
     recipe_details = data['recipe_details']
     recipe_id = recipe_details['recipe_id']
-
+    pprint(recipe_details)
     # must log in to save a recipe
     if session.get('email') == None:
         return jsonify({'success': False, 'message': 'You need to create an account to save a recipe!'})
@@ -228,7 +229,7 @@ def add_recipe_to_db():
     image = recipe_details['image']
     servings = recipe_details['servings']
     sourceUrl = recipe_details['sourceUrl']
-    cooking_mins = recipe_details['cook_mins']
+    cooking_mins = recipe_details['cooking_mins']
     prep_mins = recipe_details['prep_mins']
     ready_mins = recipe_details['ready_mins']
     # add recipe's title, image, and servings to recipes table in db
@@ -250,7 +251,7 @@ def add_recipe_to_db():
         crud.add_instructions(recipe=recipe_id, step_num=step_num, step_instruction=step_instruction)
 
     # add each key of equipment to db
-    for equipment in recipe_details['recipe_equipment']:
+    for equipment in recipe_details['equipment']:
         crud.add_equipment(recipe=recipe_id, equipment=equipment)
 
     return jsonify({'success': True, 'message': 'Recipe added to db!'})
@@ -314,7 +315,7 @@ def get_saved_recipe_details(recipe_id):
 
     email = session.get('email')
     # get recipe as saved recipe for 'favorite' data
-    saved_recipe = crud.get_a_saved_recipe(recipe_id, email)
+    saved_recipe = crud.get_a_saved_recipe(recipe_id, email).as_dict()
     # represent recipe details as dictionary
     recipe_details = helper_functions.parse_db_recipe_details(saved_recipe['recipe'])
     # add 'favorite' boolean data to details
@@ -342,6 +343,8 @@ def get_saved_recipes():
         recipe_details['favorite'] = saved['favorite']
         saved_recipes.append(recipe_details)
 
+    pprint(saved_recipes)
+
     return jsonify({'saved_recipes': saved_recipes, 'message': 'list of user\'s saved recieps!'})
 
 
@@ -354,7 +357,6 @@ def remove_from_saved():
 
     data = request.get_json()
     recipe_id = data['recipe_id']
-
     email = session.get('email')
     # remove_recipe returns boolean True
     removed = crud.remove_recipe(recipe_id, email)
@@ -397,7 +399,11 @@ def get_user_thoughts(recipe_id):
     """Get a user's thoughts on a saved recipe from db."""
 
     email = session.get('email')
-    saved_recipe_thoughts = crud.get_a_saved_recipe(recipe_id, email)
+    saved_recipe_thoughts = crud.get_a_saved_recipe(recipe_id, email).as_dict()
+
+    del saved_recipe_thoughts['recipe']
+    del saved_recipe_thoughts['user']
+
     if saved_recipe_thoughts['rating'] != None:
         saved_recipe_thoughts['rating'] = list(range(1, saved_recipe_thoughts['rating'] + 1))
     else:

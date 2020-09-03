@@ -69,7 +69,7 @@ def get_a_saved_recipe(recipe_id, email):
 
     saved_recipe = db.session.query(Saved_Recipe).filter(User.email == email).group_by(Saved_Recipe.recipe_id, Saved_Recipe.saved_id).having(Saved_Recipe.recipe_id == recipe_id).join(User, Recipe, Recipe_Ingredient, Instructions, Equipment).first() 
 
-    return saved_recipe.as_dict()
+    return saved_recipe
 
 
 def update_tried(saved_recipe, tried):
@@ -183,10 +183,12 @@ def add_equipment(recipe, equipment):
 def remove_recipe(recipe_id, email):
     """Remove recipe from user's saved recipes."""
 
-    recipe = db.session.query(Saved_Recipe).filter(Saved_Recipe.recipe_id == recipe_id, User.email == email).first()
+    saved_recipe = db.session.query(Saved_Recipe).filter(Saved_Recipe.recipe_id == recipe_id, User.email == email).first()
+    recipe = Recipe.query.filter_by(recipe_id=recipe_id).first()
 
     # delete from database
     db.session.delete(recipe)
+    db.session.delete(saved_recipe)
     db.session.commit()
 
     return True
