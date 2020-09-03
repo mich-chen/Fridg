@@ -1,4 +1,4 @@
-const { Badge, Button, ButtonGroup, Col, Container, Collapse, Form, FormControl, InputGroup, ListGroup, Navbar, ToggleButton, ToggleButtonGroup, Modal, Alert, OverlayTrigger, CardColumns, Card, CardDeck, CardGroup, } = ReactBootstrap;
+const { Badge, Button, ButtonGroup, Col, Container, Collapse, Form, FormControl, InputGroup, ListGroup, ToggleButton, ToggleButtonGroup, Modal, Alert, OverlayTrigger, CardColumns, Card, CardDeck, CardGroup, Nav, Navbar } = ReactBootstrap;
 
 const Router = ReactRouterDOM.BrowserRouter;
 const Route = ReactRouterDOM.Route;
@@ -156,21 +156,19 @@ function SearchBar(props) {
   };
 
   return (
-    <div>
-      <section className='search-bar'>
-        What's in your fridge? 
-        <input type='text'
-               className='user-search'
-               onChange={(e) => {setIngredients(e.target.value)}}
-               value={ingredients}
-               placeholder='e.g. beef, potato'>
-        </input>
+    <React.Fragment>
+      What's in your fridge? 
+      <FormControl type='text'
+             className='search-bar'
+             onChange={(e) => {setIngredients(e.target.value)}}
+             value={ingredients}
+             placeholder='e.g. beef, potato'>
+      </FormControl>
 
-        <Button onClick={searchRecipes}>
-          Let's get cookin!
-          </Button>
-      </section>
-    </div>
+      <Button onClick={searchRecipes} variant='outline-info'>
+        Let's get cookin!
+        </Button>
+    </React.Fragment>
     );
 }
 
@@ -199,32 +197,25 @@ function App() {
 
   // enum to conditionally render navbar links with loggedIn 
   const NavLinks = {
-    true: (<nav>
-            <li> 
-              <Link to="/saved-recipes">Saved Recipes</Link>
-            </li>
-            <li> 
-              <Link to="/search-results">Search Reults</Link>
-            </li>
-            <li>
-              <Link to="/logout">Log Out</Link>
-            </li>
-          </nav>
+    true: (<Nav>
+              <Nav.Link as={Link} to="/saved-recipes">Saved Recipes</Nav.Link>
+
+              <Nav.Link as={Link} to="/search-results">Search Reults</Nav.Link>
+
+              <Nav.Link as={Link} to="/logout">Log Out</Nav.Link>
+
+          </Nav>
       ),
 
-    false: (<nav>
-              <li>
-                <Link to="/login" onClick={handleShow}>
+    false: (<Nav>
+                <Nav.Link as={Link} to="/login" onClick={handleShow}>
                   Log In
-                </Link>
-              </li>
-              <li>
-                <Link to="/create-account" onClick={handleShow}>Create An Account</Link>
-              </li>
-              <li> 
-                <Link to="/search-results">Search Reults</Link>
-              </li>
-          </nav>
+                </Nav.Link>
+
+                <Nav.Link as={Link} to="/create-account" onClick={handleShow}>Create An Account</Nav.Link>
+
+                <Nav.Link as={Link} to="/search-results">Search Reults</Nav.Link>
+          </Nav>
       )
   };
 
@@ -233,22 +224,19 @@ function App() {
       <AuthContext.Provider value={{loggedIn, setLoggedIn}}>
         <Router>
           <div>
-            <nav>
-              <ul>
-                <li>
-                  <Link to="/homepage">Homepage</Link>
-                </li>
+            <Navbar bg='dark' variant='dark'>
+            <Navbar.Brand> Fridg </Navbar.Brand>
+              <Nav>
+                  <Nav.Link as={Link} to="/homepage">Homepage</Nav.Link>
 
-                <li>
-                  <Link to="/test-page">Test</Link>
-                </li>
+                  <Nav.Link as={Link} to="/test-page"> Test</Nav.Link>
                 
                 {NavLinks[loggedIn]}
 
                 <SearchBar setData={setData} />
 
-              </ul>
-            </nav>
+              </Nav>
+            </Navbar>
 
             <Switch>
 
