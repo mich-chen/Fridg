@@ -44,9 +44,6 @@ function ShoppingListBtn(props) {
   // if logged in, button will send shopping list to user's phone
   // not logged in, prompts login modal
   const handleClick = () => {
-    if (!loggedIn) {
-      alert('You must log in or create account to send shopping list!')
-    } else {
       fetch('/api/shopping-list', {
         method: 'POST',
         body: JSON.stringify({shopping_list: props.shoppingList,
@@ -54,10 +51,7 @@ function ShoppingListBtn(props) {
         headers: {'Content-Type': 'application/json'},
         credentials: 'include'
       })
-      .then(res => res.json())
-      .then(data => alert(data.message))
     }
-  };
   // not logged in renders modal window prompting log in
   // logged in renders button to server and send text
   const SHOPPING_BTN = {

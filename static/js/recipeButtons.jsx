@@ -136,8 +136,6 @@ function SearchResultButton(props) {
               headers: { 'Content-Type': 'application/json'},
               credentials:'include'
             })
-    .then(res => res.json())
-    .then(data => alert(data.message))
   };
 
   const addRecipeToDb = () => {
@@ -148,10 +146,7 @@ function SearchResultButton(props) {
               credentials:'include'
             })
     .then(res => res.json())
-    .then(data => {alert(data.message);
-                   if (data.success) { //success is boolean
-                    addRecipeToSaved()
-                    }
+    .then(data => {if (data.success) {addRecipeToSaved()}
                   }
           )
   };
@@ -182,8 +177,6 @@ function SavedRecipesButton(props) {
               headers: { 'Content-Type': 'application/json'},
               credentials:'include'
             })
-    .then(res => res.json())
-    .then(data => alert(data.message))
   };
 
   return (

@@ -19,7 +19,6 @@ function Tried(props) {
     credentials: 'include'
     })
     .then(res => res.json())
-    .then(data => alert(data.message));
     if (e.target.value) {setTried(e.target.value)};
   };
 
@@ -48,7 +47,6 @@ function Comment(props) {
     credentials: 'include'
     })
     .then(res => res.json())
-    .then(data => alert(data.message));
     setComment(newComment);
     document.getElementById('comment').value = ''
   };
@@ -103,8 +101,6 @@ function Rating(props) {
       headers: {'Content-Type': 'application/json'},
       credentials: 'include'
       })
-    .then(res => res.json())
-    .then(data => alert(data.message))
   };
 
   return(
