@@ -1,7 +1,7 @@
 // ***** Log In component *****
 
 
-function Login() {
+function Login(props) {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const loginData = {'email': email, 'password': password};
@@ -20,8 +20,9 @@ function Login() {
     })
     .then(response => response.json())
     .then(data => {
-      alert(data.message);
-      setLoggedIn(data.success)
+      setLoggedIn(data.success);
+      props.setMessage(data.message);
+      props.showAlert(true)
     })
   };
 

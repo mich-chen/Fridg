@@ -13,14 +13,21 @@ const useParams = ReactRouterDOM.useParams;
 
 function Homepage(props) {
   let history = useHistory();
-  const [appear, setAppear] = React.useState(false);
   const {loggedIn} = React.useContext(AuthContext);
+  const [appear, setAppear] = React.useState(false);
+  const [alert, showAlert] = React.useState(false);
+  const [message, setMessage] = React.useState('');
+
   const handleClick = () => {
     history.push('create-account')
   };
 
   return (
     <div id='homepage'>
+      <Alert variant='info' show={alert} onClose={() => {showAlert(false)}} dismissible>
+        {message}
+      </Alert>
+
       <h1> Hello! Welcome to the Homepage! </h1>
 
       <CatchPhrase />
@@ -28,7 +35,7 @@ function Homepage(props) {
       <SearchBar setData={props.setData}/>
       <br></br>
 
-      <Login />
+      <Login setMessage={setMessage} showAlert={showAlert} />
       <br></br>
       
       <div style={{display: (loggedIn ? 'none' : 'block')}}>
