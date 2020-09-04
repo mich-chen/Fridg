@@ -41,6 +41,7 @@ function ActionBtn(props) {
 
 function ModalButton(props) {
   // Button to render if user is not logged in
+  const {showAlert, setMessage} = props.alertProps;
   const [show, setShow] = React.useState(false);
   const [newUser, setNewUser] = React.useState(false);
 
@@ -80,7 +81,8 @@ function ModalButton(props) {
         </Modal.Header>
 
         <Modal.Body>
-          {!newUser ? <Login /> : <CreateAccount />}
+          {!newUser ? <Login showAlert={showAlert} setMessage={setMessage} /> 
+                    : <CreateAccount showAlert={showAlert} setMessage={setMessage} />}
         </Modal.Body>
 
         <Modal.Footer>

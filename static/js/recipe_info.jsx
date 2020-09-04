@@ -184,7 +184,7 @@ function RecipeCard(props) {
   // pass data as props to children and Recipe Details component
   // parent is either Search Results or Saved Recipes
   const {loggedIn} = React.useContext(AuthContext);
-  const {servings, prepMins, cookMins, readyMins, buttonStatus, handleRemove, ...others} = props;
+  const {servings, prepMins, cookMins, readyMins, buttonStatus, handleRemove, alertProps, ...others} = props;
 
   // enum to conditionally render buttons by path name and button status
   const getButton = (status, loggedIn) => ({
@@ -201,15 +201,12 @@ function RecipeCard(props) {
                                     buttonStatus={status}
                                     recipeDetails={props.recipeDetails}
                                     recipeId={props.recipeId} />
-                                : <ModalButton text={'Log in to Save!'} />)
+                                : <ModalButton text={'Log in to Save!'} 
+                                               alertProps={alertProps} />)
   });
 
   return (
-    <div>
-      <section className='recipe-card'>
-
-      <CardColumns>
-          <Card>
+        <Card className='recipe-card'>
             <ClickableToDetails {...others} elementType='image' />
             <Card.Body>
               <Card.Title>
@@ -224,10 +221,7 @@ function RecipeCard(props) {
             <Card.Footer>
               {getButton(buttonStatus, loggedIn)[props.fromPath]}
             </Card.Footer> 
-        </Card>         
-      </CardColumns>
-      </section>
-    </div>
+        </Card>  
     );
 }
 

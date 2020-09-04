@@ -13,15 +13,10 @@ const useParams = ReactRouterDOM.useParams;
 
 function Homepage(props) {
   let history = useHistory();
+  const {setMessage, showAlert} = props;
+
   const {loggedIn} = React.useContext(AuthContext);
   const [appear, setAppear] = React.useState(false);
-  const [alert, showAlert] = React.useState(false);
-  const [message, setMessage] = React.useState('');
-
-  const VARIANTS = {
-    true: 'info',
-    false: 'danger'
-  };
 
   const handleClick = () => {
     history.push('create-account')
@@ -29,11 +24,8 @@ function Homepage(props) {
 
   return (
     <div id='homepage'>
-      <Alert variant={VARIANTS[loggedIn]} show={alert} onClose={() => {showAlert(false)}} dismissible>
-        {message}
-      </Alert>
 
-      <h1> Hello! Welcome to the Homepage! </h1>
+      <h1> Hello! Welcome to Fridg! </h1>
 
       <CatchPhrase />
 
@@ -63,7 +55,7 @@ function Homepage(props) {
 
 function CatchPhrase(props) {
   return (
-    <h4> Your fridge is home to your family of ingredients. Family means no ingredient left behind or forgotten. </h4>
+    <h4> Fridg. Home to your family of ingredients. Family means no ingredient left behind or forgotten. </h4>
     );
 }
 
@@ -163,6 +155,7 @@ function SearchResults(props) {
                           cookMins={recipe.cooking_mins}
                           readyMins={recipe.ready_mins}
                           buttonStatus={recipe.is_saved}
+                          alertProps={props.alertProps}
                           />
                       ))
         }
@@ -225,10 +218,17 @@ function App() {
       .then(data => setLoggedIn(data.in_session))
   }, [loggedIn]);
   console.log('app loggedIn status', loggedIn);
-  // state for handling showing modal in nav links
+  // state for handling showing userAuthModal in nav links
   const [show, setShow] = React.useState(false);
   const handleShow = () => {setShow(true)};
   const handleClose = () => {setShow(false)};
+  // state for showing alerts for user authentication
+  const [alert, showAlert] = React.useState(false);
+  const [message, setMessage] = React.useState('');
+  const VARIANTS = {
+    true: 'success',
+    false: 'danger'
+  };
 
   // enum to conditionally render navbar links with loggedIn 
   const NavLinks = {
@@ -275,6 +275,10 @@ function App() {
               </Nav>
             </Navbar>
 
+            <Alert variant={VARIANTS[loggedIn]} show={alert} onClose={() => {showAlert(false)}} dismissible>
+              {message}
+            </Alert>
+
             <Switch>
 
               <Route path="/:fromPath/recipe-details/:id" >
@@ -287,21 +291,24 @@ function App() {
               </Route>
 
               <Route exact path="/search-results">
-                <SearchResults resultsList={data} />
+                <SearchResults resultsList={data}
+                               alertProps={{showAlert, setMessage}} />
               </Route>
 
               <Route exact path="/login">
                 <UserAuthModal show={show}
                                handleClose={handleClose}
-                               newUser={false}/>
-                <Homepage setData={setData}/>
+                               newUser={false}
+                               showAlert={showAlert}
+                               setMessage={setMessage} />
               </Route>
 
               <Route exact path="/create-account">
                 <UserAuthModal show={show}
                                handleClose={handleClose}
-                               newUser={true}/>
-                <Homepage setData={setData}/>
+                               newUser={true}
+                               showAlert={showAlert}
+                               setMessage={setMessage} />
               </Route>
 
               <Route exact path="/logout">
@@ -317,11 +324,15 @@ function App() {
               </Route>
 
               <Route path="/homepage">
-                <Homepage setData={setData} />
+                <Homepage setData={setData}
+                          showAlert={showAlert}
+                          setMessage={setMessage} />
               </Route>
 
               <Route exact path="/">
-                <Homepage setData={setData} />
+                <Homepage setData={setData}
+                          showAlert={showAlert}
+                          setMessage={setMessage} />
               </Route>
             </Switch>
           </div>
