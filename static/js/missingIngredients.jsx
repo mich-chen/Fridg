@@ -41,6 +41,7 @@ function MissingIngredientsList(props) {
 
 function ShoppingListBtn(props) {
   const {loggedIn} = React.useContext(AuthContext);
+  const [alert, showAlert] = React.useState(false);
   // if logged in, button will send shopping list to user's phone
   // not logged in, prompts login modal
   const handleClick = () => {
@@ -51,19 +52,22 @@ function ShoppingListBtn(props) {
         headers: {'Content-Type': 'application/json'},
         credentials: 'include'
       })
-    }
+    };
   // not logged in renders modal window prompting log in
   // logged in renders button to server and send text
   const SHOPPING_BTN = {
-    true: (<Button id='shopping-list-btn' onClick={handleClick}>
-            Send shopping list to phone!
-          </Button>
-          ),
-    false: (<ModalButton text={'Log in to send to your phone!'} />)
+    true: (<Button id='shopping-list-btn' onClick={() => {handleClick(); showAlert(true)}}>
+                  Send shopping list to phone!
+                </Button>),
+    false: (<ModalButton text={'Log in to send to your phone!'} show={true} />)
   };
 
   return (
     <div className="shopping-list-btn">
+      <Alert variant='info' show={alert} onClose={() => {showAlert(false)}} dismissible>
+        Shopping List sent to your phone!
+      </Alert>
+
       {SHOPPING_BTN[loggedIn]}
     </div>
     );
