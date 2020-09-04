@@ -166,6 +166,7 @@ function CreateAccount(props) {
 
 function UserAuthModal(props) {
   // modal window for navbar login and create account link
+  let history = useHistory();
   const {loggedIn} = React.useContext(AuthContext);
   const [newUser, setNewUser] = React.useState(props.newUser);
   const handleNewUser = () => {setNewUser(true)};
@@ -192,7 +193,7 @@ function UserAuthModal(props) {
 
   return (
     <React.Fragment>
-      <Modal show={loggedIn ? false : props.show} onHide={props.handleClose} >
+      <Modal show={loggedIn ? false : props.show} onHide={() => {props.handleClose; history.goBack()}} >
         <Modal.Header closeButton>
           Log In to Access All The Yummy Features!
         </Modal.Header>
