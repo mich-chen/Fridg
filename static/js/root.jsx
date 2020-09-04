@@ -18,13 +18,18 @@ function Homepage(props) {
   const [alert, showAlert] = React.useState(false);
   const [message, setMessage] = React.useState('');
 
+  const VARIANTS = {
+    true: 'info',
+    false: 'danger'
+  };
+
   const handleClick = () => {
     history.push('create-account')
   };
 
   return (
     <div id='homepage'>
-      <Alert variant='info' show={alert} onClose={() => {showAlert(false)}} dismissible>
+      <Alert variant={VARIANTS[loggedIn]} show={alert} onClose={() => {showAlert(false)}} dismissible>
         {message}
       </Alert>
 

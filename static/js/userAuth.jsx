@@ -22,7 +22,7 @@ function Login(props) {
     .then(data => {
       setLoggedIn(data.success);
       props.setMessage(data.message);
-      props.showAlert(true)
+      props.showAlert(true);
     })
   };
 
