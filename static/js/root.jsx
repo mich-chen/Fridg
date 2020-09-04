@@ -252,6 +252,8 @@ function App() {
               <Nav>
                   <Nav.Link as={Link} to="/homepage">Homepage</Nav.Link>
 
+                  <Nav.Link as={Link} to="/about">About</Nav.Link>
+
                   <Nav.Link as={Link} to="/test-page"> Test</Nav.Link>
                 
                 {NavLinks[loggedIn]}
@@ -296,6 +298,10 @@ function App() {
 
               <Route exact path="/test-page">
                 <TestPage />
+              </Route>
+
+              <Route exact path="/about">
+                <About />
               </Route>
 
               <Route path="/homepage">
