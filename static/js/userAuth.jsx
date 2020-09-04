@@ -215,13 +215,14 @@ function UserAuthModal(props) {
 function Logout() {
   let history = useHistory();
   const {loggedIn, setLoggedIn} = React.useContext(AuthContext);
+  const [message, setMessage] = React.useState('');
 
   // update loggedIn context to false in App
   React.useEffect(() => {
     fetch('/api/logout')
     .then(res => res.json())
     .then(data => {
-      alert(data.message);
+      setMessage(data.message);
       setLoggedIn(false)
     })
   },[]);
@@ -233,6 +234,10 @@ function Logout() {
 
   return (
     <div>
+      <Alert variant='success' show={!loggedIn} onClose={() => {showAlert(false)}} dismissible>
+        {message}
+      </Alert>
+
       Logged out! 
 
       <Button variant='info' onClick={handleClick}> 
