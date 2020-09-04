@@ -22,7 +22,7 @@ function Login(props) {
     .then(data => {
       setLoggedIn(data.success);
       props.setMessage(data.message);
-      props.showAlert(true);
+      props.showAlert(true)
     })
   };
 
@@ -76,7 +76,7 @@ function Login(props) {
 
 // ***** Create New Account Component *****
 
-function CreateAccount() {
+function CreateAccount(props) {
   let history = useHistory();
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
@@ -96,8 +96,9 @@ function CreateAccount() {
     })
     .then(res => res.json())
     .then(data => {
-      alert(data.message);
-      setLoggedIn(data.success)
+      setLoggedIn(data.success);
+      props.setMessage(data.message);
+      props.showAlert(true)
     })
   };
 

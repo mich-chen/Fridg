@@ -52,7 +52,7 @@ function Homepage(props) {
 
         <Collapse in={appear}>
           <div id='create-account-collapse'>
-            <CreateAccount />
+            <CreateAccount setMessage={setMessage} showAlert={showAlert}/>
           </div>
         </Collapse>
       </div>
