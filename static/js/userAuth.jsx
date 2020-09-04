@@ -2,6 +2,7 @@
 
 
 function Login(props) {
+  console.log('login props', props);
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const loginData = {'email': email, 'password': password};
@@ -77,7 +78,6 @@ function Login(props) {
 // ***** Create New Account Component *****
 
 function CreateAccount(props) {
-  let history = useHistory();
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [phone, setPhone] = React.useState('');
@@ -168,6 +168,7 @@ function UserAuthModal(props) {
   // modal window for navbar login and create account link
   let history = useHistory();
   const {loggedIn} = React.useContext(AuthContext);
+  const {show, handleClose, ...others} = props;
   const [newUser, setNewUser] = React.useState(props.newUser);
   const handleNewUser = () => {setNewUser(true)};
   const handleExistingUser = () => {setNewUser(false)};
@@ -193,13 +194,13 @@ function UserAuthModal(props) {
 
   return (
     <React.Fragment>
-      <Modal show={loggedIn ? false : props.show} onHide={() => {props.handleClose; history.goBack()}} >
+      <Modal show={loggedIn ? false : show} onHide={() => {handleClose; history.goBack()}} >
         <Modal.Header closeButton>
           Log In to Access All The Yummy Features!
         </Modal.Header>
 
         <Modal.Body>
-          {!newUser ? <Login /> : <CreateAccount />}
+          {!newUser ? <Login others={{...others}} /> : <CreateAccount others={{...others}} />}
         </Modal.Body>
 
         <Modal.Footer>
@@ -217,6 +218,7 @@ function Logout() {
   let history = useHistory();
   const {loggedIn, setLoggedIn} = React.useContext(AuthContext);
   const [message, setMessage] = React.useState('');
+  const [show, setShow] = React.useState(!loggedIn);
 
   // update loggedIn context to false in App
   React.useEffect(() => {
@@ -233,9 +235,13 @@ function Logout() {
     history.push('/')
   };
 
+  const handleClose = () => {
+    setShow(false);
+  }
+
   return (
     <div>
-      <Alert variant='success' show={!loggedIn} onClose={() => {showAlert(false)}} dismissible>
+      <Alert id='logout-alert' variant='success' show={show} onClose={handleClose} dismissible>
         {message}
       </Alert>
 
