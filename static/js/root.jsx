@@ -1,4 +1,4 @@
-const { Badge, Button, ButtonGroup, Col, Container, Collapse, Form, FormControl, InputGroup, ListGroup, ToggleButton, ToggleButtonGroup, Modal, Alert, OverlayTrigger, CardColumns, Card, CardDeck, CardGroup, Nav, Navbar } = ReactBootstrap;
+const { Badge, Button, ButtonGroup, Col, Container, Collapse, Form, FormControl, InputGroup, ListGroup, ToggleButton, ToggleButtonGroup, Modal, Alert, OverlayTrigger, CardColumns, Card, CardDeck, CardGroup, Nav, Navbar, Row, Image } = ReactBootstrap;
 
 const Router = ReactRouterDOM.BrowserRouter;
 const Route = ReactRouterDOM.Route;
@@ -22,6 +22,8 @@ function Homepage(props) {
   return (
     <div id='homepage'>
       <h1> Hello! Welcome to the Homepage! </h1>
+
+      <CatchPhrase />
 
       <SearchBar setData={props.setData}/>
       <br></br>
@@ -47,6 +49,25 @@ function Homepage(props) {
 }
 
 
+function CatchPhrase(props) {
+  return (
+    <h4> Your fridge is home to your family of ingredients. Family means no ingredient left behind or forgotten. </h4>
+    );
+}
+
+
+function About(props) {
+  return (
+    <div>
+      <p> Fridg is a single-page webapp that curates recipes based on what's in your fridge! Fridg's mission is to help reduce food waste by using Spoonacular's API to search recipes maximizing ingredients you have on hand. If you find a recipe you like, you can save, favorite, and journal your experiences with your saved recipes. Fridg also provides a checklist of missing ingredients when you search recipes and you may customize a grocery shopping list to be sent to your phone. 
+      </p>
+
+      <CatchPhrase />
+    </div>
+    );
+}
+
+
 function SavedRecipes(props) {
   const [savedList, setSavedList] = React.useState([]);
   const [removed, updateRemoved] = React.useState(false);
@@ -65,27 +86,29 @@ function SavedRecipes(props) {
   };
 
   return (
-    <div>
-      <section id='saved-recipes'>
-        {!savedList.length ? <p>You haven't saved any recipes yet!</p>
-          : (savedList.map((recipe) => 
-                <RecipeCard key={recipe.recipe_id}
-                            fromPath={'saved-recipes'}
-                            recipeDetails={recipe}
-                            img={recipe.image}
-                            title={recipe.title}
-                            recipeId={recipe.recipe_id}
-                            servings={recipe.servings}
-                            prepMins={recipe.prep_mins}
-                            cookMins={recipe.cooking_mins}
-                            readyMins={recipe.ready_mins}
-                            buttonStatus={recipe.favorite}
-                            handleRemove={handleRemove}
-                            />
-                        ))
-        }
-      </section>
-    </div>
+    <div className='container'>
+      <CardColumns className='card-columns'>
+        <section id='saved-recipes'>
+          {!savedList.length ? <p>You haven't saved any recipes yet!</p>
+            : (savedList.map((recipe) => 
+                  <RecipeCard key={recipe.recipe_id}
+                              fromPath={'saved-recipes'}
+                              recipeDetails={recipe}
+                              img={recipe.image}
+                              title={recipe.title}
+                              recipeId={recipe.recipe_id}
+                              servings={recipe.servings}
+                              prepMins={recipe.prep_mins}
+                              cookMins={recipe.cooking_mins}
+                              readyMins={recipe.ready_mins}
+                              buttonStatus={recipe.favorite}
+                              handleRemove={handleRemove}
+                              />
+                          ))
+          }
+        </section>
+      </CardColumns>
+  </div>
     );
 }
 
@@ -113,7 +136,7 @@ function SearchResults(props) {
 
 
   return (
-    <div>
+    <CardColumns className='card-columns'>
       <section id='search-results'>
         {!props.resultsList.length ? <p>Searching...</p>
           : (checkedRecipes.map((recipe) => 
@@ -132,7 +155,7 @@ function SearchResults(props) {
                       ))
         }
       </section>
-    </div>
+    </CardColumns>
     );
 }
 
