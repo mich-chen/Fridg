@@ -282,7 +282,7 @@ function App() {
             <Switch>
 
               <Route path="/:fromPath/recipe-details/:id" >
-                <RecipeDetails />
+                <RecipeDetails alertProps={{showAlert, setMessage}}/>
               </Route>
 
               <Route exact path="/saved-recipes">

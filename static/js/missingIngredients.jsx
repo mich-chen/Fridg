@@ -59,7 +59,9 @@ function ShoppingListBtn(props) {
     true: (<Button id='shopping-list-btn' onClick={() => {handleClick(); showAlert(true)}}>
                   Send shopping list to phone!
                 </Button>),
-    false: (<ModalButton text={'Log in to send to your phone!'} show={true} />)
+    false: (<ModalButton text={'Log in to send to your phone!'} 
+                         show={true}
+                         alertProps={props.alertProps} />)
   };
 
   return (
@@ -102,7 +104,9 @@ function MissingIngredientsContainer(props) {
                               checkedBoxes={checkedBoxes}
                               handleCheck={handleCheck} />
 
-      <ShoppingListBtn shoppingList={shoppingList} title={title}/>
+      <ShoppingListBtn shoppingList={shoppingList} 
+                       title={title}
+                       alertProps={props.alertProps} />
     </div>
     );
 }

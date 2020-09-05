@@ -201,7 +201,7 @@ function RecipeCard(props) {
                                     buttonStatus={status}
                                     recipeDetails={props.recipeDetails}
                                     recipeId={props.recipeId} />
-                                : <ModalButton text={'Log in to Save!'} 
+                                : <ModalButton text={'Log in to Save!'}
                                                alertProps={alertProps} />)
   });
 
@@ -234,6 +234,7 @@ function RecipeDetails(props) {
   let location = useLocation();
   const {loggedIn, setLoggedIn} = React.useContext(AuthContext);
   const {recipeDetails, ...others} = location.state;
+
   // set initial state as recipe details from props
   const [details, setDetails] = React.useState(recipeDetails);
   const [buttonStatus, setButtonStatus] = React.useState(false);
@@ -282,7 +283,8 @@ function RecipeDetails(props) {
                                         recipeDetails={details}
                                         recipeId={details.recipe_id} />
                                     </div>
-                          : <ModalButton text={'Log in to Save!'}/>
+                          : <ModalButton text={'Log in to Save!'}
+                                         alertProps={props.alertProps} />
                         )
     });
 
@@ -303,7 +305,9 @@ function RecipeDetails(props) {
         <RecipeIngredients ingredients={details.ingredients} />
 
         {details.hasOwnProperty('missing_ingredients') ? 
-          <MissingIngredientsContainer missingIngredients={details.missing_ingredients} title={details.title}/>
+          <MissingIngredientsContainer missingIngredients={details.missing_ingredients} 
+                                       title={details.title}
+                                       alertProps={props.alertProps} />
           : null
         }
 

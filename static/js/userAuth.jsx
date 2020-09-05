@@ -2,7 +2,7 @@
 
 
 function Login(props) {
-  console.log('login props', props);
+  let history = useHistory();
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const loginData = {'email': email, 'password': password};
@@ -24,7 +24,7 @@ function Login(props) {
       setLoggedIn(data.success);
       props.setMessage(data.message);
       props.showAlert(true)
-    })
+    });
   };
 
   // reset form fields after user clicks submit
@@ -78,6 +78,7 @@ function Login(props) {
 // ***** Create New Account Component *****
 
 function CreateAccount(props) {
+  let history = useHistory();
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [phone, setPhone] = React.useState('');
@@ -99,7 +100,7 @@ function CreateAccount(props) {
       setLoggedIn(data.success);
       props.setMessage(data.message);
       props.showAlert(true)
-    })
+    });
   };
 
   // reset form fields after onClick of create account button
@@ -167,7 +168,6 @@ function CreateAccount(props) {
 function UserAuthModal(props) {
   // modal window for navbar login and create account link
   let history = useHistory();
-  const {loggedIn} = React.useContext(AuthContext);
   const {show, handleClose, ...others} = props;
   const [newUser, setNewUser] = React.useState(props.newUser);
   const handleNewUser = () => {setNewUser(true)};
@@ -194,13 +194,13 @@ function UserAuthModal(props) {
 
   return (
     <React.Fragment>
-      <Modal show={loggedIn ? false : show} onHide={() => {handleClose; history.goBack()}} >
+      <Modal show={show} onHide={() => {handleClose; history.goBack()}} >
         <Modal.Header closeButton>
           Log In to Access All The Yummy Features!
         </Modal.Header>
 
         <Modal.Body>
-          {!newUser ? <Login others={{...others}} /> : <CreateAccount others={{...others}} />}
+          {!newUser ? <Login {...others} /> : <CreateAccount {...others} />}
         </Modal.Body>
 
         <Modal.Footer>
@@ -218,7 +218,7 @@ function Logout() {
   let history = useHistory();
   const {loggedIn, setLoggedIn} = React.useContext(AuthContext);
   const [message, setMessage] = React.useState('');
-  const [show, setShow] = React.useState(!loggedIn);
+  const [show, setShow] = React.useState(true);
 
   // update loggedIn context to false in App
   React.useEffect(() => {
@@ -241,7 +241,7 @@ function Logout() {
 
   return (
     <div>
-      <Alert id='logout-alert' variant='success' show={show} onClose={handleClose} dismissible>
+      <Alert id='logout-alert' variant='warning' show={show} onClose={handleClose} dismissible>
         {message}
       </Alert>
 
