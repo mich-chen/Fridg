@@ -2,7 +2,7 @@
 
 function RecipeServings(props) {
   return (
-    <div>
+    <div id='servings'>
       <label>Servings: </label>
         {props.servings}
     </div>
@@ -17,8 +17,7 @@ function RecipeTime(props) {
 
 function RecipeTimeSection(props) {
   return (
-    <div>
-      <section className='recipe-times'>
+    <div className='recipe-times'>
         <ul>
           <li id='prep-time'>
             <label>Prep Time: </label>
@@ -33,7 +32,6 @@ function RecipeTimeSection(props) {
             <RecipeTime time={props.times.readyMins} />
           </li>
         </ul>
-      </section>
     </div>
     );
 }
@@ -44,7 +42,7 @@ function RecipeTimeSection(props) {
 
 function ClickableImg(props) {
   return (
-    <Card.Img id='clickable-recipe-img' 
+    <Card.Img id='clickable-img' 
          src={`${props.image}`} 
          onClick={props.onClick}
          variant='top'
@@ -55,7 +53,7 @@ function ClickableImg(props) {
 
 function ClickableTitle(props) {
   return (
-    <h3 id='clickable-recipe-title'
+    <h3 id='clickable-title'
         onClick={props.onClick}> 
           {props.title}
     </h3>
@@ -74,13 +72,11 @@ function ClickableToDetails(props) {
   };
 
   return (
-    <div>
-      <section className='clickable-to-details'>
+    <div className='clickable-to-details'>
         {props.elementType === 'image' 
          ? <ClickableImg image={img} onClick={goToDetails} />
          : <ClickableTitle title={title} onClick={goToDetails} />
         }
-      </section>
     </div>
     );
 }
@@ -90,14 +86,14 @@ function ClickableToDetails(props) {
 
 function StaticImg(props) {
   return (
-    <Image id='static-recipe-img' src={`${props.image}`} rounded/>
+    <Image id='static-img' src={`${props.image}`} rounded/>
     );
 }
 
 
 function StaticTitle(props) {
   return (
-    <h3 id='static-recipe-title'> {props.title}</h3>
+    <h3 id='static-title'> {props.title}</h3>
     );
 }
 
@@ -111,8 +107,7 @@ function Ingredient(props){
 
 function RecipeIngredients(props) {
   return (
-    <div>
-      <section className='recipe-ingredients'>
+    <div className='recipe-ingredients'>
         <label>Ingredients: </label>
           <ul>
             {props.ingredients.map((ingredient) => 
@@ -123,7 +118,6 @@ function RecipeIngredients(props) {
                   />
               )}
           </ul>
-      </section>
     </div>
     );
 }
@@ -136,7 +130,7 @@ function RecipeEquipment(props) {
   };
 
   return (
-    <div>
+    <div className='recipe-equipment'>
       <label>Equipment: </label>
         <ul>
           {equipmentList.map((equipment) => 
@@ -152,17 +146,15 @@ function RecipeEquipment(props) {
 
 function RecipeInstructions(props) {
   return (
-    <div>
-    <section className='recipe-instructions'>
-        <label>Instructions: </label>
-          <ol>
-            {props.instructions.map((instruction) => 
-              <li key={props.instructions.indexOf(instruction)}>
-                {instruction}
-              </li>
-              )}
-          </ol>
-        </section>
+    <div className='recipe-instructions'>
+      <label>Instructions: </label>
+        <ol>
+          {props.instructions.map((instruction) => 
+            <li key={props.instructions.indexOf(instruction)}>
+              {instruction}
+            </li>
+            )}
+        </ol>
     </div>
     );
 }
@@ -170,7 +162,7 @@ function RecipeInstructions(props) {
 
 function SourceUrl(props) {
   return (
-    <a href={`${props.url}`}>
+    <a id='sourceUrl' href={`${props.url}`}>
       Click for more details on recipe
     </a>
     );
@@ -206,22 +198,22 @@ function RecipeCard(props) {
   });
 
   return (
-        <Card className='recipe-card'>
-            <ClickableToDetails {...others} elementType='image' />
-            <Card.Body>
-              <Card.Title>
-                <ClickableToDetails {...others} elementType='title' />
-              </Card.Title>
+    <Card className='recipe-card'>
+        <ClickableToDetails {...others} elementType='image' />
+        <Card.Body>
+          <Card.Title>
+            <ClickableToDetails {...others} elementType='title' />
+          </Card.Title>
 
-              <RecipeServings servings={servings}/>
+          <RecipeServings servings={servings}/>
 
-              <RecipeTimeSection times={{prepMins, cookMins, readyMins}}/>
-            </Card.Body>
+          <RecipeTimeSection times={{prepMins, cookMins, readyMins}}/>
+        </Card.Body>
 
-            <Card.Footer>
-              {getButton(buttonStatus, loggedIn)[props.fromPath]}
-            </Card.Footer> 
-        </Card>  
+        <Card.Footer>
+          {getButton(buttonStatus, loggedIn)[props.fromPath]}
+        </Card.Footer> 
+    </Card>  
     );
 }
 
@@ -289,8 +281,7 @@ function RecipeDetails(props) {
     });
 
   return (
-    <div>
-      <section className='recipe-details'>
+    <div className='container recipe-details'>
 
         {fromPath === 'saved-recipes' ? <FoodForThoughtsContainer /> : null}
 
@@ -319,7 +310,6 @@ function RecipeDetails(props) {
 
         <SourceUrl url={details.sourceUrl} />
 
-      </section>
     </div>
     );
 }

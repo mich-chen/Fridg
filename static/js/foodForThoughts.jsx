@@ -23,7 +23,7 @@ function Tried(props) {
   };
 
   return (
-    <div>
+    <div className='tried'>
       <label> Tried recipe? </label>
       <Button id='yes-tried' variant='primary' value={true} onClick={handleTried} active={tried ? true : false}> yes </Button>
       <Button id='no-tried' variant='primary' value={false} onClick={handleTried} active={tried === false ? true : false}> no </Button>
@@ -52,15 +52,13 @@ function Comment(props) {
   };
   
   return (
-    <div>
-      <div>
-        <Form.Label> Recipe Comment: </Form.Label>
-        <p> {comment} </p>
-        <FormControl id='comment' as="textarea"></FormControl>
-        <Button variant='primary' type='submit' onClick={handleComment}>
-          Save comment
-        </Button>
-      </div>
+    <div className='comment'>
+      <Form.Label> Recipe Comment: </Form.Label>
+      <p> {comment} </p>
+      <FormControl id='comment' as="textarea"></FormControl>
+      <Button variant='primary' type='submit' onClick={handleComment}>
+        Save comment
+      </Button>
     </div>
     );
 }
@@ -104,9 +102,9 @@ function Rating(props) {
   };
 
   return(
-    <div>
+    <div className='rating'>
       <label>How'd it go?</label>
-        <ButtonGroup toggle className='rating'>
+        <ButtonGroup toggle className='stars'>
           {STARS.map((star, idx) => (
             <ToggleButton key={idx}
                           type='checkbox'
@@ -144,7 +142,7 @@ function FoodForThoughtsContainer(props) {
   },[]);
 
   return (
-    <div className='user-thoughts-container'>
+    <div className='user-thoughts-container container'>
       <h4> Food For Thoughts! </h4>
 
       <Tried tried={tried} setTried={setTried} />

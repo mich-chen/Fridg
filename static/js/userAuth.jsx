@@ -35,14 +35,14 @@ function Login(props) {
 
   // set onChange listener for change in textbox
   return (
-   <div name='login' 
+   <div className='login' 
         style={{display: (loggedIn ? 'none' : 'block')}}>
     <form className='login-form'>
       <h3> Log in to see your saved recipes! </h3>
       <br/>
 
       <label> Email: </label>
-        <input id='email'
+        <input className='email'
                type='text'
                onChange={(e) => {setEmail(e.target.value)}}
                value={email} 
@@ -52,7 +52,7 @@ function Login(props) {
       <br/>
 
       <label> Password: </label>
-        <input id='password'
+        <input className='password'
                type='password'
                onChange={(e) => {setPassword(e.target.value)}}
                value={password}
@@ -62,7 +62,7 @@ function Login(props) {
 
       <br/>
 
-      <Button id='login-btn' 
+      <Button className='login-btn' 
               variant='success'
               onClick={(e) => {checkLogin(e); resetForm()}} 
               >
@@ -112,13 +112,13 @@ function CreateAccount(props) {
 
   return (
     <div>
-      <div name='create-account'>
+      <div className='create-account'>
         <form className='create-account-form'>
           <h3> Create a New Account to start saving recipes! </h3>
           <br/>
 
           <label> Email: </label>
-            <input id='email'
+            <input className='email'
                    type='text'
                    onChange={(e) => {setEmail(e.target.value)}}
                    value={email} 
@@ -128,7 +128,7 @@ function CreateAccount(props) {
           <br/>
 
           <label> Password: </label>
-            <input id='password'
+            <input className='password'
                    type='password'
                    onChange={(e) => {setPassword(e.target.value)}}
                    value={password}
@@ -138,7 +138,7 @@ function CreateAccount(props) {
           <br/>
 
           <label> Phone: </label>
-            +1 <input id='phone'
+            +1 <input className='phone'
                    type='tel'
                    onChange={(e) => {setPhone(e.target.value)}}
                    value={phone}
@@ -149,7 +149,7 @@ function CreateAccount(props) {
 
           <br/>
 
-          <Button id='create-account-btn' 
+          <Button className='create-account-btn' 
                   variant='success'
                   onClick={(e) => {createAccount(e); resetForm()}} 
                   >
@@ -193,7 +193,7 @@ function UserAuthModal(props) {
   };
 
   return (
-    <React.Fragment>
+    <React.Fragment id='user-auth-modal'>
       <Modal show={show} onHide={() => {handleClose; history.goBack()}} >
         <Modal.Header closeButton>
           Log In to Access All The Yummy Features!
@@ -240,14 +240,14 @@ function Logout() {
   }
 
   return (
-    <div>
-      <Alert id='logout-alert' variant='warning' show={show} onClose={handleClose} dismissible>
+    <div id='logout'>
+      <Alert variant='warning' show={show} onClose={handleClose} dismissible>
         {message}
       </Alert>
 
       Logged out! 
 
-      <Button variant='info' onClick={handleClick}> 
+      <Button id='logout-btn' variant='info' onClick={handleClick}> 
         Click here to go back to home!
       </Button>
     </div>

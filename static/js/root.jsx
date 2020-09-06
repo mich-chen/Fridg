@@ -23,9 +23,9 @@ function Homepage(props) {
   };
 
   return (
-    <div id='homepage'>
+    <div id='homepage' className='container'>
 
-      <h1> Hello! Welcome to Fridg! </h1>
+      <h1 id='homepage-title'> Hello! Welcome to Fridg! </h1>
 
       <CatchPhrase />
 
@@ -35,7 +35,7 @@ function Homepage(props) {
       <Login setMessage={setMessage} showAlert={showAlert} />
       <br></br>
       
-      <div style={{display: (loggedIn ? 'none' : 'block')}}>
+      <div className='create-account' style={{display: (loggedIn ? 'none' : 'block')}}>
         <p>Don't have an account? Click here to start!</p>
 
         <Button variant='info' onClick={() => {setAppear(!appear)}}>
@@ -55,14 +55,14 @@ function Homepage(props) {
 
 function CatchPhrase(props) {
   return (
-    <h4> Fridg. Home to your family of ingredients. Family means no ingredient left behind or forgotten. </h4>
+    <h4 id='catchphrase'> Fridg. Home to your family of ingredients. Family means no ingredient left behind or forgotten. </h4>
     );
 }
 
 
 function About(props) {
   return (
-    <div>
+    <div className='about container'>
       <p> Fridg is a single-page webapp that curates recipes based on what's in your fridge! Fridg's mission is to help reduce food waste by using Spoonacular's API to search recipes maximizing ingredients you have on hand. If you find a recipe you like, you can save, favorite, and journal your experiences with your saved recipes. Fridg also provides a checklist of missing ingredients when you search recipes and you may customize a grocery shopping list to be sent to your phone. 
       </p>
 
@@ -90,9 +90,8 @@ function SavedRecipes(props) {
   };
 
   return (
-    <div className='container'>
-      <CardColumns className='card-columns'>
-        <section id='saved-recipes'>
+    <div className='card-deck container'>
+      <CardDeck className='saved-recipes'>
           {!savedList.length ? <p>You haven't saved any recipes yet!</p>
             : (savedList.map((recipe) => 
                   <RecipeCard key={recipe.recipe_id}
@@ -110,8 +109,7 @@ function SavedRecipes(props) {
                               />
                           ))
           }
-        </section>
-      </CardColumns>
+      </CardDeck>
   </div>
     );
 }
@@ -140,27 +138,27 @@ function SearchResults(props) {
 
 
   return (
-    <CardColumns className='card-columns'>
-      <section id='search-results'>
-        {!props.resultsList.length ? <p>Searching...</p>
-          : (checkedRecipes.map((recipe) => 
-              <RecipeCard key={recipe.recipe_id}
-                          fromPath={'search-results'}
-                          recipeDetails={recipe}
-                          img={recipe.image}
-                          title={recipe.title}
-                          recipeId={recipe.recipe_id}
-                          servings={recipe.servings}
-                          prepMins={recipe.prep_mins}
-                          cookMins={recipe.cooking_mins}
-                          readyMins={recipe.ready_mins}
-                          buttonStatus={recipe.is_saved}
-                          alertProps={props.alertProps}
-                          />
-                      ))
-        }
-      </section>
-    </CardColumns>
+    <div className='card-deck container'>
+      <CardDeck className='search-results'>
+          {!props.resultsList.length ? <p>Searching...</p>
+            : (checkedRecipes.map((recipe) => 
+                <RecipeCard key={recipe.recipe_id}
+                            fromPath={'search-results'}
+                            recipeDetails={recipe}
+                            img={recipe.image}
+                            title={recipe.title}
+                            recipeId={recipe.recipe_id}
+                            servings={recipe.servings}
+                            prepMins={recipe.prep_mins}
+                            cookMins={recipe.cooking_mins}
+                            readyMins={recipe.ready_mins}
+                            buttonStatus={recipe.is_saved}
+                            alertProps={props.alertProps}
+                            />
+                        ))
+          }
+      </CardDeck>
+    </div>
     );
 }
 
@@ -185,7 +183,7 @@ function SearchBar(props) {
 
   return (
     <React.Fragment>
-      What's in your fridge? 
+      <label> What's in your fridge? </label> 
       <FormControl type='text'
              className='search-bar'
              onChange={(e) => {setIngredients(e.target.value)}}
@@ -193,7 +191,7 @@ function SearchBar(props) {
              placeholder='e.g. beef, potato'>
       </FormControl>
 
-      <Button onClick={searchRecipes} variant='outline-info'>
+      <Button id='search-bar-btn' onClick={searchRecipes} variant='outline-info'>
         Let's get cookin!
         </Button>
     </React.Fragment>

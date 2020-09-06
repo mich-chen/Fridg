@@ -4,7 +4,7 @@
 
 function SavedBtn(props) {
   return (
-    <Button id='saved-btn'> Saved! </Button>
+    <Button className='saved-btn'> Saved! </Button>
     );
 }
 
@@ -13,7 +13,7 @@ function FavoritedBtn(props) {
   const text = 'Favorited &hearts;';
 
   return (
-    <Button id='favorited-btn'> Favorited &hearts;  </Button>
+    <Button className='favorited-btn'> Favorited &hearts;  </Button>
     );
 }
 
@@ -31,7 +31,7 @@ function ActionBtn(props) {
   };
 
   return (
-    <Button id='action-btn'
+    <Button className='action-btn'
             onClick={handleClick}> 
       {buttonText}
     </Button>
@@ -52,26 +52,26 @@ function ModalButton(props) {
 
   const MODALFOOTER = {
     false: (
-      <React.Fragment>
+      <div>
         New user?
         <Button variant='link' onClick={handleNewUser}>
         Create account
         </Button>
-      </React.Fragment>
+      </div>
       ),
     true: (
-      <React.Fragment>
+      <div>
         Have an account?
         <Button variant='link' onClick={handleExistingUser}>
           Log in
         </Button>
-      </React.Fragment>
+      </div>
       )
   };
 
   return (
-    <React.Fragment>
-      <Button variant='primary' onClick={handleShow}>
+    <div className='recipe-modal'>
+      <Button className='recipe-modal-btn' variant='primary' onClick={handleShow}>
         {props.text}
       </Button>
 
@@ -89,7 +89,7 @@ function ModalButton(props) {
           {MODALFOOTER[newUser]}
         </Modal.Footer>
       </Modal>
-    </React.Fragment>
+    </div>
     );
 }
 
@@ -118,7 +118,7 @@ function RemoveBtn(props) {
   };
 
   return (
-    <Button id='remove-btn' variant='secondary' onClick={handleClick}> 
+    <Button className='remove-btn' variant='secondary' onClick={handleClick}> 
       Remove Recipe
     </Button>
     );
@@ -154,14 +154,12 @@ function SearchResultButton(props) {
   };
 
   return (
-    <div>
-      <section className='button'>
-        {isSaved ? <SavedBtn /> 
-          : <ActionBtn action={addRecipeToDb}
-                       initialText={'Save this recipe!'}
-                       updateText={'Saved'} 
-                       />}
-      </section>
+    <div className='search-results-btn-container button'>
+      {isSaved ? <SavedBtn /> 
+        : <ActionBtn action={addRecipeToDb}
+                     initialText={'Save this recipe!'}
+                     updateText={'Saved'} 
+                     />}
     </div>
     );
 }
@@ -182,14 +180,12 @@ function SavedRecipesButton(props) {
   };
 
   return (
-    <div>
-      <section className='button'>
-        {isFavorite ? <FavoritedBtn /> 
-          : <ActionBtn action={favoriteThisRecipe}
-                       initialText={'Saved! Not favorited!'}
-                       updateText={'Favorite <3'}
-                       />}
-      </section>
+    <div className='saved-recipes-btn-container button'>
+      {isFavorite ? <FavoritedBtn /> 
+        : <ActionBtn action={favoriteThisRecipe}
+                     initialText={'Saved! Not favorited!'}
+                     updateText={'Favorite <3'}
+                     />}
     </div>
     );
 }

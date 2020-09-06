@@ -6,8 +6,8 @@ function MissingItem(props) {
   const missingIngredient = `${amount} ${unit} ${name}`;
   // checkbox with missing ingredent info as a string value for db
   return (
-    <div>
-      <form className='missing-ingredient-item'>
+    <div className='missing-item'>
+      <form className='missing-checkbox'>
         <input id={name}
                type='checkbox'
                value={missingIngredient}
@@ -24,7 +24,7 @@ function MissingIngredientsList(props) {
   const {missingIngredients, ...others} = props;
 
   return (
-    <div className='missing-ingredients-list'>
+    <div className='missing-list'>
       <ul>
         {missingIngredients.map((ingredient) => 
           <MissingItem key={missingIngredients.indexOf(ingredient)}
@@ -96,7 +96,7 @@ function MissingIngredientsContainer(props) {
   };
 
   return(
-    <div className='missing-ingredients-container'>
+    <div className='missing-ingredients-container container'>
       <h4> Currently missing ingredients </h4>
       <p> Check the ingredients you'd like to add for a shopping list! </p>
 
