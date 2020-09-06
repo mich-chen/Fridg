@@ -258,7 +258,14 @@ function App() {
         <Router>
           <div>
             <Navbar bg='dark' variant='dark'>
-            <Navbar.Brand> Fridg </Navbar.Brand>
+            <Navbar.Brand>
+              <img src='https://img.icons8.com/cotton/64/000000/fridge.png'
+                   width='15'
+                   height='15'
+                   className='d-inline-block align-top'
+                   id='fridg-logo' />
+              {'   '} Fridg 
+            </Navbar.Brand>
               <Nav>
                   <Nav.Link as={Link} to="/homepage">Homepage</Nav.Link>
 
