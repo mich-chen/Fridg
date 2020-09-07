@@ -180,6 +180,13 @@ function SearchBar(props) {
 
     history.push("/search-results");
   };
+  // Enter key is 13, trigger searchRecipes function if enter key triggered.
+  const handleKeyUp = (e) => {
+    if (e.keyCode === 13) {
+      e.preventDefault();
+      searchRecipes()
+    }
+  }
 
   return (
     <React.Fragment>
@@ -188,10 +195,11 @@ function SearchBar(props) {
              className='search-bar'
              onChange={(e) => {setIngredients(e.target.value)}}
              value={ingredients}
-             placeholder='e.g. beef, potato'>
+             placeholder='e.g. beef, potato'
+             onKeyUp={handleKeyUp}>
       </FormControl>
 
-      <Button className='search-btn' onClick={searchRecipes} variant='outline-info'>
+      <Button type='submit' className='search-btn' onClick={searchRecipes} variant='outline-info'>
         Let's get cookin!
         </Button>
     </React.Fragment>
