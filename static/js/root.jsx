@@ -23,9 +23,9 @@ function Homepage(props) {
   };
 
   return (
-    <div id='homepage' className='container'>
+    <div className='homepage container'>
 
-      <h1 id='homepage-title'> Hello! Welcome to Fridg! </h1>
+      <h1 className='homepage-title'> Hello! Welcome to Fridg! </h1>
 
       <CatchPhrase />
 
@@ -43,7 +43,7 @@ function Homepage(props) {
         </Button>
 
         <Collapse in={appear}>
-          <div id='create-account-collapse'>
+          <div className='create-account-collapse'>
             <CreateAccount setMessage={setMessage} showAlert={showAlert}/>
           </div>
         </Collapse>
@@ -55,7 +55,7 @@ function Homepage(props) {
 
 function CatchPhrase(props) {
   return (
-    <h4 id='catchphrase'> Fridg. Home to your family of ingredients. Family means no ingredient left behind or forgotten. </h4>
+    <h4 className='catchphrase'> Fridg. Home to your family of ingredients. Family means no ingredient left behind or forgotten. </h4>
     );
 }
 
@@ -191,7 +191,7 @@ function SearchBar(props) {
              placeholder='e.g. beef, potato'>
       </FormControl>
 
-      <Button id='search-bar-btn' onClick={searchRecipes} variant='outline-info'>
+      <Button className='search-btn' onClick={searchRecipes} variant='outline-info'>
         Let's get cookin!
         </Button>
     </React.Fragment>

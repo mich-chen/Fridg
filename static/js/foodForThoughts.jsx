@@ -25,8 +25,8 @@ function Tried(props) {
   return (
     <div className='tried'>
       <label> Tried recipe? </label>
-      <Button id='yes-tried' variant='primary' value={true} onClick={handleTried} active={tried ? true : false}> yes </Button>
-      <Button id='no-tried' variant='primary' value={false} onClick={handleTried} active={tried === false ? true : false}> no </Button>
+      <Button className='yes-tried' variant='primary' value={true} onClick={handleTried} active={tried ? true : false}> yes </Button>
+      <Button className='no-tried' variant='primary' value={false} onClick={handleTried} active={tried === false ? true : false}> no </Button>
     </div>
     );
 }
@@ -55,7 +55,7 @@ function Comment(props) {
     <div className='comment'>
       <Form.Label> Recipe Comment: </Form.Label>
       <p> {comment} </p>
-      <FormControl id='comment' as="textarea"></FormControl>
+      <FormControl className='comment' as="textarea"></FormControl>
       <Button variant='primary' type='submit' onClick={handleComment}>
         Save comment
       </Button>

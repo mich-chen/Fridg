@@ -5,6 +5,12 @@
 
 body {
     text-align: center;
+    background: #F7FBFC;
+}
+
+.navbar {
+    background-color: #878ECD;
+
 }
 
 .container {
@@ -12,13 +18,13 @@ body {
 }
 
 #fridg-logo {
-    width: 40px;
-    height: 40px;
+    width: 35px;
+    height: 35px;
 }
 
 
 .card-deck {
-    margin: auto 30px;
+    margin: 15px 30px;
     display: inline-block;
 }
 
@@ -28,18 +34,8 @@ body {
     margin-bottom: 15px;
     display: inline-block;
     vertical-align: top;
-
 }
 
-/*.card-columns {
-    margin-top: 30px;
-    margin-bottom: 30px;
-    display: inline-block;
-    @include media-breakpoint-only(lg) {
-        column-count: 4;
-    }
-    @include media-breakpoint-only(xl) {
-        column-count: 5;
-    }   
+.clickable {
+    cursor: pointer;
 }
-*/

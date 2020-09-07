@@ -2,7 +2,7 @@
 
 function RecipeServings(props) {
   return (
-    <div id='servings'>
+    <div className='servings'>
       <label>Servings: </label>
         {props.servings}
     </div>
@@ -19,15 +19,15 @@ function RecipeTimeSection(props) {
   return (
     <div className='recipe-times'>
         <ul>
-          <li id='prep-time'>
+          <li className='prep-time'>
             <label>Prep Time: </label>
             <RecipeTime time={props.times.prepMins} />
           </li>
-          <li id='cook-time'>
+          <li className='cook-time'>
             <label>Cook Time: </label>
             <RecipeTime time={props.times.cookMins} />
           </li>
-          <li id='ready-time'>
+          <li className='ready-time'>
             <label>Ready In: </label>
             <RecipeTime time={props.times.readyMins} />
           </li>
@@ -42,7 +42,7 @@ function RecipeTimeSection(props) {
 
 function ClickableImg(props) {
   return (
-    <Card.Img id='clickable-img' 
+    <Card.Img className='clickable-img clickable' 
          src={`${props.image}`} 
          onClick={props.onClick}
          variant='top'
@@ -53,7 +53,7 @@ function ClickableImg(props) {
 
 function ClickableTitle(props) {
   return (
-    <h3 id='clickable-title'
+    <h3 className='clickable-title clickable'
         onClick={props.onClick}> 
           {props.title}
     </h3>
@@ -86,14 +86,14 @@ function ClickableToDetails(props) {
 
 function StaticImg(props) {
   return (
-    <Image id='static-img' src={`${props.image}`} rounded/>
+    <Image className='static-img' src={`${props.image}`} rounded/>
     );
 }
 
 
 function StaticTitle(props) {
   return (
-    <h3 id='static-title'> {props.title}</h3>
+    <h3 className='static-title'> {props.title}</h3>
     );
 }
 
@@ -162,7 +162,7 @@ function RecipeInstructions(props) {
 
 function SourceUrl(props) {
   return (
-    <a id='sourceUrl' href={`${props.url}`}>
+    <a className='sourceUrl' href={`${props.url}`}>
       Click for more details on recipe
     </a>
     );

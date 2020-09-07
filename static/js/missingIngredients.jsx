@@ -56,7 +56,7 @@ function ShoppingListBtn(props) {
   // not logged in renders modal window prompting log in
   // logged in renders button to server and send text
   const SHOPPING_BTN = {
-    true: (<Button id='shopping-list-btn' onClick={() => {handleClick(); showAlert(true)}}>
+    true: (<Button className='shopping-list-btn' onClick={() => {handleClick(); showAlert(true)}}>
                   Send shopping list to phone!
                 </Button>),
     false: (<ModalButton text={'Log in to send to your phone!'} 
