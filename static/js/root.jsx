@@ -90,8 +90,8 @@ function SavedRecipes(props) {
   };
 
   return (
-    <div className='card-deck container'>
-      <CardDeck className='saved-recipes'>
+    <div className='container'>
+      <CardDeck className='card-deck saved-recipes'>
           {!savedList.length ? <p>You haven't saved any recipes yet!</p>
             : (savedList.map((recipe) => 
                   <RecipeCard key={recipe.recipe_id}
@@ -138,8 +138,8 @@ function SearchResults(props) {
 
 
   return (
-    <div className='card-deck container'>
-      <CardDeck className='search-results'>
+    <div className='container'>
+      <CardDeck className='card-deck search-results'>
           {!props.resultsList.length ? <p>Searching...</p>
             : (checkedRecipes.map((recipe) => 
                 <RecipeCard key={recipe.recipe_id}

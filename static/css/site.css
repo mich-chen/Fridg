@@ -1,22 +1,31 @@
-img {
+/*img {
     width: 275px;
     height: 200px;
+}*/
+
+body {
+    text-align: center;
 }
 
 .container {
-    margin: auto 30px;
+    max-width: 1700px;
 }
+
+#fridg-logo {
+    width: 40px;
+    height: 40px;
+}
+
 
 .card-deck {
     margin: auto 30px;
     display: inline-block;
-    margin-bottom: 15px;
-    margin-top: 15px;
 }
-
 
 .card {
     width: 350px;
+    margin-top: 15px;
+    margin-bottom: 15px;
     display: inline-block;
     vertical-align: top;
 
