@@ -280,14 +280,15 @@ function RecipeDetails(props) {
     <div className='container recipe-details'>
 
         {fromPath === 'saved-recipes' ? <FoodForThoughtsContainer /> : null}
+        <div className='img-times-servings'>
+          <StaticImg image={details.image} />
 
-        <StaticImg image={details.image} />
+          <RecipeTimeSection times={{prepMins, cookMins, readyMins}} />
+
+          <RecipeServings servings={details.servings} />
+        </div>
 
         <StaticTitle title={details.title} />
-
-        <RecipeTimeSection times={{prepMins, cookMins, readyMins}} />
-
-        <RecipeServings servings={details.servings} />
 
         <RecipeIngredients ingredients={details.ingredients} />
 

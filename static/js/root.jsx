@@ -38,7 +38,7 @@ function Homepage(props) {
       <div className='create-account' style={{display: (loggedIn ? 'none' : 'block')}}>
         <p>Don't have an account? Click here to start!</p>
 
-        <Button variant='info' onClick={() => {setAppear(!appear)}}>
+        <Button onClick={() => {setAppear(!appear)}}>
           Create New Account!
         </Button>
 
@@ -199,7 +199,7 @@ function SearchBar(props) {
              onKeyUp={handleKeyUp}>
       </FormControl>
 
-      <Button type='submit' className='search-btn' onClick={searchRecipes} variant='outline-info'>
+      <Button type='submit' className='search-btn' onClick={searchRecipes} >
         Let's get cookin!
         </Button>
     </React.Fragment>

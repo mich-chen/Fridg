@@ -71,7 +71,7 @@ function ModalButton(props) {
 
   return (
     <div className='recipe-modal'>
-      <Button className='recipe-modal-btn' variant='primary' onClick={handleShow}>
+      <Button className='recipe-modal-btn' onClick={handleShow}>
         {props.text}
       </Button>
 
@@ -118,7 +118,7 @@ function RemoveBtn(props) {
   };
 
   return (
-    <Button className='remove-btn' variant='secondary' onClick={handleClick}> 
+    <Button className='remove-btn' onClick={handleClick}> 
       Remove Recipe
     </Button>
     );

@@ -13,7 +13,7 @@ html, body {
 }
 
 .navbar {
-  background-color: #878ECD;
+  background-color: #769FCD;
 }
 
 .container {
@@ -26,6 +26,18 @@ html, body {
   width: 35px;
   height: 35px;
 }
+
+.btn {
+  background-color: #769FCD;
+  color: black;
+  border-color: #769FCD;
+}
+/*
+.btn:hover {
+  color: black;
+  background-color: ;
+  border-color: ;
+}*/
 
 
 .card-deck {
