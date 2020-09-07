@@ -3,35 +3,31 @@
 function RecipeServings(props) {
   return (
     <div className='servings'>
-      <label>Servings: </label>
-        {props.servings}
+      Servings: {props.servings}
     </div>
   );
 }
 
 
 function RecipeTime(props) {
-  return <span>{props.time}</span>;
+  return <span>{props.time} mins</span>;
 }
 
 
 function RecipeTimeSection(props) {
   return (
     <div className='recipe-times'>
-        <ul>
-          <li className='prep-time'>
-            <label>Prep Time: </label>
-            <RecipeTime time={props.times.prepMins} />
-          </li>
-          <li className='cook-time'>
-            <label>Cook Time: </label>
-            <RecipeTime time={props.times.cookMins} />
-          </li>
-          <li className='ready-time'>
-            <label>Ready In: </label>
-            <RecipeTime time={props.times.readyMins} />
-          </li>
-        </ul>
+        <div>
+          <span className='prep-time time'>
+            Prep Time: <RecipeTime time={props.times.prepMins} />
+          </span>
+          <span className='cook-time time'>
+            Cook Time: <RecipeTime time={props.times.cookMins} />
+          </span>
+          <div className='ready-time time'>
+            Ready In: <RecipeTime time={props.times.readyMins} />
+          </div>
+        </div>
     </div>
     );
 }

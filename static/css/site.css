@@ -1,41 +1,62 @@
 /*img {
-    width: 275px;
-    height: 200px;
+  width: 275px;
+  height: 200px;
 }*/
 
 body {
-    text-align: center;
-    background: #F7FBFC;
+  text-align: center;
+  background: #F7FBFC;
 }
 
 .navbar {
-    background-color: #878ECD;
+  background-color: #878ECD;
 
 }
 
 .container {
-    max-width: 1700px;
+  max-width: 1700px;
 }
 
 #fridg-logo {
-    width: 35px;
-    height: 35px;
+  width: 35px;
+  height: 35px;
 }
 
 
 .card-deck {
-    margin: 15px 30px;
-    display: inline-block;
+  margin: 15px 30px;
+  display: inline-block;
 }
 
 .card {
-    width: 350px;
-    margin-top: 15px;
-    margin-bottom: 15px;
-    display: inline-block;
-    vertical-align: top;
+  width: 400px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  display: inline-block;
+  vertical-align: top;
 }
 
-.clickable {
-    cursor: pointer;
+.clickable:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.time {
+  display: inline-block;
+  border: 1px solid black;
+  border-radius: 10px;
+  margin: 5px 5px;
+  width: 160px;
+
+  .ready-time {
+    width: 150px;
+  }
+}
+
+.servings {
+  display: inline-block;
+  border: 1px solid black;
+  border-radius: 10px;
+  margin: 5px 5px;
+  width: 125px;
 }
