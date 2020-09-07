@@ -3,18 +3,23 @@
   height: 200px;
 }*/
 
-body {
-  text-align: center;
+html, body {
   background: #F7FBFC;
+  width: 100%;
+  height: 100%;
+  margin: 0px;
+  padding: 0px;
+  overflow-x: hidden;
 }
 
 .navbar {
   background-color: #878ECD;
-
 }
 
 .container {
   max-width: 1700px;
+  text-align: center;
+  margin: 0 50px;
 }
 
 #fridg-logo {

@@ -265,7 +265,7 @@ function App() {
       <AuthContext.Provider value={{loggedIn, setLoggedIn}}>
         <Router>
           <div>
-            <Navbar bg='dark' variant='dark'>
+            <Navbar>
             <Navbar.Brand>
               <img src='https://img.icons8.com/cotton/64/000000/fridge.png'
                    width='15'
