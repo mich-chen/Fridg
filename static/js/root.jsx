@@ -23,39 +23,62 @@ function Homepage(props) {
   };
 
   return (
-    <div className='homepage container'>
+    <Container>
+      <Row>
+        <Col className='homepage-logo'>
+        <img src='https://img.icons8.com/cotton/64/000000/fridge.png'
+                     width='50'
+                     height='50'
+                     className='fridg-logo d-inline-block' />
+        <h2>Fridg </h2>
+        </Col>
+      </Row>
+      <Row>
+        <Col className='homepage-title homepage'>
+          <h1 className='homepage-title'> Welcome! What's in your fridg? </h1>
+        </Col>
+        </Row>
 
-      <h1 className='homepage-title'> Hello! Welcome to Fridg! </h1>
+        <Row>
+          <Col className='homepage-search homepage'>
+          <SearchBar setData={props.setData}/>
+          </Col>
+        <br></br>
+      </Row>
+
+      <Row className='user-auth-row'>
+        <Col className='login-col homepage'>
+          <Login setMessage={setMessage} showAlert={showAlert} />
+        </Col>
+        <Col className='create-account' style={{display: (loggedIn ? 'none' : 'block')}}>
+          <p>Don't have an account? Click here to start!</p>
+
+          <Button onClick={() => {setAppear(!appear)}}>
+            Create New Account!
+          </Button>
+
+          <Collapse in={appear}>
+            <div className='create-account-collapse'>
+              <CreateAccount setMessage={setMessage} showAlert={showAlert}/>
+            </div>
+          </Collapse>
+        </Col>
+      </Row>
 
       <CatchPhrase />
 
-      <SearchBar setData={props.setData}/>
-      <br></br>
-
-      <Login setMessage={setMessage} showAlert={showAlert} />
-      <br></br>
-      
-      <div className='create-account' style={{display: (loggedIn ? 'none' : 'block')}}>
-        <p>Don't have an account? Click here to start!</p>
-
-        <Button onClick={() => {setAppear(!appear)}}>
-          Create New Account!
-        </Button>
-
-        <Collapse in={appear}>
-          <div className='create-account-collapse'>
-            <CreateAccount setMessage={setMessage} showAlert={showAlert}/>
-          </div>
-        </Collapse>
-      </div>
-    </div>
+    </Container>
     );
 }
 
 
 function CatchPhrase(props) {
   return (
-    <h4 className='catchphrase'> Fridg. Home to your family of ingredients. Family means no ingredient left behind or forgotten. </h4>
+    <h5 className='catchphrase'> 
+      <img src='https://img.icons8.com/cotton/64/000000/fridge.png'
+           width='30'
+           height='30' />
+      {' '}Home to your family of ingredients. Family means no ingredient left behind or forgotten. </h5>
     );
 }
 
@@ -189,8 +212,7 @@ function SearchBar(props) {
   }
 
   return (
-    <React.Fragment>
-      <label> What's in your fridge? </label> 
+    <div className='search-bar'>
       <FormControl type='text'
              className='search-bar'
              onChange={(e) => {setIngredients(e.target.value)}}
@@ -202,7 +224,7 @@ function SearchBar(props) {
       <Button type='submit' className='search-btn' onClick={searchRecipes} >
         Let's get cookin!
         </Button>
-    </React.Fragment>
+    </div>
     );
 }
 
@@ -253,7 +275,7 @@ function App() {
                   Log In
                 </Nav.Link>
 
-                <Nav.Link as={Link} to="/create-account" onClick={handleShow}>Create An Account</Nav.Link>
+                <Nav.Link as={Link} to="/create-account" onClick={handleShow}>New User</Nav.Link>
 
                 <Nav.Link as={Link} to="/search-results">Search Reults</Nav.Link>
           </Nav>
@@ -283,8 +305,9 @@ function App() {
                 
                 {NavLinks[loggedIn]}
 
-                <SearchBar setData={setData} />
-
+                <Nav className='navbar-search'>
+                  <SearchBar setData={setData} />
+                </Nav>
               </Nav>
             </Navbar>
 

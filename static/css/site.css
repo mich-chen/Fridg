@@ -7,13 +7,27 @@ html, body {
   overflow-x: hidden;
 }
 
-.navbar {
-  background-color: #769FCD;
+body {
+  background: url(ingredient-bg.jpg) no-repeat center;
+  background-size: cover;
 }
 
+.navbar {
+  background-color: #769FCD;
+  justify-content: center;
+}
+
+
+.navbar-search .search-bar {
+  display: flex;
+}
+
+
 .container {
-  max-width: 1300px;
   text-align: center;
+  margin: 30px auto;
+  background: rgba(250, 250, 250, 0.6);
+
 }
 
 #fridg-logo {
@@ -25,6 +39,7 @@ html, body {
   background-color: #769FCD;
   color: black;
   border-color: #769FCD;
+  margin: 5px 5px;
 }
 
 .btn:hover {
@@ -34,7 +49,6 @@ html, body {
 }
 
 .card-deck {
-  margin: 15px 30px;
   display: inline-block;
 }
 
@@ -51,21 +65,55 @@ html, body {
   text-decoration: underline;
 }
 
+.homepage {
+  margin: 50px 50px;
+}
+
+.homepage-title {
+  display: inline-block;
+}
+
+.homepage-search {
+  display: inline;
+}
+
+.homepage-search .search-bar {
+  width: 60%;
+  display: inline;
+}
+
+.user-auth-row {
+  margin: 50px auto;
+}
+
+.homepage .login {
+  display: block;
+  border: 1px solid black;
+  border-radius: 15px;
+  width: fit-content;
+  height: fit-content;
+  padding: 20px;
+}
 
 /* Recipe Details CSS */
 
-
 .recipe-details {
-  margin: 30px auto;
+  max-width: 800px;
 }
 
 .img-times-servings {
   width: 30%;
-  margin-right; 15px;
+  margin-right: 15px;
+  padding: 15px 15px;
+}
 
-  .static-img {
-    width: 100%;
-  }
+.static-img {
+  width: 100%;
+  margin-bottom: 5px;
+}
+
+.ingr-equip {
+  padding: 15px 15px;
 }
 
 .details-title {
@@ -83,6 +131,13 @@ label {
   display: inline-block;
 }
 
+.missing-or-thoughts {
+  padding: 15px 15px;
+  border: 1.5px solid black;
+  border-radius: 20px;
+  height: fit-content;
+}
+
 .missing-list {
   text-align: left;
 }
@@ -92,6 +147,14 @@ label {
   display: inline-block;
 }
 
+.recipe-instructions ol {
+  text-align: left;
+  display: inline-block;
+}
+
+.instructions-col {
+  padding: 15px 15px;
+}
 
 
 

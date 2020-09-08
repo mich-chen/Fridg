@@ -279,54 +279,45 @@ function RecipeDetails(props) {
   return (
     <Container className='recipe-details'>
       <Row>
-          <Col className='img-times-servings' md={{span: 3}}>
+          <Col className='img-times-servings' md={{span: 6, offset: 3}}>
             <StaticImg image={details.image} />
-
+            <StaticTitle title={details.title} />
             <RecipeTimeSection times={{prepMins, cookMins, readyMins}} />
 
             <RecipeServings servings={details.servings} />
 
             {getButtons(buttonStatus, loggedIn)[fromPath]}
           </Col>
-
-          <Col>
-            <Row className='details-title'>
-              <StaticTitle title={details.title} />
-            </Row>
-
-
-            <Row className='both-ingredients-div'>
-              <Col>
-                <RecipeIngredients ingredients={details.ingredients} />
-              </Col>
-
-              <Col>
-                {details.hasOwnProperty('missing_ingredients') ? 
-                  <MissingIngredientsContainer missingIngredients={details.missing_ingredients} 
-                                               title={details.title}
-                                               alertProps={props.alertProps} />
-                  : null
-                }
-              </Col>
-            </Row>
-
-            {fromPath === 'saved-recipes' ? <Row><FoodForThoughtsContainer /></Row> : null}
-          </Col> 
         </Row>
 
         <Row>
-          <Col md={{span: 3}}>
-          <RecipeEquipment equipment={details.equipment} />
+          <Col className='ingr-equip' md={{span: 6}}>
+            <RecipeIngredients ingredients={details.ingredients} />
+            <RecipeEquipment equipment={details.equipment} />
           </Col>
 
-          <Col>
-          <RecipeInstructions instructions={details.instructions} /> 
+          <Col md={{span: 6}}>
+            <Row>
+              <Col className='missing-or-thoughts'>
+              {details.hasOwnProperty('missing_ingredients') ? 
+                <MissingIngredientsContainer missingIngredients={details.missing_ingredients} 
+                                             title={details.title}
+                                             alertProps={props.alertProps} />
+                : null
+              }
 
-          <SourceUrl url={details.sourceUrl} />
+              {fromPath === 'saved-recipes' ? <Row><FoodForThoughtsContainer /></Row> : null}
+              </Col>
+            </Row>
+           
+            <Row>
+              <Col className='recipe-instructions-col'>
+                <RecipeInstructions instructions={details.instructions} />
+                <SourceUrl url={details.sourceUrl} />
+              </Col>
+            </Row>
           </Col>
 
-
-          
         </Row>
     </Container>
     );

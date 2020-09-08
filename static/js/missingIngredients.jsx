@@ -97,7 +97,7 @@ function MissingIngredientsContainer(props) {
 
   return(
     <div className='missing-ingredients-container'>
-      <h4> Currently missing ingredients </h4>
+      <h5> Currently missing ingredients </h5>
       <p> Check the ingredients you'd like to add for a shopping list! </p>
 
       <MissingIngredientsList missingIngredients={missingIngredients}
