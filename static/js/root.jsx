@@ -166,7 +166,7 @@ function SearchResults(props) {
   return (
     <div className='container'>
       <CardDeck className='card-deck search-results'>
-          {!props.resultsList.length ? <p>Searching...</p>
+          {!props.resultsList.length ? <h4>Let's find recipes for your ingredients!</h4>
             : (checkedRecipes.map((recipe) => 
                 <RecipeCard key={recipe.recipe_id}
                             fromPath={'search-results'}
@@ -291,7 +291,7 @@ function App() {
         <Router>
           <div>
             <Navbar>
-            <Navbar.Brand>
+            <Navbar.Brand as={Link} to="/homepage">
               <img src='https://img.icons8.com/cotton/64/000000/fridge.png'
                    width='15'
                    height='15'
