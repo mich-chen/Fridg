@@ -19,10 +19,10 @@ function RecipeTimeSection(props) {
     <div className='recipe-times'>
         <div>
           <span className='prep-time time'>
-            Prep Time: <RecipeTime time={props.times.prepMins} />
+            Prep: <RecipeTime time={props.times.prepMins} />
           </span>
           <span className='cook-time time'>
-            Cook Time: <RecipeTime time={props.times.cookMins} />
+            Cook: <RecipeTime time={props.times.cookMins} />
           </span>
           <div className='ready-time time'>
             Ready In: <RecipeTime time={props.times.readyMins} />
@@ -104,7 +104,7 @@ function Ingredient(props){
 function RecipeIngredients(props) {
   return (
     <div className='recipe-ingredients'>
-        <label>Ingredients: </label>
+        <label><b>Ingredients: </b></label>
           <ul>
             {props.ingredients.map((ingredient) => 
                 <Ingredient key={props.ingredients.indexOf(ingredient)}
@@ -127,7 +127,7 @@ function RecipeEquipment(props) {
 
   return (
     <div className='recipe-equipment'>
-      <label>Equipment: </label>
+      <label><b>Equipment: </b></label>
         <ul>
           {equipmentList.map((equipment) => 
             <li key={equipmentList.indexOf(equipment)}>
@@ -143,7 +143,7 @@ function RecipeEquipment(props) {
 function RecipeInstructions(props) {
   return (
     <div className='recipe-instructions'>
-      <label>Instructions: </label>
+      <label><b>Instructions: </b></label>
         <ol>
           {props.instructions.map((instruction) => 
             <li key={props.instructions.indexOf(instruction)}>
@@ -277,38 +277,57 @@ function RecipeDetails(props) {
     });
 
   return (
-    <div className='container recipe-details'>
+    <Container className='recipe-details'>
+      <Row>
+          <Col className='img-times-servings' md={{span: 3}}>
+            <StaticImg image={details.image} />
 
-        {fromPath === 'saved-recipes' ? <FoodForThoughtsContainer /> : null}
-        <div className='img-times-servings'>
-          <StaticImg image={details.image} />
+            <RecipeTimeSection times={{prepMins, cookMins, readyMins}} />
 
-          <RecipeTimeSection times={{prepMins, cookMins, readyMins}} />
+            <RecipeServings servings={details.servings} />
 
-          <RecipeServings servings={details.servings} />
-        </div>
+            {getButtons(buttonStatus, loggedIn)[fromPath]}
+          </Col>
 
-        <StaticTitle title={details.title} />
+          <Col>
+            <Row className='details-title'>
+              <StaticTitle title={details.title} />
+            </Row>
 
 
-        <div className='both-ingredients-div'>
-          <RecipeIngredients ingredients={details.ingredients} />
+            <Row className='both-ingredients-div'>
+              <Col>
+                <RecipeIngredients ingredients={details.ingredients} />
+              </Col>
 
-          {details.hasOwnProperty('missing_ingredients') ? 
-            <MissingIngredientsContainer missingIngredients={details.missing_ingredients} 
-                                         title={details.title}
-                                         alertProps={props.alertProps} />
-            : null
-          }
-        </div>
-        <RecipeEquipment equipment={details.equipment} />
+              <Col>
+                {details.hasOwnProperty('missing_ingredients') ? 
+                  <MissingIngredientsContainer missingIngredients={details.missing_ingredients} 
+                                               title={details.title}
+                                               alertProps={props.alertProps} />
+                  : null
+                }
+              </Col>
+            </Row>
 
-        <RecipeInstructions instructions={details.instructions} /> 
+            {fromPath === 'saved-recipes' ? <Row><FoodForThoughtsContainer /></Row> : null}
+          </Col> 
+        </Row>
 
-        {getButtons(buttonStatus, loggedIn)[fromPath]}
+        <Row>
+          <Col md={{span: 3}}>
+          <RecipeEquipment equipment={details.equipment} />
+          </Col>
 
-        <SourceUrl url={details.sourceUrl} />
+          <Col>
+          <RecipeInstructions instructions={details.instructions} /> 
 
-    </div>
+          <SourceUrl url={details.sourceUrl} />
+          </Col>
+
+
+          
+        </Row>
+    </Container>
     );
 }

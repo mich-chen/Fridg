@@ -127,7 +127,7 @@ function TestPage() {
 
       <br />
       <Row>
-      <Col md={{span: 4, offset: 8}} className='col-4'>
+      <Col>
         <h3> Currently missing ingredients </h3>
         <Form>
           <Form.Group controlId='testForm.ControlCheckbox'>

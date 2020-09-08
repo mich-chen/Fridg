@@ -13,7 +13,7 @@ function MissingItem(props) {
                value={missingIngredient}
                checked={checkedBoxes.hasOwnProperty(missingIngredient)}
                onChange={handleCheck} />
-        {'    '}<label> {amount} {unit} {name} </label>
+        {'    '} {amount} {unit} {name} 
       </form>
     </div>
     );
@@ -96,7 +96,7 @@ function MissingIngredientsContainer(props) {
   };
 
   return(
-    <div className='missing-ingredients-container container'>
+    <div className='missing-ingredients-container'>
       <h4> Currently missing ingredients </h4>
       <p> Check the ingredients you'd like to add for a shopping list! </p>
 
