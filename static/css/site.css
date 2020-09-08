@@ -1,8 +1,3 @@
-/*img {
-  width: 275px;
-  height: 200px;
-}*/
-
 html, body {
   background: #F7FBFC;
   width: 100%;
@@ -19,7 +14,11 @@ html, body {
 .container {
   max-width: 1700px;
   text-align: center;
-  margin: 0 50px;
+  margin: 30px 50px;
+
+  .recipe-details {
+    display: inline-block;
+  }
 }
 
 #fridg-logo {
@@ -39,7 +38,6 @@ html, body {
   border-color: ;
 }*/
 
-
 .card-deck {
   margin: 15px 30px;
   display: inline-block;
@@ -58,6 +56,18 @@ html, body {
   text-decoration: underline;
 }
 
+.img-times-servings {
+  width: 30%;
+
+  .static-img {
+    width: 100%;
+  }
+}
+
+.static-title {
+  
+}
+
 .time {
   display: inline-block;
   border: 1px solid black;
@@ -65,8 +75,9 @@ html, body {
   margin: 5px 5px;
   width: 160px;
 
-  .ready-time {
+  .ready-times {
     width: 150px;
+    text-align: center;
   }
 }
 

@@ -290,15 +290,17 @@ function RecipeDetails(props) {
 
         <StaticTitle title={details.title} />
 
-        <RecipeIngredients ingredients={details.ingredients} />
 
-        {details.hasOwnProperty('missing_ingredients') ? 
-          <MissingIngredientsContainer missingIngredients={details.missing_ingredients} 
-                                       title={details.title}
-                                       alertProps={props.alertProps} />
-          : null
-        }
+        <div className='both-ingredients-div'>
+          <RecipeIngredients ingredients={details.ingredients} />
 
+          {details.hasOwnProperty('missing_ingredients') ? 
+            <MissingIngredientsContainer missingIngredients={details.missing_ingredients} 
+                                         title={details.title}
+                                         alertProps={props.alertProps} />
+            : null
+          }
+        </div>
         <RecipeEquipment equipment={details.equipment} />
 
         <RecipeInstructions instructions={details.instructions} /> 

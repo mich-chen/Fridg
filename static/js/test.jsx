@@ -62,21 +62,29 @@ function TestPage() {
 
 
   return (
-    <div>
-      <Alert variant='info' show={alert} onClose={() => {showAlert(false)}} dismissible>
-        this is test react alert component
-      </Alert>
+    <Container>
+      <Row>
+        <Col>
+          <Alert variant='info' show={alert} onClose={() => {showAlert(false)}} dismissible>
+            this is test react alert component
+          </Alert>
 
-      <Button id='test-alert-btn' variant='info' onClick={handleAlert}>
-        click me to alert
-      </Button>
 
+          <Button id='test-alert-btn' variant='info' onClick={handleAlert}>
+            click me to alert
+          </Button>
+        </Col>
+      </Row>
+
+      
+      <Row>
       <div id='test-div'> <i className="fas fa-user"></i> </div>
       Test react div <i className="fas fa-star"></i>
 
       <Button id='test-modal-btn' variant='primary' onClick={handleShow}>
         Launch test modal
       </Button>
+      </Row>
 
       <Modal id='test-modal' show={show} onHide={handleClose}>
         <Modal.Header closeButton>
@@ -101,36 +109,38 @@ function TestPage() {
       </Modal>
 
       <br />
+      <Row>
+        <button id='test-mouse-over-btn' 
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+                onClick={handleStarClick}>
+          {selected ? 'filled star' 
+            : filled ? 'filled star' 
+            : 'unfilled star'}
+          <i className="fas fa-star"></i>
+        </button>
 
-      <button id='test-mouse-over-btn' 
-              onMouseEnter={handleMouseEnter}
-              onMouseLeave={handleMouseLeave}
-              onClick={handleStarClick}>
-        {selected ? 'filled star' 
-          : filled ? 'filled star' 
-          : 'unfilled star'}
-        <i className="fas fa-star"></i>
-      </button>
-
-      <button type='radio' onClick={handleStarClick}>
-        checked
-      </button>
+        <button type='radio' onClick={handleStarClick}>
+          checked
+        </button>
+      </Row>
 
       <br />
+      <Row>
+      <Col md={{span: 4, offset: 8}} className='col-4'>
+        <h3> Currently missing ingredients </h3>
+        <Form>
+          <Form.Group controlId='testForm.ControlCheckbox'>
+            <Form.Label>Test check box </Form.Label>
+            <InputGroup.Checkbox id='test-checkbox'
+                   type='checkbox'
+                   checked={false}
+                   onChange={handleCheck} />
 
-      <h3> Currently missing ingredients </h3>
-      <br />
-
-      <Form>
-        <Form.Group controlId='testForm.ControlCheckbox'>
-          <Form.Label>Test check box </Form.Label>
-          <InputGroup.Checkbox id='test-checkbox'
-                 type='checkbox'
-                 checked={false}
-                 onChange={handleCheck} />
-
-        </Form.Group>
-      </Form>
-    </div>
+          </Form.Group>
+        </Form>
+      </Col>
+      </Row>
+    </Container>
   );
 }
