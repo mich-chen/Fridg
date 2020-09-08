@@ -26,7 +26,7 @@ body {
 .container {
   text-align: center;
   margin: 30px auto;
-  background: rgba(250, 250, 250, 0.6);
+  background: rgba(225, 225, 225, 0.75);
 
 }
 
@@ -80,6 +80,10 @@ body {
 .homepage-search .search-bar {
   width: 60%;
   display: inline;
+}
+
+.navbar .btn {
+  width: 100%;
 }
 
 .user-auth-row {

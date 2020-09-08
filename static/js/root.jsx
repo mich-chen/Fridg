@@ -25,7 +25,7 @@ function Homepage(props) {
   return (
     <Container>
       <Row>
-        <Col className='homepage-logo'>
+        <Col className='homepage logo'>
         <img src='https://img.icons8.com/cotton/64/000000/fridge.png'
                      width='50'
                      height='50'
@@ -50,7 +50,7 @@ function Homepage(props) {
         <Col className='login-col homepage'>
           <Login setMessage={setMessage} showAlert={showAlert} />
         </Col>
-        <Col className='create-account' style={{display: (loggedIn ? 'none' : 'block')}}>
+        <Col className='create-account homepage' style={{display: (loggedIn ? 'none' : 'block')}}>
           <p>Don't have an account? Click here to start!</p>
 
           <Button onClick={() => {setAppear(!appear)}}>
@@ -65,8 +65,11 @@ function Homepage(props) {
         </Col>
       </Row>
 
-      <CatchPhrase />
-
+      <Row>
+        <Col className='homepage catchphrase'>
+          <CatchPhrase />
+        </Col>
+      </Row>
     </Container>
     );
 }
