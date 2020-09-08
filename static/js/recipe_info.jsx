@@ -189,7 +189,7 @@ function RecipeCard(props) {
                                     buttonStatus={status}
                                     recipeDetails={props.recipeDetails}
                                     recipeId={props.recipeId} />
-                                : <ModalButton text={'Log in to Save!'}
+                                : <ModalButton text={'Save this recipe!'}
                                                alertProps={alertProps} />)
   });
 

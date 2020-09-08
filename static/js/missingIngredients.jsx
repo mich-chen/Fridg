@@ -59,7 +59,7 @@ function ShoppingListBtn(props) {
     true: (<Button className='shopping-list-btn' onClick={() => {handleClick(); showAlert(true)}}>
                   Send shopping list to phone!
                 </Button>),
-    false: (<ModalButton text={'Log in to send to your phone!'} 
+    false: (<ModalButton text={'Send shopping list to phone!'} 
                          show={true}
                          alertProps={props.alertProps} />)
   };
