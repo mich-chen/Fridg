@@ -319,8 +319,8 @@ function RecipeDetails(props) {
 
 
       <Row>
-        <Col className='homepage catchphrase'>
-          <CatchPhrase />
+        <Col className='homepage tagline'>
+          <TagLine />
         </Col>
       </Row>
 

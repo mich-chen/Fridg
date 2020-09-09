@@ -256,8 +256,8 @@ function Logout() {
       </Row>
 
       <Row>
-        <Col className='logout catchphrase'>
-          <CatchPhrase />
+        <Col className='logout tagline'>
+          <TagLine />
         </Col>
       </Row>
     </Container>

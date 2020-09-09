@@ -69,8 +69,8 @@ function Homepage(props) {
       </Row>
 
       <Row>
-        <Col className='homepage catchphrase'>
-          <CatchPhrase />
+        <Col className='homepage tagline'>
+          <TagLine />
         </Col>
       </Row>
     </Container>
@@ -78,9 +78,9 @@ function Homepage(props) {
 }
 
 
-function CatchPhrase(props) {
+function TagLine(props) {
   return (
-    <h5 className='catchphrase'> 
+    <h5 className='tagline'> 
       <img src='https://img.icons8.com/cotton/64/000000/fridge.png'
            width='35'
            height='35' />
@@ -123,8 +123,8 @@ function About(props) {
       </Row>
 
       <Row>
-        <Col className='about catchphrase'>
-          <CatchPhrase />
+        <Col className='about tagline'>
+          <TagLine />
         </Col>
       </Row>
     </Container>
@@ -172,8 +172,8 @@ function SavedRecipes(props) {
       </CardDeck>
 
       <Row>
-        <Col className='homepage catchphrase'>
-          <CatchPhrase />
+        <Col className='homepage tagline'>
+          <TagLine />
         </Col>
       </Row>
   </div>
@@ -226,8 +226,8 @@ function SearchResults(props) {
       </CardDeck>
 
       <Row>
-        <Col className='homepage catchphrase'>
-          <CatchPhrase />
+        <Col className='homepage tagline'>
+          <Tagline />
         </Col>
       </Row>
     </div>
