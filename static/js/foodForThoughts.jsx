@@ -5,6 +5,7 @@
 function Tried(props) {
   let { id } = useParams();
   const {tried, setTried} = props;
+  console.log(tried);
 
   const handleTried = (e) => {
     const values = {
@@ -19,14 +20,14 @@ function Tried(props) {
     credentials: 'include'
     })
     .then(res => res.json())
-    if (e.target.value) {setTried(e.target.value)};
+    setTried(e.target.value);
   };
 
   return (
     <div className='tried'>
       <label> Tried recipe? </label>
       <Button className='yes-tried' variant='primary' value={true} onClick={handleTried} active={tried ? true : false}> yes </Button>
-      <Button className='no-tried' variant='primary' value={false} onClick={handleTried} active={tried === false ? true : false}> no </Button>
+      <Button className='no-tried' variant='primary' value={false} onClick={handleTried} active={!tried ? true : false}> no </Button>
     </div>
     );
 }
@@ -37,28 +38,32 @@ function Tried(props) {
 function Comment(props) {
   let { id } = useParams();
   const {comment, setComment} = props;
-
+  const [newComment, setNewComment] = React.useState('');
+  console.log(newComment);
   const handleComment = () => {
-    const newComment = document.getElementById('comment').value;
     fetch('/api/update_user_thoughts', {
     method: 'POST',
     body: JSON.stringify({comment: newComment, recipe_id: id}),
     headers: {'Content-Type': 'application/json'},
     credentials: 'include'
-    })
-    .then(res => res.json())
+    });
     setComment(newComment);
-    document.getElementById('comment').value = ''
+    setNewComment('')
   };
   
   return (
     <div className='comment'>
       <Form.Label> Recipe Comment: </Form.Label>
       <p> {comment} </p>
-      <FormControl className='comment' as="textarea"></FormControl>
-      <Button variant='primary' type='submit' onClick={handleComment}>
-        Save comment
-      </Button>
+      <FormControl 
+        className='comment' 
+        as="textarea" 
+        value={newComment}
+        onChange={(e)=>{setNewComment(e.target.value)}}></FormControl>
+
+        <Button variant='primary' type='submit' onClick={handleComment}>
+          Save comment
+        </Button>
     </div>
     );
 }
@@ -149,8 +154,7 @@ function FoodForThoughtsContainer(props) {
 
       <br/>
 
-      <Rating setRating={setRating}
-              rating={rating} />
+      <Rating setRating={setRating} rating={rating} />
 
       <br/>
 
