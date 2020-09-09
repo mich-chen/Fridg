@@ -240,7 +240,7 @@ function Logout() {
   return (
     <Container>
       <Row>
-        <Col id='logout'>
+        <Col className='logout'>
           <Alert variant='warning' show={show} onClose={handleClose} dismissible>
             {message}
           </Alert>
@@ -250,6 +250,12 @@ function Logout() {
           <Button id='logout-btn' variant='info' onClick={handleClick}> 
             Click here to go back to home!
           </Button>
+        </Col>
+      </Row>
+
+      <Row>
+        <Col className='logout catchphrase'>
+          <CatchPhrase />
         </Col>
       </Row>
     </Container>

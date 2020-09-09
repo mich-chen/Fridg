@@ -79,7 +79,7 @@ body {
   text-decoration: underline;
 }
 
-.homepage, .about {
+.homepage, .about, .logout {
   margin: 30px 30px;
   margin-bottom: 15px;
 }
