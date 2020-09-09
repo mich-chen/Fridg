@@ -227,7 +227,7 @@ function SearchResults(props) {
 
       <Row>
         <Col className='homepage tagline'>
-          <Tagline />
+          <TagLine />
         </Col>
       </Row>
     </div>
@@ -402,10 +402,6 @@ function App() {
                 <Logout />
               </Route>
 
-              <Route exact path="/test-page">
-                <TestPage />
-              </Route>
-
               <Route exact path="/about">
                 <About />
               </Route>
@@ -422,6 +418,14 @@ function App() {
                           setMessage={setMessage} />
               </Route>
             </Switch>
+          </div>
+
+          <div>
+            <Row>
+              <Col className='tagline'>
+                <TagLine />
+              </Col>
+            </Row>
           </div>
         </Router>
     </AuthContext.Provider>
