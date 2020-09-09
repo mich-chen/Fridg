@@ -79,7 +79,7 @@ body {
   text-decoration: underline;
 }
 
-.homepage {
+.homepage, .about {
   margin: 30px 30px;
   margin-bottom: 15px;
 }

@@ -91,12 +91,43 @@ function CatchPhrase(props) {
 
 function About(props) {
   return (
-    <div className='about container'>
-      <p> Fridg is a single-page webapp that curates recipes based on what's in your fridge! Fridg's mission is to help reduce food waste by using Spoonacular's API to search recipes maximizing ingredients you have on hand. If you find a recipe you like, you can save, favorite, and journal your experiences with your saved recipes. Fridg also provides a checklist of missing ingredients when you search recipes and you may customize a grocery shopping list to be sent to your phone. 
-      </p>
+    <Container>
+      <Row>
+        <Col className='about logo'>
+        <img src='https://img.icons8.com/cotton/64/000000/fridge.png'
+                     width='40'
+                     height='40'
+                     className='fridg-logo d-inline-block' />
+        <h1>Fridg </h1>
+        </Col>
+      </Row>
 
-      <CatchPhrase />
-    </div>
+      <Row>
+        <Col className='about me-img'>
+          <img src='me.jpg' />
+        </Col>
+
+        <Col className='about me'>
+          <p>
+            Hi! Welcome to Fridg! My name is Michelle Chen and I’m a new software engineer. My inspiration for Fridg came from my new cooking experiences during COVID-19 quarantine. I found myself with a few too little ingredients left over from my meal preps and couldn’t find recipes for them. I strive to reduce food waste as much as possible but found my leftover ingredients going bad fairly quickly without a recipe for them to call home. I thought to myself, “I really wish there was an app that could find recipes for ingredients I have on hand…hmm” Luckily, I decided to switch careers at the start of the pandemic and had this amazing opportunity to make the app I was looking for! I’d love to share this app with you in hopes you’ll find delicious simple recipes for your ingredients too! 
+          </p>
+        </Col>
+      </Row>
+
+      <Row>
+        <Col className='about'>
+          <p> 
+            Fridg is a full-stack, single-page webapp that curates recipes based on what's in your fridge! Fridg's mission is to help reduce food waste by using Spoonacular's API to provide recipes maximizing ingredients you have on hand. If you find a recipe you like, you can save, favorite, and journal your experiences with that recipe. Fridg also provides a checklist of missing ingredients when you search recipes and you may customize a grocery shopping list to be sent to your phone. 
+            </p>
+        </Col>
+      </Row>
+
+      <Row>
+        <Col className='about catchphrase'>
+          <CatchPhrase />
+        </Col>
+      </Row>
+    </Container>
     );
 }
 
