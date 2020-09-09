@@ -238,17 +238,21 @@ function Logout() {
   }
 
   return (
-    <div id='logout'>
-      <Alert variant='warning' show={show} onClose={handleClose} dismissible>
-        {message}
-      </Alert>
+    <Container>
+      <Row>
+        <Col id='logout'>
+          <Alert variant='warning' show={show} onClose={handleClose} dismissible>
+            {message}
+          </Alert>
 
-      Logged out! 
+          Logged out! 
 
-      <Button id='logout-btn' variant='info' onClick={handleClick}> 
-        Click here to go back to home!
-      </Button>
-    </div>
+          <Button id='logout-btn' variant='info' onClick={handleClick}> 
+            Click here to go back to home!
+          </Button>
+        </Col>
+      </Row>
+    </Container>
     );
 }
 
