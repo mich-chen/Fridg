@@ -114,9 +114,7 @@ function CreateAccount(props) {
     <div>
       <div className='create-account'>
         <form className='create-account-form'>
-          <h3> Create a New Account to start saving recipes! </h3>
-          <br/>
-
+          <h4> Create a new account to start saving recipes! </h4>
           <label> Email: </label>
             <input className='email'
                    type='text'

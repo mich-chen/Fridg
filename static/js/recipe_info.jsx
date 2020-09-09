@@ -319,6 +319,7 @@ function RecipeDetails(props) {
           </Col>
 
         </Row>
+
     </Container>
     );
 }

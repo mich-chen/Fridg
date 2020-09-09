@@ -49,19 +49,22 @@ function Homepage(props) {
       <Row className='user-auth-row'>
         <Col className='login-col homepage'>
           <Login setMessage={setMessage} showAlert={showAlert} />
-        </Col>
-        <Col className='create-account homepage' style={{display: (loggedIn ? 'none' : 'block')}}>
-          <p>Don't have an account? Click here to start!</p>
 
-          <Button onClick={() => {setAppear(!appear)}}>
-            Create New Account!
-          </Button>
+          <div className='create-account homepage' style={{display: (loggedIn ? 'none' : 'block')}}>
 
-          <Collapse in={appear}>
-            <div className='create-account-collapse'>
-              <CreateAccount setMessage={setMessage} showAlert={showAlert}/>
-            </div>
-          </Collapse>
+            Don't have an account?
+            <br/>
+            <Button onClick={() => {setAppear(!appear)}}>
+              Create New Account!
+            </Button>
+
+            <Collapse in={appear}>
+              <div className='create-account-collapse'>
+                <CreateAccount setMessage={setMessage} showAlert={showAlert}/>
+              </div>
+            </Collapse>
+
+          </div>
         </Col>
       </Row>
 
@@ -275,7 +278,11 @@ function App() {
 
     false: (<Nav>
                 <Nav.Link as={Link} to="/login" onClick={handleShow}>
-                  Log In
+                  <img src="https://img.icons8.com/cotton/64/000000/gender-neutral-user--v1.png"
+                       width='30'
+                       height='30'
+                       className='d-inline-block align-top'
+                       id='navbar-login' />
                 </Nav.Link>
 
                 <Nav.Link as={Link} to="/create-account" onClick={handleShow}>New User</Nav.Link>

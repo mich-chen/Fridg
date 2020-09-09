@@ -26,8 +26,12 @@ body {
 .container {
   text-align: center;
   margin: 30px auto;
-  background: rgba(225, 225, 225, 0.75);
+  background: rgba(250, 250, 250, 0.75);
+  max-width: 960px;
+}
 
+.search-results, .saved-recipes {
+  max-width: 1140px;
 }
 
 #fridg-logo {
@@ -40,6 +44,7 @@ body {
   color: black;
   border-color: #769FCD;
   margin: 5px 5px;
+  vertical-align: unset;
 }
 
 .btn:hover {
@@ -66,7 +71,8 @@ body {
 }
 
 .homepage {
-  margin: 50px 50px;
+  margin: 30px 30px;
+  margin-bottom: 15px;
 }
 
 .homepage-title {
@@ -86,12 +92,17 @@ body {
   width: 100%;
 }
 
-.user-auth-row {
-  margin: 50px auto;
+.login, .create-account-collapse {
+  display: block;
+  border: 1px solid black;
+  border-radius: 15px;
+  width: fit-content;
+  height: fit-content;
+  padding: 20px;
+  margin: auto auto;
 }
 
-.homepage .login {
-  display: block;
+.homepage .create-account-collapse {
   border: 1px solid black;
   border-radius: 15px;
   width: fit-content;
@@ -100,10 +111,6 @@ body {
 }
 
 /* Recipe Details CSS */
-
-.recipe-details {
-  max-width: 800px;
-}
 
 .img-times-servings {
   width: 30%;
