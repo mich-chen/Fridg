@@ -95,8 +95,8 @@ function About(props) {
       <Row>
         <Col className='about logo'>
         <img src='https://img.icons8.com/cotton/64/000000/fridge.png'
-                     width='40'
-                     height='40'
+                     width='50'
+                     height='50'
                      className='fridg-logo d-inline-block' />
         <h1>Fridg </h1>
         </Col>
