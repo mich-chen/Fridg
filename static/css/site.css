@@ -40,6 +40,11 @@ body {
   font-weight: 500;
 }
 
+.tagline {
+  text-align: center;
+  color: #f4f9f4;
+}
+
 .search-results, .saved-recipes {
   max-width: 1140px;
 }
@@ -47,6 +52,14 @@ body {
 #fridg-logo {
   width: 35px;
   height: 35px;
+}
+
+.form-control:focus {
+  color: #403f48;
+  border-color: #8aae92;
+  background: rgba(244, 249, 244, 0.65);
+  box-shadow: 0 0 0 0.2rem rgba(64, 63, 72, 0.6)
+
 }
 
 .btn {
