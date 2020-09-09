@@ -13,12 +13,12 @@ body {
 }
 
 .navbar {
-  background-color: #769FCD;
+  background-color: #8AAE93;
   justify-content: center;
 }
 
 .navbar-light .navbar-nav .nav-link, .navbar-light .navbar-brand {
-  color: white;
+  color: #f4f9f4;
 }
 
 .navbar-search .search-bar {
@@ -33,9 +33,11 @@ body {
 .container {
   text-align: center;
   margin: 30px auto;
-  background: rgba(250, 250, 250, 0.78);
+  background: rgba(244, 249, 244, 0.65);
   max-width: 960px;
   border-radius: 25px;
+  color: #403f48;
+  font-weight: 500;
 }
 
 .search-results, .saved-recipes {
@@ -48,17 +50,30 @@ body {
 }
 
 .btn {
-  background-color: #769FCD;
-  color: black;
-  border-color: #769FCD;
+  background-color: #8aae92;
+  color: #403f48;
+  border-color: #8aae92;
   margin: 5px 5px;
   vertical-align: unset;
 }
 
 .btn:hover {
-  color: black;
-  background-color: ;
-  border-color: ;
+  color: #f4f9f4;
+  background-color: #8aae92;
+  border-color: #403f48;
+}
+
+.btn:focus {
+  color: #f4f9f4;
+  background-color: #8aae92;
+  border-color: #403f48;
+  box-shadow: 0 0 0 0.2rem rgba(64, 63, 72, 0.6);
+}
+
+.btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle {
+  color: #f4f9f4;
+  background-color: #8aae92;
+  border-color: #403f48;
 }
 
 .card-deck, .homepage-title  {
@@ -81,6 +96,7 @@ body {
 .clickable:hover {
   cursor: pointer;
   text-decoration: underline;
+  color: #8aae92;
 }
 
 .homepage, .about, .logout {
@@ -101,7 +117,7 @@ body {
   width: 100%;
 }
 
-.login, .create-account-collapse, .create-account {
+.login, .create-account {
   display: block;
   border: 1px solid black;
   border-radius: 15px;
@@ -109,14 +125,8 @@ body {
   height: fit-content;
   padding: 20px;
   margin: auto auto;
-}
-
-.homepage .create-account-collapse {
-  border: 1px solid black;
-  border-radius: 15px;
-  width: fit-content;
-  height: fit-content;
-  padding: 20px;
+  background-color: #616161;
+  color: #f4f9f4;
 }
 
 /* Recipe Details CSS */
