@@ -259,10 +259,12 @@ function RecipeDetails(props) {
   // enum to conditionally render buttons by path name and button status
   const getButtons = (status, loggedIn) => ({
       'saved-recipes':(<div>
-                        <SavedRecipesButton 
-                          buttonStatus={status}
-                          recipeId={details.recipe_id} />
-                        <RemoveBtn recipeId={details.recipe_id} />
+                        <Row style={{'justify-content': 'center'}}>
+                          <SavedRecipesButton 
+                            buttonStatus={status}
+                            recipeId={details.recipe_id} />
+                          <RemoveBtn recipeId={details.recipe_id} />
+                        </Row>
                       </div>
                       ),
       'search-results': (loggedIn ? <div>
@@ -279,52 +281,48 @@ function RecipeDetails(props) {
   return (
     <Container className='recipe-details'>
       <Row>
-          <Col className='img-times-servings' md={{span: 6, offset: 3}}>
-            <StaticImg image={details.image} />
-            <StaticTitle title={details.title} />
-            <RecipeTimeSection times={{prepMins, cookMins, readyMins}} />
+        <Col className='img-times-servings' md={{span: 6, offset: 3}}>
+          <StaticImg image={details.image} />
+          <StaticTitle title={details.title} />
+          <RecipeTimeSection times={{prepMins, cookMins, readyMins}} />
 
-            <RecipeServings servings={details.servings} />
+          <RecipeServings servings={details.servings} />
 
-            {getButtons(buttonStatus, loggedIn)[fromPath]}
-          </Col>
-        </Row>
+          {getButtons(buttonStatus, loggedIn)[fromPath]}
+        </Col>
+      </Row>
 
-        <Row>
-          <Col className='ingr-equip' md={{span: 6}}>
-            <RecipeIngredients ingredients={details.ingredients} />
-            <RecipeEquipment equipment={details.equipment} />
-          </Col>
+      <Row className='details-row'>
+        <Col className='ingr-equip details'>
+          <RecipeIngredients ingredients={details.ingredients} />
+          <RecipeEquipment equipment={details.equipment} />
+        </Col>
 
-          <Col md={{span: 6}}>
-            <Row>
-              <Col className='missing-or-thoughts'>
-              {details.hasOwnProperty('missing_ingredients') ? 
-                <MissingIngredientsContainer missingIngredients={details.missing_ingredients} 
-                                             title={details.title}
-                                             alertProps={props.alertProps} />
-                : null
-              }
+        <Col className='missing-or-thoughts details'>
+            {details.hasOwnProperty('missing_ingredients') ? 
+              <MissingIngredientsContainer missingIngredients={details.missing_ingredients} 
+                                           title={details.title}
+                                           alertProps={props.alertProps} />
+              : null
+            }
 
-              {fromPath === 'saved-recipes' ? <Row><FoodForThoughtsContainer /></Row> : null}
-              </Col>
-            </Row>
+            {fromPath === 'saved-recipes' ? <FoodForThoughtsContainer />: null}
+        </Col>
+      </Row>
            
-            <Row>
-              <Col className='recipe-instructions-col'>
-                <RecipeInstructions instructions={details.instructions} />
-                <SourceUrl url={details.sourceUrl} />
-              </Col>
-            </Row>
-          </Col>
+      <Row className='details-row'>
+        <Col className='recipe-instructions details'>
+          <RecipeInstructions instructions={details.instructions} />
+          <SourceUrl url={details.sourceUrl} />
+        </Col>
+      </Row>
 
-        </Row>
 
-        <Row>
-          <Col className='homepage catchphrase'>
-            <CatchPhrase />
-          </Col>
-        </Row>
+      <Row>
+        <Col className='homepage catchphrase'>
+          <CatchPhrase />
+        </Col>
+      </Row>
 
     </Container>
     );

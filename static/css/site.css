@@ -17,17 +17,21 @@ body {
   justify-content: center;
 }
 
-
 .navbar-search .search-bar {
   display: flex;
+  margin-left: 1rem;
 }
 
+.navbar-search .search-bar .btn {
+  width: 225px;
+}
 
 .container {
   text-align: center;
   margin: 30px auto;
   background: rgba(250, 250, 250, 0.78);
   max-width: 960px;
+  border-radius: 25px;
 }
 
 .search-results, .saved-recipes {
@@ -63,6 +67,11 @@ body {
   margin-bottom: 15px;
   display: inline-block;
   vertical-align: top;
+  border-radius: 20px;
+}
+
+.card-img {
+  border-radius: 20px;
 }
 
 .clickable:hover {
@@ -108,10 +117,18 @@ body {
 
 /* Recipe Details CSS */
 
+.details {
+  margin: 15px 15px;
+}
+
+.details-row {
+  padding: 0 75px;
+}
+
 .img-times-servings {
   width: 30%;
-  margin-right: 15px;
   padding: 15px 15px;
+  margin: 15px auto;
 }
 
 .static-img {
@@ -149,6 +166,12 @@ label {
   text-align: left;
 }
 
+.ingr-equip {
+  text-align: left;
+  padding: 15px;
+  padding-left: 50px;
+}
+
 .recipe-instructions ol, .recipe-equipment ul {
   text-align: left;
   display: inline-block;
@@ -179,3 +202,6 @@ label {
   width: 125px;
 }
 
+p.comment, .thoughts {
+  margin-bottom: 5px;
+}

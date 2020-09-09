@@ -119,7 +119,7 @@ function SavedRecipes(props) {
   };
 
   return (
-    <div className='container'>
+    <div className='container saved-recipes'>
       <CardDeck className='card-deck saved-recipes'>
           {!savedList.length ? <p>You haven't saved any recipes yet!</p>
             : (savedList.map((recipe) => 
@@ -279,7 +279,7 @@ function App() {
   // enum to conditionally render navbar links with loggedIn 
   const NavLinks = {
     true: (<Nav>
-              <Nav.Link as={Link} to="/saved-recipes">Saved Recipes</Nav.Link>
+              <Nav.Link as={Link} to="/saved-recipes">Saved</Nav.Link>
 
               <Nav.Link as={Link} to="/search-results">Search Reults</Nav.Link>
 
@@ -319,11 +319,9 @@ function App() {
                 {'   '} Fridg 
               </Navbar.Brand>
               <Nav>
-                <Nav.Link as={Link} to="/homepage">Homepage</Nav.Link>
+                <Nav.Link as={Link} to="/homepage">Home</Nav.Link>
 
                 <Nav.Link as={Link} to="/about">About</Nav.Link>
-
-                <Nav.Link as={Link} to="/test-page"> Test</Nav.Link>
                 
                 {NavLinks[loggedIn]}
 
