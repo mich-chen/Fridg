@@ -385,7 +385,8 @@ def send_shopping_list():
     message = client.messages.create(
         to="+15599403988",
         from_="+14158180714",
-        body=f'{recipe_title} shopping list:\n'
+        body=f'\nThanks for using Fridg!\n'
+             f'{recipe_title} shopping list:\n'
              f'{shopping_list}'
              )
 

@@ -26,7 +26,7 @@ body {
 .container {
   text-align: center;
   margin: 30px auto;
-  background: rgba(250, 250, 250, 0.75);
+  background: rgba(250, 250, 250, 0.78);
   max-width: 960px;
 }
 
@@ -53,7 +53,7 @@ body {
   border-color: ;
 }
 
-.card-deck {
+.card-deck, .homepage-title  {
   display: inline-block;
 }
 
@@ -73,10 +73,6 @@ body {
 .homepage {
   margin: 30px 30px;
   margin-bottom: 15px;
-}
-
-.homepage-title {
-  display: inline-block;
 }
 
 .homepage-search {
@@ -153,12 +149,7 @@ label {
   text-align: left;
 }
 
-.recipe-equipment ul {
-  text-align: left;
-  display: inline-block;
-}
-
-.recipe-instructions ol {
+.recipe-instructions ol, .recipe-equipment ul {
   text-align: left;
   display: inline-block;
 }
@@ -166,8 +157,6 @@ label {
 .instructions-col {
   padding: 15px 15px;
 }
-
-
 
 .time {
   display: inline-block;

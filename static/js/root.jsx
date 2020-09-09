@@ -30,7 +30,7 @@ function Homepage(props) {
                      width='50'
                      height='50'
                      className='fridg-logo d-inline-block' />
-        <h2>Fridg </h2>
+        <h1>Fridg </h1>
         </Col>
       </Row>
       <Row>
@@ -82,8 +82,8 @@ function CatchPhrase(props) {
   return (
     <h5 className='catchphrase'> 
       <img src='https://img.icons8.com/cotton/64/000000/fridge.png'
-           width='30'
-           height='30' />
+           width='35'
+           height='35' />
       {' '}Home to your family of ingredients. Family means no ingredient left behind or forgotten. </h5>
     );
 }
@@ -139,6 +139,12 @@ function SavedRecipes(props) {
                           ))
           }
       </CardDeck>
+
+      <Row>
+        <Col className='homepage catchphrase'>
+          <CatchPhrase />
+        </Col>
+      </Row>
   </div>
     );
 }
@@ -167,7 +173,7 @@ function SearchResults(props) {
 
 
   return (
-    <div className='container'>
+    <div className='container search-results'>
       <CardDeck className='card-deck search-results'>
           {!props.resultsList.length ? <h4>Let's find recipes for your ingredients!</h4>
             : (checkedRecipes.map((recipe) => 
@@ -187,6 +193,12 @@ function SearchResults(props) {
                         ))
           }
       </CardDeck>
+
+      <Row>
+        <Col className='homepage catchphrase'>
+          <CatchPhrase />
+        </Col>
+      </Row>
     </div>
     );
 }
@@ -298,20 +310,20 @@ function App() {
         <Router>
           <div>
             <Navbar>
-            <Navbar.Brand as={Link} to="/homepage">
-              <img src='https://img.icons8.com/cotton/64/000000/fridge.png'
-                   width='15'
-                   height='15'
-                   className='d-inline-block align-top'
-                   id='fridg-logo' />
-              {'   '} Fridg 
-            </Navbar.Brand>
+              <Navbar.Brand as={Link} to="/homepage">
+                <img src='https://img.icons8.com/cotton/64/000000/fridge.png'
+                     width='20'
+                     height='20'
+                     className='d-inline-block align-top'
+                     id='fridg-logo' />
+                {'   '} Fridg 
+              </Navbar.Brand>
               <Nav>
-                  <Nav.Link as={Link} to="/homepage">Homepage</Nav.Link>
+                <Nav.Link as={Link} to="/homepage">Homepage</Nav.Link>
 
-                  <Nav.Link as={Link} to="/about">About</Nav.Link>
+                <Nav.Link as={Link} to="/about">About</Nav.Link>
 
-                  <Nav.Link as={Link} to="/test-page"> Test</Nav.Link>
+                <Nav.Link as={Link} to="/test-page"> Test</Nav.Link>
                 
                 {NavLinks[loggedIn]}
 

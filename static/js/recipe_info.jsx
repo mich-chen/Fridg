@@ -320,6 +320,12 @@ function RecipeDetails(props) {
 
         </Row>
 
+        <Row>
+          <Col className='homepage catchphrase'>
+            <CatchPhrase />
+          </Col>
+        </Row>
+
     </Container>
     );
 }
