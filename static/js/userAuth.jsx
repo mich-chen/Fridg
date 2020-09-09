@@ -191,7 +191,8 @@ function UserAuthModal(props) {
   };
 
   return (
-    <React.Fragment id='user-auth-modal'>
+    <Row className='user-auth-modal'>
+      <Col>
       <Modal show={show} onHide={() => {handleClose; history.goBack()}} >
         <Modal.Header closeButton>
           Log In to Access All The Yummy Features!
@@ -205,7 +206,8 @@ function UserAuthModal(props) {
           {MODALFOOTER[newUser]}
         </Modal.Footer>
       </Modal>
-    </React.Fragment>
+      </Col>
+    </Row>
     );
 }
 

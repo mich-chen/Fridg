@@ -50,7 +50,7 @@ function Homepage(props) {
         <Col className='login-col homepage'>
           <Login setMessage={setMessage} showAlert={showAlert} />
 
-          <div className='create-account homepage' style={{display: (loggedIn ? 'none' : 'block')}}>
+          <div className='homepage-create-account homepage' style={{display: (loggedIn ? 'none' : 'block')}}>
 
             Don't have an account?
             <br/>

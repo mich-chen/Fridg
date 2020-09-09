@@ -17,6 +17,10 @@ body {
   justify-content: center;
 }
 
+.navbar-light .navbar-nav .nav-link, .navbar-light .navbar-brand {
+  color: white;
+}
+
 .navbar-search .search-bar {
   display: flex;
   margin-left: 1rem;
@@ -97,7 +101,7 @@ body {
   width: 100%;
 }
 
-.login, .create-account-collapse {
+.login, .create-account-collapse, .create-account {
   display: block;
   border: 1px solid black;
   border-radius: 15px;
