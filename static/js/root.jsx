@@ -27,8 +27,8 @@ function Homepage(props) {
       <Row>
         <Col className='homepage logo'>
         <img src='https://img.icons8.com/cotton/64/000000/fridge.png'
-                     width='50'
-                     height='50'
+                     width='60'
+                     height='60'
                      className='fridg-logo d-inline-block' />
         <h1>Fridg </h1>
         <br />
@@ -91,8 +91,8 @@ function About(props) {
       <Row>
         <Col className='about logo'>
         <img src='https://img.icons8.com/cotton/64/000000/fridge.png'
-                     width='50'
-                     height='50'
+                     width='60'
+                     height='60'
                      className='fridg-logo d-inline-block' />
         <h1>Fridg </h1>
         </Col>
@@ -250,7 +250,7 @@ function SearchBar(props) {
 
       <Button type='submit' className='search-btn' onClick={searchRecipes} >
         Let's get cookin!
-        </Button>
+      </Button>
     </div>
     );
 }
@@ -315,8 +315,8 @@ function App() {
             <Navbar>
               <Navbar.Brand as={Link} to="/homepage">
                 <img src='https://img.icons8.com/cotton/64/000000/fridge.png'
-                     width='20'
-                     height='20'
+                     width='35'
+                     height='35'
                      className='d-inline-block align-top'
                      id='fridg-logo' />
                 {'   '} Fridg 

@@ -151,13 +151,16 @@ function FoodForThoughtsContainer(props) {
 
   return (
     <div className='user-thoughts-container'>
-          <h5> Food For Thoughts! </h5>
-       
-          <Tried tried={tried} setTried={setTried} />
-       
-          <Rating setRating={setRating} rating={rating} />
-       
-          <Comment comment={comment} setComment={setComment} />
+      <img src="https://img.icons8.com/ios-filled/50/000000/salt-bae.png"
+           height='50'
+           width='50' />
+      <h4> Food For Thoughts! </h4>
+   
+      <Tried tried={tried} setTried={setTried} />
+   
+      <Rating setRating={setRating} rating={rating} />
+   
+      <Comment comment={comment} setComment={setComment} />
 
     </div>
     );

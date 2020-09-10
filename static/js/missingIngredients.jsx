@@ -57,7 +57,10 @@ function ShoppingListBtn(props) {
   // logged in renders button to server and send text
   const SHOPPING_BTN = {
     true: (<Button className='shopping-list-btn' onClick={() => {handleClick(); showAlert(true)}}>
-                  Send shopping list to phone!
+              <img src="https://img.icons8.com/cotton/64/000000/checklist--v1.png"
+                   height='30'
+                   width='30' />
+              {'  '}Send shopping list to phone! 
                 </Button>),
     false: (<ModalButton text={'Send shopping list to phone!'} 
                          show={true}
@@ -97,7 +100,10 @@ function MissingIngredientsContainer(props) {
 
   return(
     <div className='missing-ingredients-container'>
-      <h5> Currently missing ingredients </h5>
+      <img src="https://img.icons8.com/dusk/64/000000/ingredients.png"
+           height='50'
+           width='50' />
+      <h4> Currently missing ingredients </h4>
       <p> Check the ingredients you'd like to add for a shopping list! </p>
 
       <MissingIngredientsList missingIngredients={missingIngredients}

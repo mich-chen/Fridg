@@ -10,6 +10,7 @@ html, body {
 body {
   background: url(ingredient-bg.jpg) no-repeat center;
   background-size: cover;
+  font-size: 1.1rem;
 }
 
 #root {
@@ -19,20 +20,19 @@ body {
 
 .content-wrapper {
   padding-bottom: 4rem;
-
 }
 
 .navbar {
   justify-content: center;
+  font-family: 'Quicksand', sans-serif;
 }
 
 .nav-link {
-  margin-top: 5px;
+  margin-top: 3px;
 }
 
 .navbar-light .navbar-nav .nav-link, .navbar-light .navbar-brand {
   color: #f4f9f4;
-  font-weight: 500;
 }
 
 .navbar-light .navbar-nav .nav-link:focus, .navbar-light .navbar-nav .nav-link:hover, .navbar-light .navbar-brand:focus, .navbar-light .navbar-brand:hover {
@@ -56,7 +56,7 @@ body {
   max-width: 960px;
   border-radius: 25px;
   color: #403f48;
-  font-weight: 500;
+  font-family: 'Roboto', sans-serif;
 }
 
 .footer {
@@ -66,6 +66,12 @@ body {
   width: 100%;
   text-align: center;
   color: #f4f9f4;
+}
+
+label, h1, h2, h3, h4, h5, h6 {
+  display: block;
+  margin: 5px;
+  font-family: 'Quicksand', sans-serif;
 }
 
 .search-results, .saved-recipes {
@@ -82,7 +88,6 @@ body {
   border-color: #8aae92;
   background: rgba(244, 249, 244, 0.65);
   box-shadow: 0 0 0 0.2rem rgba(64, 63, 72, 0.6)
-
 }
 
 .btn {
@@ -91,7 +96,6 @@ body {
   border-color: #8aae92;
   margin: 5px 5px;
   vertical-align: unset;
-  font-weight: 600;
 }
 
 .btn:hover {
@@ -141,7 +145,7 @@ body {
   color: #8aae92;
 }
 
-.saved-recipes-btn-container, .search-results-btn-container {
+.saved-recipes-btn-container, .search-results-btn-container, .homepage-search {
   display: inline-block;
 }
 
@@ -149,17 +153,9 @@ body {
   margin: 30px 30px;
 }
 
-.homepage-search {
-  display: inline;
-}
-
 .homepage-search .search-bar {
   width: 60%;
   display: inline;
-}
-
-.navbar .btn {
-  width: 100%;
 }
 
 .login, .create-account {
@@ -173,8 +169,6 @@ body {
   background-color: #616161;
   color: #f4f9f4;
 }
-
-/* Recipe Details CSS */
 
 .details {
   margin: 15px 15px;
@@ -205,16 +199,6 @@ body {
   margin-bottom: 15px;
 }
 
-label {
-  display: block;
-  margin: 5px;
-}
-
-.recipe-ingredients ul {
-  text-align: left;
-  display: inline-block;
-}
-
 .missing-or-thoughts {
   padding: 15px 15px;
   border: 1.5px solid black;
@@ -226,15 +210,15 @@ label {
   text-align: left;
 }
 
+.recipe-ingredients ul, .recipe-instructions ol, .recipe-equipment ul {
+  text-align: left;
+  display: inline-block;
+}
+
 .ingr-equip {
   text-align: left;
   padding: 15px;
   padding-left: 50px;
-}
-
-.recipe-instructions ol, .recipe-equipment ul {
-  text-align: left;
-  display: inline-block;
 }
 
 .instructions-col {
@@ -246,11 +230,11 @@ label {
   border: 1px solid black;
   border-radius: 10px;
   margin: 5px 5px;
-  width: 130px;
+  width: 140px;
 }
 
 .ready-time {
-  width: 160px;
+  width: 170px;
   text-align: center;
 }
 
