@@ -91,6 +91,7 @@ body {
   border-color: #8aae92;
   margin: 5px 5px;
   vertical-align: unset;
+  font-weight: 600;
 }
 
 .btn:hover {
@@ -206,6 +207,7 @@ body {
 
 label {
   display: block;
+  margin: 5px;
 }
 
 .recipe-ingredients ul {
@@ -266,4 +268,8 @@ p.comment, .thoughts {
 
 .stars .btn-primary:not(:disabled):not(.disabled).active, .stars .btn-primary:not(:disabled):not(.disabled):active, .stars .show>.btn-primary.dropdown-toggle {
   color: yellow;
+}
+
+.modal-open {
+  text-align: center;
 }

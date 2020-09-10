@@ -189,7 +189,9 @@ function RecipeCard(props) {
                                     buttonStatus={status}
                                     recipeDetails={props.recipeDetails}
                                     recipeId={props.recipeId} />
-                                : <ModalButton text={'Save this recipe!'}
+                                : <ModalButton text={<img src="https://img.icons8.com/android/24/000000/plus.png"
+                                                          height='40'
+                                                          width='40' />}
                                                alertProps={alertProps} />)
   });
 
@@ -275,7 +277,9 @@ function RecipeDetails(props) {
                                         recipeId={details.recipe_id} />
                                       <RemoveBtn recipeId={details.recipe_id} />
                                     </div>
-                          : <ModalButton text={'Log in to Save!'}
+                          : <ModalButton text={<img src="https://img.icons8.com/android/24/000000/plus.png"
+                                                    height='40'
+                                                    width='40' />}
                                          alertProps={props.alertProps} />
                         )
     });
