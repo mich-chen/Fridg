@@ -316,14 +316,6 @@ function RecipeDetails(props) {
           <SourceUrl url={details.sourceUrl} />
         </Col>
       </Row>
-
-
-      <Row>
-        <Col className='homepage tagline'>
-          <TagLine />
-        </Col>
-      </Row>
-
     </Container>
     );
 }

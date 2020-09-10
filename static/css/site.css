@@ -14,6 +14,7 @@ body {
 
 #root {
   position: relative;
+  min-height: 100vh;
 }
 
 .content-wrapper {
@@ -109,12 +110,12 @@ body {
 
 .card-deck, .homepage-title  {
   display: inline-block;
+  padding: 15px 0;
 }
 
-.card {
+.card-deck .card {
   width: 350px;
-  margin-top: 15px;
-  margin-bottom: 15px;
+  margin: 5px 5px;
   display: inline-block;
   vertical-align: top;
   border-radius: 20px;

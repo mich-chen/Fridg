@@ -67,12 +67,6 @@ function Homepage(props) {
           </div>
         </Col>
       </Row>
-
-      <Row>
-        <Col className='homepage tagline'>
-          <TagLine />
-        </Col>
-      </Row>
     </Container>
     );
 }
@@ -121,12 +115,6 @@ function About(props) {
             </p>
         </Col>
       </Row>
-
-      <Row>
-        <Col className='about tagline'>
-          <TagLine />
-        </Col>
-      </Row>
     </Container>
     );
 }
@@ -170,12 +158,6 @@ function SavedRecipes(props) {
                           ))
           }
       </CardDeck>
-
-      <Row>
-        <Col className='homepage tagline'>
-          <TagLine />
-        </Col>
-      </Row>
   </div>
     );
 }
@@ -224,12 +206,6 @@ function SearchResults(props) {
                         ))
           }
       </CardDeck>
-
-      <Row>
-        <Col className='homepage tagline'>
-          <TagLine />
-        </Col>
-      </Row>
     </div>
     );
 }
