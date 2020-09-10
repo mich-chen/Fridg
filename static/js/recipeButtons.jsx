@@ -13,7 +13,11 @@ function FavoritedBtn(props) {
   const text = 'Favorited &hearts;';
 
   return (
-    <Button className='favorited-btn'> Favorited &hearts;  </Button>
+    <Button className='favorited-btn'>
+      <img src="https://img.icons8.com/cotton/64/000000/hearts--v2.png"
+           height='30'
+           width='30' />
+    </Button>
     );
 }
 
@@ -183,8 +187,12 @@ function SavedRecipesButton(props) {
     <div className='saved-recipes-btn-container button'>
       {isFavorite ? <FavoritedBtn /> 
         : <ActionBtn action={favoriteThisRecipe}
-                     initialText={'Saved! Not favorited!'}
-                     updateText={'Favorite <3'}
+                     initialText={<img src="https://img.icons8.com/cotton/64/000000/hearts--v3.png"
+                                       height='30'
+                                       width='30' />}
+                     updateText={<img src="https://img.icons8.com/cotton/64/000000/hearts--v2.png"
+                                      height='30'
+                                      width='30' />}
                      />}
     </div>
     );
