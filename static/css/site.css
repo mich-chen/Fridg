@@ -135,7 +135,7 @@ body {
   color: #8aae92;
 }
 
-.saved-recipes-btn-container {
+.saved-recipes-btn-container, .search-results-btn-container {
   display: inline-block;
 }
 
