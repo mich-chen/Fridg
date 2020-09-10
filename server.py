@@ -192,7 +192,7 @@ def check_if_saved_recipe():
 
     users_saved_recipes = crud.get_saved_recipes(session.get('email'))
     # set of saved recipe ids
-    saved_ids = {saved['saved_id'] for saved in users_saved_recipes}
+    saved_ids = {saved['recipe_id'] for saved in users_saved_recipes}
 
     # iterate through list of recipes, if recipe id is in set of saved ids, is_saved is true
     for recipe in recipes_list:
