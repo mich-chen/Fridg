@@ -234,7 +234,7 @@ function RecipeDetails(props) {
         .then(res => res.json())
         .then(data => {
           setDetails(data.recipe_details);
-          setButtonStatus(data.favorite)
+          setButtonStatus(data.recipe_details.favorite)
           })
     } else {
       fetch('/api/check_results',
@@ -251,6 +251,7 @@ function RecipeDetails(props) {
     };
   }, [buttonStatus]);
   console.log('recipes details', details);
+  console.log(buttonStatus);
 
   const prepMins = details.prep_mins;
   const cookMins = details.cooking_mins;
