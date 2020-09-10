@@ -86,7 +86,6 @@ label, h1, h2, h3, h4, h5, h6 {
 .form-control:focus {
   color: #403f48;
   border-color: #8aae92;
-  background: rgba(244, 249, 244, 0.65);
   box-shadow: 0 0 0 0.2rem rgba(64, 63, 72, 0.6)
 }
 
@@ -168,6 +167,11 @@ label, h1, h2, h3, h4, h5, h6 {
   margin: auto auto;
   background-color: #616161;
   color: #f4f9f4;
+}
+
+.email, .password, .phone {
+  width: 250px;
+  display: inline-block;
 }
 
 .details {

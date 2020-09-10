@@ -47,13 +47,14 @@ function Login(props) {
              width='25' />
         {'  '}Email: 
       </label>
-        <input className='email'
+        <FormControl className='email'
                type='text'
                onChange={(e) => {setEmail(e.target.value)}}
                value={email} 
                placeholder="email@email.com"
                required
-               />
+               >
+        </FormControl>
       <br />
 
       <label>
@@ -62,14 +63,14 @@ function Login(props) {
              width='25' />
         {'  '}Password: 
       </label>
-        <input className='password'
+        <FormControl className='password'
                type='password'
                onChange={(e) => {setPassword(e.target.value)}}
                value={password}
                placeholder='password'
                required
-               />
-
+               >
+        </FormControl>
       <br />
 
       <Button className='login-btn' 
@@ -131,13 +132,14 @@ function CreateAccount(props) {
                  width='25' />
             {'  '}Email: 
           </label>
-            <input className='email'
+            <FormControl className='email'
                    type='text'
                    onChange={(e) => {setEmail(e.target.value)}}
                    value={email} 
                    placeholder="email@email.com"
                    required
-                   />
+                   >
+            </FormControl>
           <br/>
 
           <label>
@@ -146,13 +148,14 @@ function CreateAccount(props) {
                  width='25' />
             {'  '}Password: 
           </label>
-            <input className='password'
+            <FormControl className='password'
                    type='password'
                    onChange={(e) => {setPassword(e.target.value)}}
                    value={password}
                    placeholder='password'
                    required
-                   />
+                   >
+            </FormControl>
           <br/>
 
           <label> 
@@ -161,14 +164,15 @@ function CreateAccount(props) {
                  width='25' />
               {'  '}Phone: 
           </label>
-            +1 <input className='phone'
+            +1 <FormControl className='phone'
                    type='tel'
                    onChange={(e) => {setPhone(e.target.value)}}
                    value={phone}
                    placeholder='Enter in 10-digit format'
                    maxLength='10'
                    required
-                   />
+                   >
+              </FormControl>
 
           <br/>
 
