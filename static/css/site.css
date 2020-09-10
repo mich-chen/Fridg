@@ -32,6 +32,11 @@ body {
 
 .navbar-light .navbar-nav .nav-link, .navbar-light .navbar-brand {
   color: #f4f9f4;
+  font-weight: 500;
+}
+
+.navbar-light .navbar-nav .nav-link:focus, .navbar-light .navbar-nav .nav-link:hover, .navbar-light .navbar-brand:focus, .navbar-light .navbar-brand:hover {
+  color: #8aae92;
 }
 
 .navbar-search .search-bar {
@@ -107,7 +112,7 @@ body {
   border-color: #403f48;
 }
 
-.card-deck, .homepage-title  {
+.card-deck {
   display: inline-block;
   padding: 15px 0;
 }
@@ -141,7 +146,6 @@ body {
 
 .homepage, .about, .logout {
   margin: 30px 30px;
-  margin-bottom: 15px;
 }
 
 .homepage-search {
@@ -260,6 +264,6 @@ p.comment, .thoughts {
   margin-bottom: 5px;
 }
 
-.stars .btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle {
+.stars .btn-primary:not(:disabled):not(.disabled).active, .stars .btn-primary:not(:disabled):not(.disabled):active, .stars .show>.btn-primary.dropdown-toggle {
   color: yellow;
 }

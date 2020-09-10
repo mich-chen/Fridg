@@ -31,6 +31,8 @@ function Homepage(props) {
                      height='50'
                      className='fridg-logo d-inline-block' />
         <h1>Fridg </h1>
+        <br />
+        <h4>No ingredient left behind</h4>
         </Col>
       </Row>
       <Row>
@@ -296,13 +298,7 @@ function App() {
       ),
 
     false: (<Nav>
-                <Nav.Link as={Link} to="/login" onClick={handleShow}>
-                  <img src="https://img.icons8.com/cotton/64/000000/gender-neutral-user--v1.png"
-                       width='30'
-                       height='30'
-                       className='d-inline-block align-top'
-                       id='navbar-login' />
-                </Nav.Link>
+                <Nav.Link as={Link} to="/login" onClick={handleShow}>Login</Nav.Link>
 
                 <Nav.Link as={Link} to="/create-account" onClick={handleShow}>New User</Nav.Link>
 
