@@ -273,6 +273,7 @@ function RecipeDetails(props) {
                                         buttonStatus={status}
                                         recipeDetails={details}
                                         recipeId={details.recipe_id} />
+                                      <RemoveBtn recipeId={details.recipe_id} />
                                     </div>
                           : <ModalButton text={'Log in to Save!'}
                                          alertProps={props.alertProps} />

@@ -135,6 +135,10 @@ body {
   color: #8aae92;
 }
 
+.saved-recipes-btn-container {
+  display: inline-block;
+}
+
 .homepage, .about, .logout {
   margin: 30px 30px;
   margin-bottom: 15px;
@@ -254,4 +258,8 @@ label {
 
 p.comment, .thoughts {
   margin-bottom: 5px;
+}
+
+.stars .btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle {
+  color: yellow;
 }
