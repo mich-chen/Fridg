@@ -104,7 +104,7 @@ function About(props) {
 
       <Row>
         <Col className='about me-img'>
-          <img src='me.jpg' />
+          <img src='../css/me.jpg' />
         </Col>
 
         <Col className='about me'>
@@ -339,7 +339,7 @@ function App() {
     return (
       <AuthContext.Provider value={{loggedIn, setLoggedIn}}>
         <Router>
-          <div>
+          <div className='content-wrapper'>
             <Navbar>
               <Navbar.Brand as={Link} to="/homepage">
                 <img src='https://img.icons8.com/cotton/64/000000/fridge.png'
@@ -420,13 +420,9 @@ function App() {
             </Switch>
           </div>
 
-          <div>
-            <Row>
-              <Col className='tagline'>
-                <TagLine />
-              </Col>
-            </Row>
-          </div>
+          <footer className='tagline footer'>
+            <TagLine />
+          </footer>
         </Router>
     </AuthContext.Provider>
   );

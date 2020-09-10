@@ -12,9 +12,22 @@ body {
   background-size: cover;
 }
 
+#root {
+  position: relative;
+}
+
+.content-wrapper {
+  padding-bottom: 4rem;
+
+}
+
 .navbar {
   background-color: #8AAE93;
   justify-content: center;
+}
+
+.nav-link {
+  margin-top: 5px;
 }
 
 .navbar-light .navbar-nav .nav-link, .navbar-light .navbar-brand {
@@ -24,10 +37,11 @@ body {
 .navbar-search .search-bar {
   display: flex;
   margin-left: 1rem;
+  margin-top: 5px;
 }
 
 .navbar-search .search-bar .btn {
-  width: 225px;
+  width: 250px;
 }
 
 .container {
@@ -40,7 +54,11 @@ body {
   font-weight: 500;
 }
 
-.tagline {
+.footer {
+  position: absolute;
+  bottom: 0;
+  height: 4rem;
+  width: 100%;
   text-align: center;
   color: #f4f9f4;
 }
@@ -104,6 +122,11 @@ body {
 
 .card-img {
   border-radius: 20px;
+}
+
+.card-img-top {
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
 }
 
 .clickable:hover {

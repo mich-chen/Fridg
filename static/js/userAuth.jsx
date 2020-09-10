@@ -255,11 +255,6 @@ function Logout() {
         </Col>
       </Row>
 
-      <Row>
-        <Col className='logout tagline'>
-          <TagLine />
-        </Col>
-      </Row>
     </Container>
     );
 }
