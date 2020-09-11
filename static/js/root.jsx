@@ -98,10 +98,34 @@ function About(props) {
         </Col>
       </Row>
 
-      <Row>
-        <Col className='about me-img'>
-          <img src='/static/css/me.jpg' />
-        </Col>
+      <Row className='about'>
+        <Row className='me-img'>
+          <Col className='about me-img'>
+            <Row>
+              <Col>
+              <img src='/static/css/me.jpg' style={{width: 350}}/>
+              </Col>
+            </Row>
+            <Row className='contact'>
+              <img src="https://img.icons8.com/cotton/64/000000/secured-letter--v3.png"
+                    height='30'
+                    width='30' />
+                {'    '}mich.chen.94@gmail.com
+            </Row>
+            <Row className='contact'>
+              <img src="/static/css/LinkedIn-logo.png"
+                    height='30'
+                    width='30' />
+                 {'    '}in/mich-chen
+            </Row>
+            <Row className='contact'>
+              <img src="/static/css/Github-logo.png"
+                                height='30'
+                                width='30' /> 
+                  {'    '}/mich-chen
+            </Row>
+          </Col>
+        </Row>
 
         <Col className='about me'>
           <p>
@@ -111,7 +135,7 @@ function About(props) {
       </Row>
 
       <Row>
-        <Col className='about'>
+        <Col className='about' style={{'margin-top': 0}}>
           <p> 
             Fridg is a full-stack, single-page webapp that curates recipes based on what's in your fridge! Fridg's mission is to help reduce food waste by using Spoonacular's API to provide recipes maximizing ingredients you have on hand. If you find a recipe you like, you can save, favorite, and journal your experiences with that recipe. Fridg also provides a checklist of missing ingredients when you search recipes and you may customize a grocery shopping list to be sent to your phone. 
             </p>

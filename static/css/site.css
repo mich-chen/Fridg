@@ -261,3 +261,8 @@ p.comment, .thoughts {
 .modal-open {
   text-align: center;
 }
+
+.contact.row {
+  justify-content: center;
+  margin: 5px;
+}
