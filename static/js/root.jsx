@@ -100,7 +100,7 @@ function About(props) {
 
       <Row>
         <Col className='about me-img'>
-          <img src='../css/me.jpg' />
+          <img src='/static/css/me.jpg' />
         </Col>
 
         <Col className='about me'>
