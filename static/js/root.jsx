@@ -326,7 +326,7 @@ function App() {
 
                 <Nav.Link as={Link} to="/create-account" onClick={handleShow}>New User</Nav.Link>
 
-                <Nav.Link as={Link} to="/search-results">Search Reults</Nav.Link>
+                <Nav.Link as={Link} to="/search-results">Search Results</Nav.Link>
           </Nav>
       )
   };
