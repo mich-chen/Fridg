@@ -25,12 +25,43 @@
 ## <a name="features"></a>Features
 
 ### Landing Page
+Users may login, create new account, or continue as a guest. Login and create account forms make a JavaScript fetch request to my Python and Flask backend to validate user email and passwords. Create an account on the Landing page is made using React Boostrap's Collapse component. If users choose to continue as guests, they have access to logging in or signing up in the navbar, which will render a React modal window.
 
+
+### Homepage
+Once logged in, users can view search form again without authentication components. Users now have access to their saved recipes, search results, and the option to log out. 
+
+
+### Searching Recipes by Ingredients
+When users or guests search ingredients they have on hand, an asynchronous fetch request is made to my backend and Spoonacular's API to return recipes maximizing the queried ingredients.
+
+
+Using a RESTful API on Fridg's backend, search results are checked for any previously saved recipes and conditionally renders buttons accordingly.
+
+
+### Recipe Details From Search Results - Missing Ingredients
+Spoonacular's data includes missing ingredients which users may send as a shopping list to their phone via the Twilio API.
+
+
+
+### Recipe Details From Saved Recipes - Food For Thoughts
+Logged in users will see a section called Food For Thoughts and no longer see missing ingredients. Fridg uses React hooks, such as useContext, useState, and useEffect, to conditionally render this section depending if user accessed recipe details from Saved or Search Results. 
+
+useContext provides global access to user authentication for also conditionally rendering navlinks and setting state for saved recipes. useState and useEffect are used in combination to set and update state depending where the user came from, and to render appropriate section in details.
+
+
+### Food For Thoughts
+Food For Thoughts 
+
+
+### Removing Recipe From Saved
 
 
 
 
 ## <a name="future"></a>Future State
+
+* Fridg 2.0 will incorporate password encryption and later OAuth for stricter security and login options.
 
 
 
