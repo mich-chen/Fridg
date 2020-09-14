@@ -5,9 +5,22 @@
  Hi and welcome! Michelle worked in a cancer precision medicine lab performing experiments on tissue specimens and analyzing drug responses. Michelle came to realize the true scientific method was utterly inefficient, left little room for creative problem solving, and didn't see herself growing in the field. She was extremely drawn to the efficiency and flexibility of problem solving, debugging, and testing along each step of coding. Turns out, coding is the scientific method on steroids! Software engineering and programming came naturally to her and she knew it was a perfect fit after every coding challenge she found herself more motivated and wanting to work harder. Software engineering provides many opportunities for growth and for Michelle to explore her creative problem-solving side! 
 
 ## Contents
-* Tech Stack
-* Features
-* Future State
-* Installation
+* [Tech Stack](#tech-stack)
+* [Features](#features)
+* [Future State](#future-state)
+* [Installation](#installation)
+
+## <a name="tech-stack"></a>Technologies
+* React
+* Python
+* Flask
+* PostgreSQL
+* SQLAlchemy ORM
+* HTML
+* CSS
+* Bootstrap / React Bootstrap
+* Twilio
+* Spoonacular
+
 
 
