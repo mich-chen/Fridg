@@ -1,0 +1,1 @@
+# <img src="/static/img/Fridg.png" width="100%" alt="Fridg">
