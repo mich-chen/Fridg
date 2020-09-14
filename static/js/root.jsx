@@ -314,7 +314,7 @@ function App() {
     true: (<Nav>
               <Nav.Link as={Link} to="/saved-recipes">Saved</Nav.Link>
 
-              <Nav.Link as={Link} to="/search-results">Search Reults</Nav.Link>
+              <Nav.Link as={Link} to="/search-results">Search Results</Nav.Link>
 
               <Nav.Link as={Link} to="/logout">Log Out</Nav.Link>
 
