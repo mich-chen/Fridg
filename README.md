@@ -31,6 +31,13 @@ Users may login, create new account, or continue as a guest. Login and create ac
 ### Homepage
 Once logged in, users can view search form again without authentication components. Users now have access to their saved recipes, search results, and the option to log out. 
 
+useContext provides global access to user authentication to conditionally render navlinks.
+
+
+### Guests and Logged In Users
+Michelle wanted to allow all guests and users access to search recipes. Logged in users may save recipes and send a shopping list to their phone. However, guests will be prompted to login or create an account if they wish to save a recipe or send a shopping list to their phone.
+
+
 
 ### Searching Recipes by Ingredients
 When users or guests search ingredients they have on hand, an asynchronous fetch request is made to my backend and Spoonacular's API to return recipes maximizing the queried ingredients.
@@ -39,24 +46,29 @@ When users or guests search ingredients they have on hand, an asynchronous fetch
 Using a RESTful API on Fridg's backend, search results are checked for any previously saved recipes and conditionally renders buttons accordingly.
 
 
-### Recipe Details From Search Results - Missing Ingredients
+### Recipe Details From Search Results
 Spoonacular's data includes missing ingredients which users may send as a shopping list to their phone via the Twilio API.
 
+Missing ingredients component is conditionally rendered only when selected recipe is from search results. This is acheived using props, useState, useEffect, and React Router to navigate and render unique components.
 
 
-### Recipe Details From Saved Recipes - Food For Thoughts
-Logged in users will see a section called Food For Thoughts and no longer see missing ingredients. Fridg uses React hooks, such as useContext, useState, and useEffect, to conditionally render this section depending if user accessed recipe details from Saved or Search Results. 
 
-useContext provides global access to user authentication for also conditionally rendering navlinks and setting state for saved recipes. useState and useEffect are used in combination to set and update state depending where the user came from, and to render appropriate section in details.
+### Recipe Details From Saved Recipes
+Users may save, favorite, and add their experiences with a recipe.
+
+Similar to recipe details from search results, this is acheived using props, useState, useEffect, and React Router. When recipe is saved, data is stored in PostgreSQL database.
 
 
 ### Food For Thoughts
-Food For Thoughts 
+Food For Thoughts is a section users may reference back to for each saved recipe. Users can log if they've tried a recipe, give a 5-star rating, and add any comments. Users can update this section as many times and however they'd like. 
+
+Fridg uses React hooks, such as useContext, useState, and useEffect, to conditionally render this component depending if user accessed recipe details from Saved or Search Results. Each component of Food For Thoughts lifts state up to a common parent component and useEffect fetches a RESTful API to return and display most recent updated data as user interacts with components.
 
 
 ### Removing Recipe From Saved
+Users may remove a recipe from their saved recipes. 
 
-
+This feature takes advantage of useEffect and useState hooks to dynamically render user's saved recipes as a recipe is removed. State is updated from button's event listener, triggering the useEffect to fetch newly updated data in backend, and updates new state, causing page to rerender recipe cards.
 
 
 ## <a name="future"></a>Future State
