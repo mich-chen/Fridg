@@ -65,7 +65,7 @@ Food For Thoughts is a section users may reference back to for each saved recipe
 Fridg uses React hooks, such as useContext, useState, and useEffect, to conditionally render this component depending if user accessed recipe details from Saved or Search Results. Each component of Food For Thoughts lifts state up to a common parent component and useEffect fetches a RESTful API to return and display most recent updated data as user interacts with components.
 
 
-### Removing Recipe From Saved
+### Removing Recipe
 Users may remove a recipe from their saved recipes. 
 
 This feature takes advantage of useEffect and useState hooks to dynamically render user's saved recipes as a recipe is removed. State is updated from button's event listener, triggering the useEffect to fetch newly updated data in backend, and updates new state, causing page to rerender recipe cards.
@@ -86,4 +86,58 @@ The project roadmap for Fridg has several features planned out for the next spri
 
 
 ## <a name="installation"></a>Installation
+To run Fridg on your own machine:
+
+Install PostgreSQL (Mac OSX)
+
+Clone or fork this repo:
+```
+$ https://github.com/mich-chen/Fridg.git
+```
+
+Create and activate a virtual environment inside your Fridg directory:
+```
+$ virtualenv env
+$ source env/bin/activate
+```
+
+Install the dependencies:
+```
+$ pip install -r requirements.txt
+```
+
+Sign up to use the:
+* [Spoonacular API](https://spoonacular.com/food-api)
+* [Twilio API](https://www.twilio.com)
+
+Save your API keys in a file called <kbd>secrets.sh</kbd> using this format:
+
+```
+export SPOONACULAR_KEY="YOUR_KEY_HERE"
+export TWILIO_SID="YOUR_KEY_HERE"
+export TWILIO_TOKEN="YOUR_KEY_HERE"
+```
+
+Source your keys from your secrets.sh file into your virtual environment:
+
+```
+$ source secrets.sh
+```
+
+Set up the database:
+
+```
+$ createdb recipes
+$ python3 model.py
+```
+
+Run the app:
+
+```
+$ python3 server.py
+```
+
+Navigate to [http://localhost:3000](http://localhost:3000) to access Fridg in your browser to begin your recipe adventures!
+
+
 
