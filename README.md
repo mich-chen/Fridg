@@ -60,7 +60,7 @@ Food For Thoughts
 
 
 ## <a name="future"></a>Future State
-The project roadmap for Fridg has several features planned out for the next spring:
+The project roadmap for Fridg has several features planned out for the next sprint:
 
 * Incorporate password encryption and hashing
   * later OAuth for stricter security and login options
