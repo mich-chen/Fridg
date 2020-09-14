@@ -1,4 +1,4 @@
-# <img src="/static/img/Fridg.png" width="30%" alt="Fridg">
+# <img src="/static/img/Fridg.png" width="30%" alt="Fridg"> No Ingredient Left Behind.
  Fridg is a web application that strives to help reduce food waste by using Spoonacular's API to provide recipes maximizing ingredients on hand. Fridg also provides a checklist of missing ingredients which users may send as a shopping list to their phone via the Twilio API. Users may also save recipes and document their experiences to reference back to, such as if they've tried the recipe, give a 5-star rating, and add comments. Fridg is a full-stack, single page web app, built using React, Python, Flask, and PostgreSQL. Our ingredients are one big happy family in the fridge. And family means no ingredient left behind or forgotten.
 
  ## About Me
