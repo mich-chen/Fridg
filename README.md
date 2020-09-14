@@ -60,10 +60,17 @@ Food For Thoughts
 
 
 ## <a name="future"></a>Future State
+The project roadmap for Fridg has several features planned out for the next spring:
 
-* Fridg 2.0 will incorporate password encryption and later OAuth for stricter security and login options.
-
-
+* Incorporate password encryption and hashing
+  * later OAuth for stricter security and login options
+* Add social aspect to webapp
+  * Add friend list
+  * Users can share and have access to others' saved recipes
+* Add sorting and filters in search results for time, maximum/minimum ingredients, food group, etc.
+  * or add sorting options as dropdown menu in search bar
+* Image processing with Spoonacular's API to search recipes based on food or ingredients identified in a photo
+* Built-in unit conversions for recipe ingredients
 
 
 ## <a name="installation"></a>Installation
