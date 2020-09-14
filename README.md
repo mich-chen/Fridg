@@ -89,6 +89,7 @@ The project roadmap for Fridg has several features planned out for the next spri
 To run Fridg on your own machine:
 
 Install PostgreSQL (Mac OSX)
+
 Fridg is styled using [React Bootstrap](https://react-bootstrap.github.io), [Bootstrap](https://getbootstrap.com), [icons8](https://icons8.com), and [Font Awesome](https://fontawesome.com). CDNs are included in <kbd>root.html</kbd>
 
 Clone or fork this repo:
