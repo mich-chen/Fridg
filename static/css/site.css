@@ -8,7 +8,7 @@ html, body {
 }
 
 body {
-  background: url(ingredient-bg.jpg) no-repeat center;
+  background: url(/static/img/ingredient-bg.jpg) no-repeat center;
   background-size: cover;
   font-size: 1.1rem;
 }

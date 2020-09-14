@@ -103,7 +103,7 @@ function About(props) {
           <Col className='about me-img'>
             <Row>
               <Col>
-              <img src='/static/css/me.jpg' style={{width: 350}}/>
+              <img src='/static/img/me.jpg' style={{width: 350}}/>
               </Col>
             </Row>
             <Row className='contact'>
@@ -113,13 +113,13 @@ function About(props) {
                 {'    '}mich.chen.94@gmail.com
             </Row>
             <Row className='contact'>
-              <img src="/static/css/LinkedIn-logo.png"
+              <img src="/static/img/LinkedIn-logo.png"
                     height='30'
                     width='30' />
                  {'    '}in/mich-chen
             </Row>
             <Row className='contact'>
-              <img src="/static/css/Github-logo.png"
+              <img src="/static/img/Github-logo.png"
                                 height='30'
                                 width='30' /> 
                   {'    '}/mich-chen
