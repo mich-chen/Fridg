@@ -89,6 +89,7 @@ The project roadmap for Fridg has several features planned out for the next spri
 To run Fridg on your own machine:
 
 Install PostgreSQL (Mac OSX)
+Fridg is styled using [React Bootstrap](https://react-bootstrap.github.io), [Bootstrap](https://getbootstrap.com), [icons8](https://icons8.com), and [Font Awesome](https://fontawesome.com). CDNs are included in <kbd>root.html</kbd>
 
 Clone or fork this repo:
 ```
@@ -140,4 +141,23 @@ $ python3 server.py
 Navigate to [http://localhost:3000](http://localhost:3000) to access Fridg in your browser to begin your recipe adventures!
 
 
+## Learn More
+
+### React
+Check out the [React documentation](https://reactjs.org/)
+
+### React Router
+For front-end declarative routing and navigation, Fridg uses [React Router](https://reactrouter.com).
+
+### React Bootstrap
+Styling with React Bootstrap components, check out [React Bootstrap documentation](https://react-bootstrap.github.io).
+
+### Bootstrap
+Additional styling and non-React apps, check out [Bootstrap documentation](https://getbootstrap.com)
+
+### Spoonacular API
+Check out [Spoonacular API documentation](https://spoonacular.com/food-api) for any and all food related application APIs. They provide a wide range of search engines, nutrition and meal plan APIs, and much more!
+
+### Twilio API
+Check out [Twilio API documentation](https://www.twilio.com) for any business communications to embed into web, desktop, and mobile software.
 
