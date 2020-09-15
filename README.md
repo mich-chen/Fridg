@@ -42,6 +42,8 @@ Michelle wanted to allow all guests and users access to search recipes. Logged i
 
 ![alt text](https://github.com/mich-chen/Fridg/blob/master/static/img/guest-login-modal.gif "Login Modal")
 
+![alt text](https://github.com/mich-chen/Fridg/blob/master/static/img/save-and-shopping-list.gif "Save and Shopping List")
+
 ### Searching Recipes by Ingredients
 When users or guests search ingredients they have on hand, an asynchronous fetch request is made to my backend and Spoonacular's API to return recipes maximizing the queried ingredients.
 
