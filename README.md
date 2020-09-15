@@ -12,6 +12,7 @@
 
 ## <a name="tech-stack"></a>Technologies
 * React
+* JavaScript
 * Python
 * Flask
 * PostgreSQL
