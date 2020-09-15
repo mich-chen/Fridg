@@ -30,6 +30,8 @@ Users may login, create new account, or continue as a guest. Login and create ac
 
 ![alt text](https://github.com/mich-chen/Fridg/blob/master/static/img/landing.gif "Landing Page")
 
+![alt text](https://github.com/mich-chen/Fridg/blob/master/static/img/landing-page.gif "Landing Page")
+
 
 ### Homepage
 Once logged in, users can view search form again without authentication components. Users now have access to their saved recipes, search results, and the option to log out. 
