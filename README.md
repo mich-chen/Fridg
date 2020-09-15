@@ -28,6 +28,8 @@
 ### Landing Page
 Users may login, create new account, or continue as a guest. Login and create account forms make a JavaScript fetch request to my Python and Flask backend to validate user email and passwords. Create an account on the Landing page is made using React Boostrap's Collapse component. If users choose to continue as guests, they have access to logging in or signing up in the navbar, which will render a React modal window.
 
+![alt text](https://github.com/mich-chen/Fridg/blob/master/static/img/landing.gif "Landing Page")
+
 
 ### Homepage
 Once logged in, users can view search form again without authentication components. Users now have access to their saved recipes, search results, and the option to log out. 
