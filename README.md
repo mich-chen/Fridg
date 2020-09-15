@@ -33,15 +33,14 @@ Users may login, create new account, or continue as a guest. Login and create ac
 ### Homepage
 Once logged in, users can view search form again without authentication components. Users now have access to their saved recipes, search results, and the option to log out. 
 
-![alt text](https://github.com/mich-chen/Fridg/blob/master/static/img/Homepage.png "Homepage")
-
 useContext provides global access to user authentication to conditionally render navlinks.
 
+![alt text](https://github.com/mich-chen/Fridg/blob/master/static/img/Homepage.png "Homepage")
 
 ### Guests and Logged In Users
 Michelle wanted to allow all guests and users access to search recipes. Logged in users may save recipes and send a shopping list to their phone. However, guests will be prompted to login or create an account if they wish to save a recipe or send a shopping list to their phone.
 
-
+![alt text](https://github.com/mich-chen/Fridg/blob/master/static/img/guest-login-modal.gif "Login Modal")
 
 ### Searching Recipes by Ingredients
 When users or guests search ingredients they have on hand, an asynchronous fetch request is made to my backend and Spoonacular's API to return recipes maximizing the queried ingredients.
