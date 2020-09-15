@@ -71,6 +71,8 @@ Users may remove a recipe from their saved recipes.
 
 This feature takes advantage of useEffect and useState hooks to dynamically render user's saved recipes as a recipe is removed. State is updated from button's event listener, triggering the useEffect to fetch newly updated data in backend, and updates new state, causing page to rerender recipe cards.
 
+![alt text](https://github.com/mich-chen/Fridg/blob/master/static/img/remove-recipe.gif "Remove Recipe")
+
 ## <a name="future"></a>Future State
 The project roadmap for Fridg has several features planned out for the next sprint:
 
