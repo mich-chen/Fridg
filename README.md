@@ -38,12 +38,12 @@ useContext provides global access to user authentication to conditionally render
 
 ![alt text](https://github.com/mich-chen/Fridg/blob/master/static/img/Homepage.png "Homepage")
 
+
 ### Guests and Logged In Users
 Michelle wanted to allow all guests and users access to search recipes. Logged in users may save recipes and send a shopping list to their phone. However, guests will be prompted to login or create an account if they wish to save a recipe or send a shopping list to their phone.
 
 ![alt text](https://github.com/mich-chen/Fridg/blob/master/static/img/login-modal.gif "Login Modal")
 
-![alt text](https://github.com/mich-chen/Fridg/blob/master/static/img/save-and-shopping-list.gif "Save and Shopping List")
 
 ### Searching Recipes by Ingredients
 When users or guests search ingredients they have on hand, an asynchronous fetch request is made to my backend and Spoonacular's API to return recipes maximizing the queried ingredients.
@@ -58,6 +58,7 @@ Spoonacular's data includes missing ingredients which users may send as a shoppi
 
 Missing ingredients component is conditionally rendered only when selected recipe is from search results. This is acheived using props, useState, useEffect, and React Router to navigate and render unique components.
 
+![alt text](https://github.com/mich-chen/Fridg/blob/master/static/img/save-and-shopping-list.gif "Save and Shopping List")
 
 
 ### Recipe Details From Saved Recipes
