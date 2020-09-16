@@ -74,6 +74,8 @@ Food For Thoughts is a section users may reference back to for each saved recipe
 
 Fridg uses React hooks, such as useContext, useState, and useEffect, to conditionally render this component depending if user accessed recipe details from Saved or Search Results. Each component of Food For Thoughts lifts state up to a common parent component and useEffect fetches a RESTful API to return and display most recent updated data as user interacts with components.
 
+![alt text](https://github.com/mich-chen/Fridg/blob/master/static/img/food-for-thoughts.gif "Food For Thoughts")
+
 
 ### Removing Recipe
 Users may remove a recipe from their saved recipes. 
