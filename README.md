@@ -21,6 +21,7 @@
 * CSS
 * React Router
 * React Bootstrap
+* Bootstrap
 * Twilio
 * Spoonacular
 
