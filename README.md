@@ -161,7 +161,9 @@ Navigate to [http://localhost:5000](http://localhost:5000) to access Fridg in yo
 Michelle Chen
 :email: [mich.chen.94@gmail.com](mich.chen.94@gmail.com)
 
-![alt text](https://github.com/mich-chen/Fridg/blob/master/static/img/LinkedIn-logo.png "LinkedIn") /in/mich-chen (https://www.linkedin.com/in/mich-chen/)
+[LinkedIn](https://www.linkedin.com/in/mich-chen/)
+
+[Github](https://github.com/mich-chen)
 
 
 ## Learn More
