@@ -158,12 +158,7 @@ Navigate to [http://localhost:5000](http://localhost:5000) to access Fridg in yo
 
 ## Author
 
-Michelle Chen
-:email: [mich.chen.94@gmail.com](mich.chen.94@gmail.com)
-
-[LinkedIn](https://www.linkedin.com/in/mich-chen/)
-
-[Github](https://github.com/mich-chen)
+Michelle Chen - :email: [mich.chen.94@gmail.com](mich.chen.94@gmail.com) - [LinkedIn](https://www.linkedin.com/in/mich-chen/) - [Github](https://github.com/mich-chen)
 
 
 ## Learn More
