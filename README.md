@@ -19,7 +19,8 @@
 * SQLAlchemy ORM
 * HTML
 * CSS
-* Bootstrap / React Bootstrap
+* React Router
+* React Bootstrap
 * Twilio
 * Spoonacular
 
