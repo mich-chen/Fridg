@@ -66,6 +66,8 @@ Users may save, favorite, and add their experiences with a recipe.
 
 Similar to recipe details from search results, this is acheived using props, useState, useEffect, and React Router. When recipe is saved, data is stored in PostgreSQL database.
 
+![alt text](https://github.com/mich-chen/Fridg/blob/master/static/img/saved-recipe-details.gif "Saved Recipe Details")
+
 
 ### Food For Thoughts
 Food For Thoughts is a section users may reference back to for each saved recipe. Users can log if they've tried a recipe, give a 5-star rating, and add any comments. Users can update this section as many times and however they'd like. 
