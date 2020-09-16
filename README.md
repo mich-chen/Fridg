@@ -154,7 +154,13 @@ Run the app:
 $ python3 server.py
 ```
 
-Navigate to [http://localhost:3000](http://localhost:3000) to access Fridg in your browser to begin your recipe adventures!
+Navigate to [http://localhost:5000](http://localhost:5000) to access Fridg in your browser to begin your recipe adventures!
+
+## Author
+
+Michelle Chen
+:email: [mich.chen.94@gmail.com](mich.chen.94@gmail.com)
+[https://github.com/mich-chen/Fridg/blob/master/static/img/remove-recipe.gif /in/mich-chen](https://www.linkedin.com/in/mich-chen/)
 
 
 ## Learn More
