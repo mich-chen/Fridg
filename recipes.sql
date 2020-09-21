@@ -16,15 +16,60 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
+ALTER TABLE ONLY public.saved_recipes DROP CONSTRAINT saved_recipes_user_id_fkey;
+ALTER TABLE ONLY public.saved_recipes DROP CONSTRAINT saved_recipes_recipe_id_fkey;
+ALTER TABLE ONLY public.recipe_ingredients DROP CONSTRAINT recipe_ingredients_recipe_id_fkey;
+ALTER TABLE ONLY public.instructions DROP CONSTRAINT instructions_recipe_id_fkey;
+ALTER TABLE ONLY public.equipment DROP CONSTRAINT equipment_recipe_id_fkey;
+ALTER TABLE ONLY public.users DROP CONSTRAINT users_pkey;
+ALTER TABLE ONLY public.saved_recipes DROP CONSTRAINT saved_recipes_pkey;
+ALTER TABLE ONLY public.recipes DROP CONSTRAINT recipes_pkey;
+ALTER TABLE ONLY public.recipe_ingredients DROP CONSTRAINT recipe_ingredients_pkey;
+ALTER TABLE ONLY public.instructions DROP CONSTRAINT instructions_pkey;
+ALTER TABLE ONLY public.equipment DROP CONSTRAINT equipment_pkey;
+ALTER TABLE public.users ALTER COLUMN user_id DROP DEFAULT;
+ALTER TABLE public.saved_recipes ALTER COLUMN saved_id DROP DEFAULT;
+ALTER TABLE public.recipes ALTER COLUMN recipe_id DROP DEFAULT;
+ALTER TABLE public.recipe_ingredients ALTER COLUMN rec_ing_id DROP DEFAULT;
+ALTER TABLE public.instructions ALTER COLUMN instruction_id DROP DEFAULT;
+ALTER TABLE public.equipment ALTER COLUMN equipment_id DROP DEFAULT;
+DROP SEQUENCE public.users_user_id_seq;
+DROP TABLE public.users;
+DROP SEQUENCE public.saved_recipes_saved_id_seq;
+DROP TABLE public.saved_recipes;
+DROP SEQUENCE public.recipes_recipe_id_seq;
+DROP TABLE public.recipes;
+DROP SEQUENCE public.recipe_ingredients_rec_ing_id_seq;
+DROP TABLE public.recipe_ingredients;
+DROP SEQUENCE public.instructions_instruction_id_seq;
+DROP TABLE public.instructions;
+DROP SEQUENCE public.equipment_equipment_id_seq;
+DROP TABLE public.equipment;
+DROP EXTENSION plpgsql;
+DROP SCHEMA public;
 --
--- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+-- Name: public; Type: SCHEMA; Schema: -; Owner: -
+--
+
+CREATE SCHEMA public;
+
+
+--
+-- Name: SCHEMA public; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON SCHEMA public IS 'standard public schema';
+
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: -
 --
 
 CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 
 
 --
--- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: -
 --
 
 COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
@@ -35,7 +80,7 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: equipment; Type: TABLE; Schema: public; Owner: vagrant
+-- Name: equipment; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.equipment (
@@ -45,10 +90,8 @@ CREATE TABLE public.equipment (
 );
 
 
-ALTER TABLE public.equipment OWNER TO vagrant;
-
 --
--- Name: equipment_equipment_id_seq; Type: SEQUENCE; Schema: public; Owner: vagrant
+-- Name: equipment_equipment_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE public.equipment_equipment_id_seq
@@ -60,17 +103,15 @@ CREATE SEQUENCE public.equipment_equipment_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.equipment_equipment_id_seq OWNER TO vagrant;
-
 --
--- Name: equipment_equipment_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: vagrant
+-- Name: equipment_equipment_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE public.equipment_equipment_id_seq OWNED BY public.equipment.equipment_id;
 
 
 --
--- Name: instructions; Type: TABLE; Schema: public; Owner: vagrant
+-- Name: instructions; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.instructions (
@@ -81,10 +122,8 @@ CREATE TABLE public.instructions (
 );
 
 
-ALTER TABLE public.instructions OWNER TO vagrant;
-
 --
--- Name: instructions_instruction_id_seq; Type: SEQUENCE; Schema: public; Owner: vagrant
+-- Name: instructions_instruction_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE public.instructions_instruction_id_seq
@@ -96,17 +135,15 @@ CREATE SEQUENCE public.instructions_instruction_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.instructions_instruction_id_seq OWNER TO vagrant;
-
 --
--- Name: instructions_instruction_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: vagrant
+-- Name: instructions_instruction_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE public.instructions_instruction_id_seq OWNED BY public.instructions.instruction_id;
 
 
 --
--- Name: recipe_ingredients; Type: TABLE; Schema: public; Owner: vagrant
+-- Name: recipe_ingredients; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.recipe_ingredients (
@@ -119,10 +156,8 @@ CREATE TABLE public.recipe_ingredients (
 );
 
 
-ALTER TABLE public.recipe_ingredients OWNER TO vagrant;
-
 --
--- Name: recipe_ingredients_rec_ing_id_seq; Type: SEQUENCE; Schema: public; Owner: vagrant
+-- Name: recipe_ingredients_rec_ing_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE public.recipe_ingredients_rec_ing_id_seq
@@ -134,17 +169,15 @@ CREATE SEQUENCE public.recipe_ingredients_rec_ing_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.recipe_ingredients_rec_ing_id_seq OWNER TO vagrant;
-
 --
--- Name: recipe_ingredients_rec_ing_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: vagrant
+-- Name: recipe_ingredients_rec_ing_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE public.recipe_ingredients_rec_ing_id_seq OWNED BY public.recipe_ingredients.rec_ing_id;
 
 
 --
--- Name: recipes; Type: TABLE; Schema: public; Owner: vagrant
+-- Name: recipes; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.recipes (
@@ -159,10 +192,8 @@ CREATE TABLE public.recipes (
 );
 
 
-ALTER TABLE public.recipes OWNER TO vagrant;
-
 --
--- Name: recipes_recipe_id_seq; Type: SEQUENCE; Schema: public; Owner: vagrant
+-- Name: recipes_recipe_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE public.recipes_recipe_id_seq
@@ -174,17 +205,15 @@ CREATE SEQUENCE public.recipes_recipe_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.recipes_recipe_id_seq OWNER TO vagrant;
-
 --
--- Name: recipes_recipe_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: vagrant
+-- Name: recipes_recipe_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE public.recipes_recipe_id_seq OWNED BY public.recipes.recipe_id;
 
 
 --
--- Name: saved_recipes; Type: TABLE; Schema: public; Owner: vagrant
+-- Name: saved_recipes; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.saved_recipes (
@@ -198,10 +227,8 @@ CREATE TABLE public.saved_recipes (
 );
 
 
-ALTER TABLE public.saved_recipes OWNER TO vagrant;
-
 --
--- Name: saved_recipes_saved_id_seq; Type: SEQUENCE; Schema: public; Owner: vagrant
+-- Name: saved_recipes_saved_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE public.saved_recipes_saved_id_seq
@@ -213,17 +240,15 @@ CREATE SEQUENCE public.saved_recipes_saved_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.saved_recipes_saved_id_seq OWNER TO vagrant;
-
 --
--- Name: saved_recipes_saved_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: vagrant
+-- Name: saved_recipes_saved_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE public.saved_recipes_saved_id_seq OWNED BY public.saved_recipes.saved_id;
 
 
 --
--- Name: users; Type: TABLE; Schema: public; Owner: vagrant
+-- Name: users; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.users (
@@ -234,10 +259,8 @@ CREATE TABLE public.users (
 );
 
 
-ALTER TABLE public.users OWNER TO vagrant;
-
 --
--- Name: users_user_id_seq; Type: SEQUENCE; Schema: public; Owner: vagrant
+-- Name: users_user_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE public.users_user_id_seq
@@ -249,59 +272,57 @@ CREATE SEQUENCE public.users_user_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.users_user_id_seq OWNER TO vagrant;
-
 --
--- Name: users_user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: vagrant
+-- Name: users_user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE public.users_user_id_seq OWNED BY public.users.user_id;
 
 
 --
--- Name: equipment equipment_id; Type: DEFAULT; Schema: public; Owner: vagrant
+-- Name: equipment equipment_id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.equipment ALTER COLUMN equipment_id SET DEFAULT nextval('public.equipment_equipment_id_seq'::regclass);
 
 
 --
--- Name: instructions instruction_id; Type: DEFAULT; Schema: public; Owner: vagrant
+-- Name: instructions instruction_id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.instructions ALTER COLUMN instruction_id SET DEFAULT nextval('public.instructions_instruction_id_seq'::regclass);
 
 
 --
--- Name: recipe_ingredients rec_ing_id; Type: DEFAULT; Schema: public; Owner: vagrant
+-- Name: recipe_ingredients rec_ing_id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.recipe_ingredients ALTER COLUMN rec_ing_id SET DEFAULT nextval('public.recipe_ingredients_rec_ing_id_seq'::regclass);
 
 
 --
--- Name: recipes recipe_id; Type: DEFAULT; Schema: public; Owner: vagrant
+-- Name: recipes recipe_id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.recipes ALTER COLUMN recipe_id SET DEFAULT nextval('public.recipes_recipe_id_seq'::regclass);
 
 
 --
--- Name: saved_recipes saved_id; Type: DEFAULT; Schema: public; Owner: vagrant
+-- Name: saved_recipes saved_id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.saved_recipes ALTER COLUMN saved_id SET DEFAULT nextval('public.saved_recipes_saved_id_seq'::regclass);
 
 
 --
--- Name: users user_id; Type: DEFAULT; Schema: public; Owner: vagrant
+-- Name: users user_id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.users ALTER COLUMN user_id SET DEFAULT nextval('public.users_user_id_seq'::regclass);
 
 
 --
--- Data for Name: equipment; Type: TABLE DATA; Schema: public; Owner: vagrant
+-- Data for Name: equipment; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 COPY public.equipment (equipment_id, recipe_id, equipment) FROM stdin;
@@ -456,7 +477,7 @@ COPY public.equipment (equipment_id, recipe_id, equipment) FROM stdin;
 
 
 --
--- Data for Name: instructions; Type: TABLE DATA; Schema: public; Owner: vagrant
+-- Data for Name: instructions; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 COPY public.instructions (instruction_id, recipe_id, step_num, step_instruction) FROM stdin;
@@ -705,7 +726,7 @@ COPY public.instructions (instruction_id, recipe_id, step_num, step_instruction)
 
 
 --
--- Data for Name: recipe_ingredients; Type: TABLE DATA; Schema: public; Owner: vagrant
+-- Data for Name: recipe_ingredients; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 COPY public.recipe_ingredients (rec_ing_id, recipe_id, ingredient_id, amount, unit, name) FROM stdin;
@@ -1011,7 +1032,7 @@ COPY public.recipe_ingredients (rec_ing_id, recipe_id, ingredient_id, amount, un
 
 
 --
--- Data for Name: recipes; Type: TABLE DATA; Schema: public; Owner: vagrant
+-- Data for Name: recipes; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 COPY public.recipes (recipe_id, title, image, servings, "sourceUrl", cooking_mins, prep_mins, ready_mins) FROM stdin;
@@ -1031,7 +1052,7 @@ COPY public.recipes (recipe_id, title, image, servings, "sourceUrl", cooking_min
 
 
 --
--- Data for Name: saved_recipes; Type: TABLE DATA; Schema: public; Owner: vagrant
+-- Data for Name: saved_recipes; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 COPY public.saved_recipes (saved_id, recipe_id, user_id, favorite, tried, rating, comment) FROM stdin;
@@ -1056,7 +1077,7 @@ COPY public.saved_recipes (saved_id, recipe_id, user_id, favorite, tried, rating
 
 
 --
--- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: vagrant
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 COPY public.users (user_id, email, password, phone) FROM stdin;
@@ -1069,49 +1090,49 @@ COPY public.users (user_id, email, password, phone) FROM stdin;
 
 
 --
--- Name: equipment_equipment_id_seq; Type: SEQUENCE SET; Schema: public; Owner: vagrant
+-- Name: equipment_equipment_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
 SELECT pg_catalog.setval('public.equipment_equipment_id_seq', 147, true);
 
 
 --
--- Name: instructions_instruction_id_seq; Type: SEQUENCE SET; Schema: public; Owner: vagrant
+-- Name: instructions_instruction_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
 SELECT pg_catalog.setval('public.instructions_instruction_id_seq', 241, true);
 
 
 --
--- Name: recipe_ingredients_rec_ing_id_seq; Type: SEQUENCE SET; Schema: public; Owner: vagrant
+-- Name: recipe_ingredients_rec_ing_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
 SELECT pg_catalog.setval('public.recipe_ingredients_rec_ing_id_seq', 298, true);
 
 
 --
--- Name: recipes_recipe_id_seq; Type: SEQUENCE SET; Schema: public; Owner: vagrant
+-- Name: recipes_recipe_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
 SELECT pg_catalog.setval('public.recipes_recipe_id_seq', 1, false);
 
 
 --
--- Name: saved_recipes_saved_id_seq; Type: SEQUENCE SET; Schema: public; Owner: vagrant
+-- Name: saved_recipes_saved_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
 SELECT pg_catalog.setval('public.saved_recipes_saved_id_seq', 54, true);
 
 
 --
--- Name: users_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: vagrant
+-- Name: users_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
 SELECT pg_catalog.setval('public.users_user_id_seq', 5, true);
 
 
 --
--- Name: equipment equipment_pkey; Type: CONSTRAINT; Schema: public; Owner: vagrant
+-- Name: equipment equipment_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.equipment
@@ -1119,7 +1140,7 @@ ALTER TABLE ONLY public.equipment
 
 
 --
--- Name: instructions instructions_pkey; Type: CONSTRAINT; Schema: public; Owner: vagrant
+-- Name: instructions instructions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.instructions
@@ -1127,7 +1148,7 @@ ALTER TABLE ONLY public.instructions
 
 
 --
--- Name: recipe_ingredients recipe_ingredients_pkey; Type: CONSTRAINT; Schema: public; Owner: vagrant
+-- Name: recipe_ingredients recipe_ingredients_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.recipe_ingredients
@@ -1135,7 +1156,7 @@ ALTER TABLE ONLY public.recipe_ingredients
 
 
 --
--- Name: recipes recipes_pkey; Type: CONSTRAINT; Schema: public; Owner: vagrant
+-- Name: recipes recipes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.recipes
@@ -1143,7 +1164,7 @@ ALTER TABLE ONLY public.recipes
 
 
 --
--- Name: saved_recipes saved_recipes_pkey; Type: CONSTRAINT; Schema: public; Owner: vagrant
+-- Name: saved_recipes saved_recipes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.saved_recipes
@@ -1151,7 +1172,7 @@ ALTER TABLE ONLY public.saved_recipes
 
 
 --
--- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: vagrant
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.users
@@ -1159,7 +1180,7 @@ ALTER TABLE ONLY public.users
 
 
 --
--- Name: equipment equipment_recipe_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: vagrant
+-- Name: equipment equipment_recipe_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.equipment
@@ -1167,7 +1188,7 @@ ALTER TABLE ONLY public.equipment
 
 
 --
--- Name: instructions instructions_recipe_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: vagrant
+-- Name: instructions instructions_recipe_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.instructions
@@ -1175,7 +1196,7 @@ ALTER TABLE ONLY public.instructions
 
 
 --
--- Name: recipe_ingredients recipe_ingredients_recipe_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: vagrant
+-- Name: recipe_ingredients recipe_ingredients_recipe_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.recipe_ingredients
@@ -1183,7 +1204,7 @@ ALTER TABLE ONLY public.recipe_ingredients
 
 
 --
--- Name: saved_recipes saved_recipes_recipe_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: vagrant
+-- Name: saved_recipes saved_recipes_recipe_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.saved_recipes
@@ -1191,11 +1212,18 @@ ALTER TABLE ONLY public.saved_recipes
 
 
 --
--- Name: saved_recipes saved_recipes_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: vagrant
+-- Name: saved_recipes saved_recipes_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.saved_recipes
     ADD CONSTRAINT saved_recipes_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(user_id);
+
+
+--
+-- Name: SCHEMA public; Type: ACL; Schema: -; Owner: -
+--
+
+GRANT ALL ON SCHEMA public TO PUBLIC;
 
 
 --
