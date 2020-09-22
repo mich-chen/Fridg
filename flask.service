@@ -1,5 +1,5 @@
 [Unit]
-Description=My Awesome Cat App
+Description=Fridg App
 After=network.target
 
 [Service]
@@ -7,7 +7,7 @@ User=ubuntu
 Group=ubuntu
 Environment="LANG=en_US.UTF-8"
 Environment="LANGUAGE=en_US.UTF-8:"
-WorkingDirectory=/home/ubuntu/catapp/
+WorkingDirectory=/home/ubuntu/Fridg/
 ExecStart=/bin/bash -c "source secrets.sh\
 && source env/bin/activate\
 && python3 server.py &>> flask.log"
