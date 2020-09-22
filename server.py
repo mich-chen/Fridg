@@ -154,7 +154,7 @@ def search_results():
                "sort": "max-used-ingredients",
                "instructionsRequired": True,
                "fillIngredients": True,
-               "number": 10,
+               "number": 15,
                } 
     # make http request to spoonacular's complexSearch API
     res = requests.get(url, params=payload)
