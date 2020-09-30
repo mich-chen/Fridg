@@ -5,7 +5,6 @@
 function Tried(props) {
   let { id } = useParams();
   const {tried, setTried} = props;
-  console.log(tried);
 
   const handleTried = (e) => {
     const values = {
@@ -39,7 +38,6 @@ function Comment(props) {
   let { id } = useParams();
   const {comment, setComment} = props;
   const [newComment, setNewComment] = React.useState('');
-  console.log(newComment);
   const handleComment = () => {
     fetch('/api/update_user_thoughts', {
     method: 'POST',

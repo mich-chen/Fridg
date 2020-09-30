@@ -119,7 +119,7 @@ function About(props) {
                  {'    '}in/mich-chen
             </Row>
             <Row className='contact'>
-              <img src="/static/img/Github-logo.png"
+              <img src="/static/img/GitHub-logo.png"
                                 height='30'
                                 width='30' /> 
                   {'    '}/mich-chen
@@ -151,14 +151,12 @@ function SavedRecipes(props) {
   const [removed, updateRemoved] = React.useState(false);
   // retrieve list of user's saved recipes
   React.useEffect(() => {
-    console.log('useeffect in saved recipes');
     fetch('/api/saved_recipes')
     .then(res => res.json())
     .then(savedData => {
       setSavedList(savedData.saved_recipes); 
     })
   }, [removed]);
-  // console.log('saved list of recipes', savedList);
   const handleRemove = () => {
     updateRemoved(true);
   };
@@ -195,7 +193,6 @@ function SearchResults(props) {
   const [checkedRecipes, updateCheckedRecipes] = React.useState([]);
   // check search results for any user's saved recipes
   React.useEffect(() => {
-    console.log('in check results use effect');
     fetch('/api/check_results', {
       method: 'POST',
       body: JSON.stringify({results_list: resultsList}),
@@ -207,9 +204,6 @@ function SearchResults(props) {
       updateCheckedRecipes(data.checked_recipes);
     });
   }, [resultsList]);
-
-  console.log('results', checkedRecipes);
-
 
   return (
     <div className='container search-results'>
@@ -284,19 +278,15 @@ const AuthContext = React.createContext(null);
 
 
 function App() {
-  console.log('in app component');
   // data from Spoonacular API search results
   const [data, setData] = React.useState([]);
-  console.log((data));
   const [loggedIn, setLoggedIn] = React.useState(null);
   // each time setLoggedIn is updated in App, useEffect will fetch logged in from server to persist data during reloads
   React.useEffect(() => {
-    console.log('in app useEffect');
     fetch('/api/check_session')
       .then(res => res.json())
       .then(data => setLoggedIn(data.in_session))
   }, [loggedIn]);
-  console.log('app loggedIn status', loggedIn);
   // state for handling showing userAuthModal in nav links
   const [show, setShow] = React.useState(false);
   const handleShow = () => {setShow(true)};

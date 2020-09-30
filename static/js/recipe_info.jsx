@@ -252,8 +252,6 @@ function RecipeDetails(props) {
           })
     };
   }, [buttonStatus]);
-  console.log('recipes details', details);
-  console.log(buttonStatus);
 
   const prepMins = details.prep_mins;
   const cookMins = details.cooking_mins;
