@@ -345,7 +345,6 @@ def remove_from_saved():
 @app.route('/api/shopping-list', methods=["POST"])
 def send_shopping_list():
     """Send shopping list of ingredients to user's phone via Twilio API."""
-
     # pass phone as string to 'to=' in message
     email = session.get('email')
     phone = crud.get_user_phone(email)
@@ -357,19 +356,18 @@ def send_shopping_list():
     
     client = Client(TWILIO_SID, TWILIO_TOKEN)
 
-    # "+15599403988"
-    message = client.messages.create(
-        to="+15593131883",
-        from_="+14158180714",
-        body=f'\nThanks for using Fridg!\n'
-             f'{recipe_title} shopping list:\n'
-             f'{shopping_list}'
-             )
-
-    print(message.sid)
-
-    return jsonify({'success': True, 'message': 'Shopping list sent to your phone!'})
-
+    try:
+        message = client.messages.create(
+            to=str(phone),
+            from_="+14158180714",
+            body=f'\nThanks for using Fridg!\n'
+                f'{recipe_title} shopping list:\n'
+                f'{shopping_list}'
+                )
+        return jsonify({'success': True, 'message': 'Shopping list sent to your phone!'})
+    except:
+        error = "Number is not valid, please input correct phone number in format +1xxxxxxxxxx"
+        return jsonify({'success': False, 'message': error})
 
 @app.route('/api/user_thoughts/<recipe_id>')
 def get_user_thoughts(recipe_id):
@@ -417,7 +415,7 @@ def update_user_thoughts():
 
 if __name__ == '__main__':
     # Connect to db first, then app can access it.
-    # app.debug = True
+    app.debug = True
     connect_to_db(app)
     # DebugToolbarExtension(app)
     app.run(host='0.0.0.0')
