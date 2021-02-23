@@ -2,11 +2,8 @@
 
 import crud
 from model import connect_to_db, db
-from pprint import pprint
-
 
 # ***** Parse Spoonacular's API Endpoint data (Complex Search data) *****
-
 
 def parse_API_recipe_details(complex_data):
     """Parse only details we need from bulk/complex API endpoint."""
@@ -62,7 +59,6 @@ def parse_db_recipe_details(recipe):
     """Return dictionary of a db recipe's details information."""
 
     recipe_details = recipe.as_dict()
-    print(recipe_details)
 
     ingredients = [ingredient.as_dict() for ingredient in recipe_details['ingredients']]
     instructions = [instruction.as_dict()['step_instruction'] for instruction in recipe_details['instructions']]
