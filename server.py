@@ -53,10 +53,8 @@ def homepage():
 @app.route('/api/login', methods=["POST"])
 def process_login():
 
-    print('in login route')
     # unencode from JSON
     data = request.get_json()
-    # # print(data)
     email = data['email']
     password = data['password']
 
@@ -85,7 +83,6 @@ def process_login():
 def create_account():
     """Create new account and store in db."""
 
-    print('\nin create account route\n')
     # unencode from JSON
     data = request.get_json()
     email = data['email']
@@ -115,7 +112,6 @@ def create_account():
 @app.route('/api/check_session')
 def check_if_logged_in():
     """Check if active session/logged in user."""
-    print('\nin checking session route\n')
 
     if session.get('email'):
         return jsonify({'in_session': True})
@@ -126,7 +122,6 @@ def check_if_logged_in():
 @app.route('/api/logout')
 def process_logout():
     """Remove user's session after logout."""
-    print('in logout route')
 
     session.pop('email', None)
 
@@ -138,12 +133,10 @@ def process_logout():
 def search_results():
     """Make API request for search results."""
 
-    print("route is hit through js")
     # unencode from JSON
     data = request.get_json()
     # User's input is a string of comma-separated list of ingredients 
     input_ingredients_str = data['ingredients']
-    print(input_ingredients_str)
 
     # spoonacular's api url
     url = "https://api.spoonacular.com/recipes/complexSearch"
@@ -168,7 +161,6 @@ def search_results():
     for recipe in recipes_complex_data:
         recipe_data = helper_functions.parse_API_recipe_details(recipe)
         recipe_results.append(recipe_data)
-    pprint(recipe_results)
 
     return jsonify(recipe_results)
 
@@ -178,7 +170,6 @@ def search_results():
 def check_if_saved_recipe():
     """Checked if recipes saved, if yes then add a key indicating. """
 
-    print('\nin check if saved recipes route\n')
     data = request.get_json()
     recipes_list = data['results_list']
 
@@ -186,7 +177,6 @@ def check_if_saved_recipe():
         # if not logged in or in session, then all recipes show as not saved
         for recipe in recipes_list:
             recipe['is_saved'] = False
-        pprint(recipes_list)
 
         return jsonify({'checked_recipes': recipes_list, 'success': True, 'message': 'You need to create an account to see saved recipes!'})
 
@@ -207,12 +197,10 @@ def check_if_saved_recipe():
 def add_recipe_to_db():
     """Add selected recipe to recipes table in db."""
 
-    pprint('in recipe_to_db route')
     # unencode from JSON
     data = request.get_json()
     recipe_details = data['recipe_details']
     recipe_id = recipe_details['recipe_id']
-    pprint(recipe_details)
     # must log in to save a recipe
     if session.get('email') == None:
         return jsonify({'success': False, 'message': 'You need to create an account to save a recipe!'})
@@ -221,7 +209,6 @@ def add_recipe_to_db():
     existing_recipe = crud.quick_get_recipe(recipe_id)
 
     if existing_recipe != None:
-        print('\nrecipe already in db')
         return jsonify({'success': True, 'message': 'Recipe already in db, procdeed to saving'})
 
     print('\n new recipe, adding to db \n')
@@ -264,7 +251,6 @@ def add_recipe_to_saved():
 
     Only logged in users can save one recipe at a time (one recipe_id passed in POST request body)."""
 
-    print('\n\nin save_a_recipe route')
     # unencode from JSON
     data = request.get_json()
     recipe_id = data['recipe_id']
@@ -293,7 +279,6 @@ def add_recipe_to_saved():
 def favorite_a_recipe():
     """Favorite a saved recipe."""
 
-    print('\nin favorited route\n')
     # unencode from JSON
     data = request.get_json()
     recipe_id = data['recipe_id']
@@ -307,10 +292,7 @@ def favorite_a_recipe():
 def get_saved_recipe_details(recipe_id):
     """Return details of one saved recipe given id."""
 
-    print('\nin one saved recipe details\n')
-
     if session.get('email') == None:
-        print('in session == none')
         return jsonify({'recipe_details': [], 'success': False, 'message': 'You need to create an account to see a saved recipe\'s details!'})
 
     email = session.get('email')
@@ -329,8 +311,6 @@ def get_saved_recipe_details(recipe_id):
 def get_saved_recipes():
     """Get all of user's saved and favorited recipes."""
 
-    print('\nin get saved recipes route\n')
-
     if session.get('email') == None:
         return jsonify({'saved_recipes': [], 'success': False, 'message': 'You need to create an account to see saved recipes!'})
 
@@ -343,8 +323,6 @@ def get_saved_recipes():
         recipe_details['favorite'] = saved['favorite']
         saved_recipes.append(recipe_details)
 
-    pprint(saved_recipes)
-
     return jsonify({'saved_recipes': saved_recipes, 'message': 'list of user\'s saved recieps!'})
 
 
@@ -352,8 +330,6 @@ def get_saved_recipes():
 @app.route('/api/remove_recipe', methods=["POST"])
 def remove_from_saved():
     """Remove recipe from user's saved recipes list."""
-
-    print('\nin remove recipe route\n')
 
     data = request.get_json()
     recipe_id = data['recipe_id']
@@ -383,7 +359,7 @@ def send_shopping_list():
 
     # "+15599403988"
     message = client.messages.create(
-        to="+15599403988",
+        to="+15593131883",
         from_="+14158180714",
         body=f'\nThanks for using Fridg!\n'
              f'{recipe_title} shopping list:\n'
@@ -409,7 +385,6 @@ def get_user_thoughts(recipe_id):
         saved_recipe_thoughts['rating'] = list(range(1, saved_recipe_thoughts['rating'] + 1))
     else:
         saved_recipe_thoughts['rating'] = []
-    print('\nuser thoughts', saved_recipe_thoughts)
 
     return jsonify({'thoughts': saved_recipe_thoughts, 'message': 'retrieved user\'s food for thought!'})
 
@@ -417,7 +392,6 @@ def get_user_thoughts(recipe_id):
 @app.route('/api/update_user_thoughts', methods=["POST"])
 def update_user_thoughts():
     """Update a user's thoughts on a saved recipe."""
-    print('\nin user thought to db route\n')
     data = request.get_json()
     tried_str = (data.get('tried'))
     rating = data.get('rating')
@@ -430,7 +404,6 @@ def update_user_thoughts():
     if tried_str != None:
         tried = bool(tried_str)
         crud.update_tried(saved_recipe=saved_recipe, tried=tried)
-        print(tried)
 
     if rating != None:
         crud.update_rating(saved_recipe=saved_recipe, rating=rating)
