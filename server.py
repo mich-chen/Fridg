@@ -416,6 +416,6 @@ def update_user_thoughts():
 if __name__ == '__main__':
     # Connect to db first, then app can access it.
     app.debug = True
-    connect_to_db(app)
+    connect_to_db(app, echo=False)
     # DebugToolbarExtension(app)
     app.run(host='0.0.0.0')
