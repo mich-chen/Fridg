@@ -42,6 +42,12 @@ function MissingIngredientsList(props) {
 function ShoppingListBtn(props) {
   const {loggedIn} = React.useContext(AuthContext);
   const [alert, showAlert] = React.useState(false);
+  const [isValidPhone, setIsValidPhone] = React.useState(false);
+  const [textMessage, setTextMessage] = React.useState('');
+  const VARIANTS = {
+    true: 'info',
+    false: 'danger'
+  };
   // if logged in, button will send shopping list to user's phone
   // not logged in, prompts login modal
   const handleClick = () => {
@@ -51,6 +57,11 @@ function ShoppingListBtn(props) {
                               recipe_title: props.title}),
         headers: {'Content-Type': 'application/json'},
         credentials: 'include'
+      })
+      .then(response => response.json())
+      .then(data => {
+        setIsValidPhone(data.success);
+        setTextMessage(data.message);
       })
     };
   // not logged in renders modal window prompting log in
@@ -69,8 +80,8 @@ function ShoppingListBtn(props) {
 
   return (
     <div className="shopping-list-btn">
-      <Alert variant='info' show={alert} onClose={() => {showAlert(false)}} dismissible>
-        Shopping List sent to your phone!
+      <Alert variant={VARIANTS[isValidPhone]} show={alert} onClose={() => {showAlert(false)}} dismissible>
+        {textMessage}
       </Alert>
 
       {SHOPPING_BTN[loggedIn]}
