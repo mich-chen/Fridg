@@ -35,11 +35,12 @@ TWILIO_TOKEN = os.environ["TWILIO_TOKEN"]
 
 
 @app.route('/', defaults={'path': ''})
+@app.route('/<string:path>')
 @app.route('/<path:path>')
 def catch_all(path):
     """Catch all URL routes that don't match specific path."""
 
-    return render_template('root.html')
+    return render_template("root.html")
 
 
 @app.route('/')

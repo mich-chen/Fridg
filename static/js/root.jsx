@@ -321,95 +321,95 @@ function App() {
       )
   };
 
-    // use React Router for front-end routing
-    return (
-      <AuthContext.Provider value={{loggedIn, setLoggedIn}}>
-        <Router>
-          <div className='content-wrapper'>
-            <Navbar>
-              <Navbar.Brand as={Link} to="/homepage">
-                <img src='https://img.icons8.com/cotton/64/000000/fridge.png'
-                     width='35'
-                     height='35'
-                     className='d-inline-block align-top'
-                     id='fridg-logo' />
-                {'   '} Fridg 
-              </Navbar.Brand>
-              <Nav>
-                <Nav.Link as={Link} to="/homepage">Home</Nav.Link>
+  // use React Router for front-end routing
+  return (
+    <AuthContext.Provider value={{loggedIn, setLoggedIn}}>
+      <Router>
+        <div className='content-wrapper'>
+          <Navbar>
+            <Navbar.Brand as={Link} to="/homepage">
+              <img src='https://img.icons8.com/cotton/64/000000/fridge.png'
+                    width='35'
+                    height='35'
+                    className='d-inline-block align-top'
+                    id='fridg-logo' />
+              {'   '} Fridg 
+            </Navbar.Brand>
+            <Nav>
+              <Nav.Link as={Link} to="/homepage">Home</Nav.Link>
 
-                <Nav.Link as={Link} to="/about">About</Nav.Link>
-                
-                {NavLinks[loggedIn]}
+              <Nav.Link as={Link} to="/about">About</Nav.Link>
+              
+              {NavLinks[loggedIn]}
 
-                <Nav className='navbar-search'>
-                  <SearchBar setData={setData} />
-                </Nav>
+              <Nav className='navbar-search'>
+                <SearchBar setData={setData} />
               </Nav>
-            </Navbar>
+            </Nav>
+          </Navbar>
 
-            <Alert variant={VARIANTS[loggedIn]} show={alert} onClose={() => {showAlert(false)}} dismissible>
-              {message}
-            </Alert>
+          <Alert variant={VARIANTS[loggedIn]} show={alert} onClose={() => {showAlert(false)}} dismissible>
+            {message}
+          </Alert>
 
-            <Switch>
+          <Switch>
 
-              <Route path="/:fromPath/recipe-details/:id" >
-                <RecipeDetails alertProps={{showAlert, setMessage}}/>
-              </Route>
+            <Route path="/:fromPath/recipe-details/:id" >
+              <RecipeDetails alertProps={{showAlert, setMessage}}/>
+            </Route>
 
-              <Route exact path="/saved-recipes">
-                <SavedRecipes 
-                />
-              </Route>
+            <Route exact path="/saved-recipes">
+              <SavedRecipes 
+              />
+            </Route>
 
-              <Route exact path="/search-results">
-                <SearchResults resultsList={data}
-                               alertProps={{showAlert, setMessage}} />
-              </Route>
+            <Route exact path="/search-results">
+              <SearchResults resultsList={data}
+                              alertProps={{showAlert, setMessage}} />
+            </Route>
 
-              <Route exact path="/login">
-                <UserAuthModal show={show}
-                               handleClose={handleClose}
-                               newUser={false}
-                               showAlert={showAlert}
-                               setMessage={setMessage} />
-              </Route>
+            <Route exact path="/login">
+              <UserAuthModal show={show}
+                              handleClose={handleClose}
+                              newUser={false}
+                              showAlert={showAlert}
+                              setMessage={setMessage} />
+            </Route>
 
-              <Route exact path="/create-account">
-                <UserAuthModal show={show}
-                               handleClose={handleClose}
-                               newUser={true}
-                               showAlert={showAlert}
-                               setMessage={setMessage} />
-              </Route>
+            <Route exact path="/create-account">
+              <UserAuthModal show={show}
+                              handleClose={handleClose}
+                              newUser={true}
+                              showAlert={showAlert}
+                              setMessage={setMessage} />
+            </Route>
 
-              <Route exact path="/logout">
-                <Logout />
-              </Route>
+            <Route exact path="/logout">
+              <Logout />
+            </Route>
 
-              <Route exact path="/about">
-                <About />
-              </Route>
+            <Route exact path="/about">
+              <About />
+            </Route>
 
-              <Route path="/homepage">
-                <Homepage setData={setData}
-                          showAlert={showAlert}
-                          setMessage={setMessage} />
-              </Route>
+            <Route path="/homepage">
+              <Homepage setData={setData}
+                        showAlert={showAlert}
+                        setMessage={setMessage} />
+            </Route>
 
-              <Route exact path="/">
-                <Homepage setData={setData}
-                          showAlert={showAlert}
-                          setMessage={setMessage} />
-              </Route>
-            </Switch>
-          </div>
+            <Route>
+              <Homepage setData={setData}
+                        showAlert={showAlert}
+                        setMessage={setMessage} />
+            </Route>
+          </Switch>
+      </div>
 
-          <footer className='tagline footer'>
-            <TagLine />
-          </footer>
-        </Router>
+        <footer className='tagline footer'>
+          <TagLine />
+        </footer>
+      </Router>
     </AuthContext.Provider>
   );
 }
